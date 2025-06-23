@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-8 px-12 py-8">
+  <div class="flex w-full flex-col gap-8 px-12 py-8">
     <button class="text-primary flex items-center gap-2 font-semibold">
       <Icon name="arrow-left" :size="20" />
       Integration
@@ -36,5 +36,5 @@
 <script setup lang="ts">
 import Icon from '@/components/icons/Icon.vue';
 
-import TableListAccount from '@/pages/integration/list-account/TableListAccount.vue';
+import TableListAccount from '@/pages/integration/list-account/ListAccountTable.vue';
 </script>

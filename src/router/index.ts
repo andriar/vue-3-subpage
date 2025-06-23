@@ -94,7 +94,7 @@ export function createRouter(appId?: string | number): Router {
     {
       path: '/list-account',
       name: 'ListAccount',
-      component: ListAccount
+      component: ListAccount,
     },
     {
       path: '/home',
