@@ -1,18 +1,30 @@
 <script setup lang="ts">
-const props = withDefaults(defineProps<{
-  size?: number
-  class?: string
-}>(), {
-  size: 24,
-  class: '',
-})
+const props = withDefaults(
+  defineProps<{
+    size?: number;
+    class?: string;
+  }>(),
+  {
+    size: 24,
+    class: '',
+  }
+);
 </script>
 
 <template>
-  <svg :width="props.size" :height="props.size" :class="props.class" viewBox="0 0 24 24" fill="none"
-    xmlns="http://www.w3.org/2000/svg">
-    <path fill-rule="evenodd" clip-rule="evenodd"
+  <svg
+    :width="props.size"
+    :height="props.size"
+    :class="props.class"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      fill-rule="evenodd"
+      clip-rule="evenodd"
       d="M5 6C5.55228 6 6 5.55228 6 5C6 4.44772 5.55228 4 5 4C4.44772 4 4 4.44772 4 5C4 5.55228 4.44772 6 5 6ZM7.82929 6C7.41746 7.16519 6.30622 8 5 8C3.34315 8 2 6.65685 2 5C2 3.34315 3.34315 2 5 2C6.30622 2 7.41746 2.83481 7.82929 4H21C21.5523 4 22 4.44772 22 5C22 5.55228 21.5523 6 21 6H7.82929ZM12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13ZM14.8293 13C14.4175 14.1652 13.3062 15 12 15C10.6938 15 9.58254 14.1652 9.17071 13H3C2.44772 13 2 12.5523 2 12C2 11.4477 2.44772 11 3 11H9.17071C9.58254 9.83481 10.6938 9 12 9C13.3062 9 14.4175 9.83481 14.8293 11H21C21.5523 11 22 11.4477 22 12C22 12.5523 21.5523 13 21 13H14.8293ZM19 18C18.4477 18 18 18.4477 18 19C18 19.5523 18.4477 20 19 20C19.5523 20 20 19.5523 20 19C20 18.4477 19.5523 18 19 18ZM16.1707 20L3 20C2.44772 20 2 19.5523 2 19C2 18.4477 2.44772 18 3 18L16.1707 18C16.5825 16.8348 17.6938 16 19 16C20.6569 16 22 17.3431 22 19C22 20.6569 20.6569 22 19 22C17.6938 22 16.5825 21.1652 16.1707 20Z"
-      fill="currentColor" />
+      fill="currentColor"
+    />
   </svg>
 </template>

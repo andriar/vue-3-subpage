@@ -1,12 +1,12 @@
 <template>
   <div class="w-full">
-    <div class="flex items-center justify-between">
-      <!-- Search Input -->
-      <div class="relative mb-6">
+    <!-- Header Table List Account -->
+    <div class="flex items-center justify-between pb-4">
+      <div class="relative">
         <Icon
           name="search"
           :size="20"
-          class="absolute top-1/2 left-3 -translate-y-1/2 transform text-gray-400"
+          class="text-icon-black absolute top-1/2 left-3 -translate-y-1/2 transform"
         />
         <input
           v-model="searchQuery"
@@ -20,7 +20,7 @@
         <button
           class="bg-button-primary text-surface-primary-white flex items-center gap-x-2 rounded-[64px] px-7 py-2 text-sm font-semibold"
         >
-          <Icon name="plus" :size="16" />
+          <Icon name="plus" :size="16" class="text-icon-white" />
           New Integration
         </button>
       </div>
@@ -63,7 +63,7 @@
                   title="Copy Channel ID"
                   @click="copyToClipboard(channel.channelId)"
                 >
-                  <Icon name="copy" :size="12" class="text-gray-400" />
+                  <Icon name="copy" :size="12" class="text-icon-green" />
                 </button>
               </div>
             </td>
@@ -87,15 +87,15 @@
         </div>
 
         <div class="flex items-center gap-4">
-          <Icon name="double-chevron-left" :size="12" />
-          <Icon name="chevron-left" :size="12" />
+          <Icon name="double-chevron-left" class="text-icon-disable" :size="24" />
+          <Icon name="chevron-left" class="text-icon-disable" :size="12" />
           <div
             class="shadow-small flex h-10 w-12 items-center justify-center rounded-lg text-base font-bold"
           >
             1
           </div>
-          <Icon name="chevron-right" :size="12" />
-          <Icon name="double-chevron-right" :size="12" />
+          <Icon name="chevron-right" class="text-icon-green" :size="12" />
+          <Icon name="double-chevron-right" class="text-icon-green" :size="24" />
         </div>
       </div>
 

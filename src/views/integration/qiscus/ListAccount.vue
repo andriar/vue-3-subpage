@@ -7,7 +7,7 @@
 
     <!-- Header -->
     <div class="flex items-center gap-2">
-      <Icon name="chat" :size="20" />
+      <Icon name="chat" :size="24" />
       <h2 class="text-text-title text-xl font-semibold">Qiscus Live Chat</h2>
     </div>
 
@@ -25,10 +25,8 @@
 
     <!-- Table section -->
     <div class="shadow-large rounded-2xl bg-white p-4">
-      <div class="flex items-center justify-between">
-        <!-- Search Input with Icon -->
-        <TableListAccount />
-      </div>
+      <!-- Search Input with Icon -->
+      <TableListAccount />
     </div>
   </div>
 </template>

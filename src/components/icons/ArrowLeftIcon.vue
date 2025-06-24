@@ -1,40 +1,30 @@
+<script setup lang="ts">
+const props = withDefaults(
+  defineProps<{
+    size?: number;
+    class?: string;
+  }>(),
+  {
+    size: 24,
+    class: '',
+  }
+);
+</script>
+
 <template>
   <svg
-    xmlns="http://www.w3.org/2000/svg"
-    :width="size"
-    :height="size"
+    :width="props.size"
+    :height="props.size"
+    :class="props.class"
     viewBox="0 0 20 20"
     fill="none"
-    :class="className"
-    v-bind="$attrs"
+    xmlns="http://www.w3.org/2000/svg"
   >
     <path
       fill-rule="evenodd"
       clip-rule="evenodd"
       d="M10 1.81818C14.5187 1.81818 18.1818 5.48131 18.1818 10C18.1818 14.5187 14.5187 18.1818 10 18.1818C5.48131 18.1818 1.81818 14.5187 1.81818 10C1.81818 5.48131 5.48131 1.81818 10 1.81818ZM20 10C20 4.47715 15.5228 0 10 0C4.47715 0 0 4.47715 0 10C0 15.5228 4.47715 20 10 20C15.5228 20 20 15.5228 20 10ZM9.35718 5.72081C8.14325 6.93474 6.91774 8.13824 5.7149 9.36314C5.36959 9.71484 5.37299 10.2958 5.72146 10.6435L9.35718 14.2792C9.7122 14.6342 10.2878 14.6342 10.6428 14.2792C10.9978 13.9242 10.9978 13.3486 10.6428 12.9935L8.55838 10.9091H13.6364C14.1384 10.9091 14.5455 10.5021 14.5455 10C14.5455 9.49792 14.1384 9.09091 13.6364 9.09091H8.55838L10.6428 7.00646C10.9978 6.65144 10.9978 6.07583 10.6428 5.72081C10.2878 5.36579 9.7122 5.36579 9.35718 5.72081Z"
-      :fill="color"
+      fill="currentColor"
     />
   </svg>
 </template>
-
-<script setup>
-defineProps({
-  size: {
-    type: [String, Number],
-    default: 20,
-  },
-  color: {
-    type: String,
-    default: 'currentColor',
-  },
-  className: {
-    type: String,
-    default: '',
-  },
-});
-
-// // Inherit attributes untuk fleksibilitas
-// defineOptions({
-//   inheritAttrs: false,
-// });
-</script>
