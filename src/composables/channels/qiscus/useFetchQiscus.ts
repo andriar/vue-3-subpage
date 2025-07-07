@@ -1,9 +1,11 @@
 import { ref } from 'vue';
+import { z } from 'zod';
 
 import { qiscusApi } from '@/api/channels';
-import type { IPagination2, IResponse } from '@/types/api';
-import type { IQiscusChannel } from '@/types/channels';
+import type { IPagination2 } from '@/types/api';
 import { filterFilledObj } from '@/utils/helper/object';
+
+import { type Pagination, type QiscusChannel, QiscusResponseSchema } from '../schema/qiscus';
 
 const initMeta: IPagination2 = {
   page: 0,
@@ -14,8 +16,8 @@ const initMeta: IPagination2 = {
 
 export const useFetchQiscus = () => {
   const loading = ref(false);
-  const data = ref<IQiscusChannel[]>([]);
-  const meta = ref<IPagination2>({ ...initMeta });
+  const data = ref<QiscusChannel[]>([]);
+  const meta = ref<Pagination>({ ...initMeta });
   const error = ref<Error | null>(null);
 
   const fetchChannels = async (params?: any) => {
@@ -25,12 +27,22 @@ export const useFetchQiscus = () => {
 
       const newParams = _getParams(params);
       const response = await qiscusApi.get(newParams);
-      const dataResponse = response.data as unknown as IResponse<IQiscusChannel[]>;
 
-      data.value = dataResponse.data;
-      meta.value = dataResponse.meta as unknown as IPagination2;
+      // Validasi response dengan Zod
+      const validatedResponse = QiscusResponseSchema.parse(response.data);
+
+      data.value = validatedResponse.data;
+      meta.value = validatedResponse.meta;
     } catch (err) {
-      error.value = err instanceof Error ? err : new Error('An unknown error occurred');
+      if (err instanceof z.ZodError) {
+        // Handle Zod validation errors
+        console.error('Validation Error:', err.errors);
+        error.value = new Error(
+          `Validation failed: ${err.errors.map((e) => e.message).join(', ')}`
+        );
+      } else {
+        error.value = err instanceof Error ? err : new Error('An unknown error occurred');
+      }
       data.value = [];
       meta.value = { ...initMeta };
     } finally {

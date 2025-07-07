@@ -204,15 +204,15 @@ function copyToClipboard(text: string) {
   navigator.clipboard.writeText(text);
 }
 
-const channels = computed(() =>
-  listData.value.map((channel: IQiscusChannel) => ({
+const channels = computed(() => {
+  return listData.value.map((channel) => ({
     id: channel.id,
     name: channel.name,
     channelId: channel.id.toString(), // Assuming channel.id is also the channelId for display
     isActive: channel.is_active,
     badgeUrl: channel.badge_url ? channel.badge_url : CHANNEL_BADGE_URL.qiscus,
-  }))
-);
+  }));
+});
 
 async function updateChannelStatus(id: number, is_active: boolean) {
   const { update, data, error } = useUpdateQiscus();
@@ -254,7 +254,7 @@ async function updateChannelStatus(id: number, is_active: boolean) {
 }
 
 function updateExistingListData(newData: IQiscusChannel) {
-  const fIdx = listData.value.findIndex((ld: IQiscusChannel) => ld.id === newData.id);
+  const fIdx = listData.value.findIndex((ld) => ld.id === newData.id);
 
   if (fIdx === -1) return;
   if (!listData.value[fIdx]) return;
