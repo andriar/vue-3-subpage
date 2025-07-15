@@ -8,7 +8,7 @@ import App from './App.vue';
 import './assets/css/style.css';
 import './assets/css/tailwind.css';
 import prismPlugin from './plugins/prism';
-import { createRouter } from './router';
+import { createRouter } from './router/index-integration';
 import { useAppConfigStore } from './stores/app-config';
 
 export interface WidgetConfig {

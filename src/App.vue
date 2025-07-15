@@ -18,10 +18,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watchEffect } from 'vue';
+import { defineAsyncComponent, onMounted, ref, watchEffect } from 'vue';
 import { RouterView } from 'vue-router';
-import MainLoading from './components/ui/MainLoading.vue';
-import { navigationDirection } from './router'; // Import the reactive navigationDirection
+import { navigationDirection } from './router/index-integration'; // Import the reactive navigationDirection
+
+const MainLoading = defineAsyncComponent(() => (import('./components/ui/MainLoading.vue')))
 
 // Define reactive variables for transition classes
 const enterActiveClass = ref('transition-all duration-100 ease-out');
