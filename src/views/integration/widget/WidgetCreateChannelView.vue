@@ -8,12 +8,16 @@ import { useCreateQiscus } from '@/composables/channels/qiscus';
 import { useSweetAlert } from '@/composables/useSweetAlert';
 import AutoResponderForm from '@/features/widget/components/forms/AutoResponderForm.vue';
 import CreateWidgetForm from '@/features/widget/components/forms/CreateWidgetForm.vue';
+import { useAppConfigStore } from '@/stores/app-config';
+import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
 import type { IWidgetChannel } from '@/types/channels';
 import { CHANNEL_BADGE_URL } from '@/utils/constant/channels';
 
 const { showAlert } = useSweetAlert();
 const router = useRouter();
 const uQiscus = useCreateQiscus();
+const { postWidgetConfig } = useQiscusLiveChatStore();
+const { appId } = useAppConfigStore();
 
 const isBot = ref(false);
 const isAutoresponderFormOpen = ref(false);
@@ -84,6 +88,7 @@ async function handleSubmit() {
       showCancelButton: false,
     });
   }
+  await postWidgetConfig(appId, uQiscus.data.value?.id as unknown as string);
 
   router.replace({ name: 'qiscus-detail', params: { id: uQiscus.data.value?.id } });
 }
