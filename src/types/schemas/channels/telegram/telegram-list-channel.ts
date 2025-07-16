@@ -8,6 +8,7 @@ export const TelegramChannelSchema = z.object({
   id: z.number(),
   is_active: z.boolean(),
   username: z.string(),
+  name: z.string(),
   webhook_url: z.string().nullable(),
 });
 

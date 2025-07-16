@@ -11,11 +11,33 @@ export const integrationRoutes: RouteRecordRaw[] = [
   {
     path: '/whatsapp',
     name: 'whatsapp',
-    component: () => null,
-    beforeEnter: () => {
-      window.location.href = `/integration?ch=whatsapp`;
-      return false;
-    },
+    redirect: { name: 'whatsapp-list' },
+    children: [
+      {
+        path: '', // Full path: /qiscus
+        name: 'whatsapp-list',
+        component: import('@/views/integration/whatsapp/WhatsappChannelView.vue'),
+      },
+      // wip
+      {
+        path: ':id', // Full path: /qiscus/:id
+        name: 'whatsapp-detail',
+        component: () => null,
+        beforeEnter: (to) => {
+          window.location.href = `/integration?ch=whatsapp&id=${to.params.id}`;
+          return false;
+        },
+      },
+      {
+        path: 'create', // Full path: /qiscus/create
+        name: 'whatsapp-new',
+        component: () => null,
+        beforeEnter: () => {
+          window.location.href = `/integration?ch=whatsapp`;
+          return false;
+        },
+      },
+    ],
   },
   {
     path: '/instagram',
@@ -64,7 +86,7 @@ export const integrationRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/integration/telegram/TelegramView.vue'),
       },
       {
-        path: 'create',
+        path: 'create', // Full path: /telegram/create
         name: 'telegram-create',
         component: () => import('@/views/integration/telegram/TelegramCreateChannelView.vue'),
       },
@@ -103,13 +125,9 @@ export const integrationRoutes: RouteRecordRaw[] = [
     },
   },
   {
-    path: '/bot_integration',
-    name: 'bot_integration',
-    component: () => null,
-    beforeEnter: () => {
-      window.location.href = `/integration?ch=bot_integration`;
-      return false;
-    },
+    path: '/bot-integration',
+    name: 'bot-integration',
+    component: import('@/views/integration/bot/BotView.vue'),
   },
 ];
 

@@ -4,37 +4,17 @@
     <div :class="wrapperClasses({ isFocused, error, disabled })">
       <div :class="contentWrapperClasses()">
         <slot name="suffix-icon" />
-        <input
-          v-bind="$attrs"
-          :id="id"
-          :type="currentType"
-          :class="inputClasses({ disabled })"
-          :value="modelValue"
-          @input="onInput"
-          @focus="isFocused = true"
-          @blur="isFocused = false"
-          :placeholder="placeholder"
-          :disabled="disabled"
-        />
+        <input v-bind="$attrs" :id="id" :type="currentType" :class="inputClasses({ disabled })" :value="modelValue"
+          @input="onInput" @focus="isFocused = true" @blur="isFocused = false" :placeholder="placeholder"
+          :disabled="disabled" />
 
-        <button
-          v-if="clearable"
-          class="invisible cursor-pointer transition-colors duration-300 ease-in-out"
-          :class="{
-            visible: modelValue,
-          }"
-          @click="onClear"
-          :disabled="disabled"
-        >
+        <button v-if="clearable" class="invisible cursor-pointer transition-colors duration-300 ease-in-out" :class="{
+          visible: modelValue,
+        }" @click="onClear" :disabled="disabled">
           <CloseIcon :size="20" class="h-5 w-5 text-[#A0A0A0] hover:text-[#0A0A0A]" />
         </button>
 
-        <button
-          v-if="type === 'password'"
-          class="cursor-pointer"
-          @click="togglePasswordVisibility"
-          :disabled="disabled"
-        >
+        <button v-if="type === 'password'" class="cursor-pointer" @click="togglePasswordVisibility">
           <EyeIcon class="h-5 w-5 text-[#A0A0A0] hover:text-[#0A0A0A]" />
         </button>
       </div>
@@ -86,7 +66,7 @@ const isFocused = ref(false);
 const showPassword = ref(false);
 
 const currentType = computed(() =>
-  props.type === 'password' && !showPassword.value ? 'password' : props.type
+  props.type === 'password' && showPassword.value ? 'text' : props.type
 );
 
 const onInput = (event: Event) => {
@@ -137,12 +117,20 @@ const wrapperClasses = cva(
   }
 );
 
-const contentWrapperClasses = cva('flex w-full flex-row items-center gap-3 px-3 py-3 bg-white');
-
-const inputClasses = cva('w-full bg-white outline-none text-sm placeholder:text-[#A0A0A0]', {
+const contentWrapperClasses = cva('flex w-full flex-row items-center gap-3 px-3 py-3', {
   variants: {
     disabled: {
-      true: 'cursor-not-allowed',
+      true: '!bg-red-500',
+      false: 'bg-white'
+    },
+  },
+});
+
+const inputClasses = cva('w-full outline-none text-sm font-medium leading-5 placeholder:text-[#A0A0A0]', {
+  variants: {
+    disabled: {
+      true: 'cursor-not-allowed !bg-surface-disable',
+      false: 'bg-white'
     },
   },
 });

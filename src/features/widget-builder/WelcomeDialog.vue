@@ -49,7 +49,7 @@ const handleImageUpload = async (file: File, target: keyof typeof uploaderInstan
   if (uploader.data.value) {
     const targetHandlers = {
       brandIcon: () => (welcomeDialogState.value.brandIconWelcomeDialog = uploader.data.value!.url),
-      actionIcon: () => (firstAction.value.iconUrl = uploader.data.value!.url),
+      actionIcon: () => (welcomeDialogState.value.actionIconWelcomeDialog = uploader.data.value!.url),
       attentionGrabberImage: () =>
         (welcomeDialogState.value.attentionGrabberImage = uploader.data.value!.url),
     } as const;
@@ -87,10 +87,13 @@ const attentionGrabber = computed({
 
 // Ensure first action always exists
 const firstAction = computed(() => {
-  if (!welcomeDialogState.value.actionsWelcomeDialog[0]) {
-    welcomeDialogState.value.actionsWelcomeDialog.push({ label: '', iconUrl: '' });
-  }
-  return welcomeDialogState.value.actionsWelcomeDialog[0]!;
+  const action = [
+    {
+      label: welcomeDialogState.value.actionDescriptionWelcomeDialog,
+      iconUrl: welcomeDialogState.value.actionIconWelcomeDialog,
+    },
+  ];
+  return action;
 });
 
 // Convert between string and number for input binding
@@ -158,7 +161,7 @@ watch(
             :maxlength="50"
           />
           <ImageInput
-            v-model="firstAction.iconUrl"
+            v-model="welcomeDialogState.actionIconWelcomeDialog"
             label="Icon"
             id="action-icon"
             :isUploading="actionIconUpload.loading.value"
@@ -173,7 +176,7 @@ watch(
           </ImageInput>
           <Input
             id="action-welcome"
-            v-model="firstAction.label"
+            v-model="welcomeDialogState.actionDescriptionWelcomeDialog"
             label="Description"
             :maxlength="50"
           />
@@ -264,7 +267,7 @@ watch(
         :title="welcomeDialogState.firstDescriptionWelcomeDialog"
         :subtitle="welcomeDialogState.secondDescriptionWelcomeDialog"
         :imageUrl="welcomeDialogState.brandIconWelcomeDialog"
-        :actions="welcomeDialogState.actionsWelcomeDialog"
+        :actions="firstAction"
       />
       <div class="bg-surface-disable h-16 w-16 rounded-full" />
     </div>

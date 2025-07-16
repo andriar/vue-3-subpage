@@ -15,7 +15,7 @@ const channelPreviewData = computed(() => {
     .filter((channel) => channel.enabled)
     .map((channel) => ({
       label: channel.name,
-      iconUrl: CHANNEL_BADGE_URL[channel.icon as keyof typeof CHANNEL_BADGE_URL] || '',
+      iconUrl: channel.icon || CHANNEL_BADGE_URL[channel.icon as keyof typeof CHANNEL_BADGE_URL],
     }));
 });
 </script>
@@ -30,7 +30,7 @@ const channelPreviewData = computed(() => {
       :channels="channelPreviewData"
       :previewLiveChatName="channelState.previewLiveChatName"
       :enableQiscusLiveChat="channelState.isQiscusLiveChat"
-      :imageUrl="''"
+      :imageUrl="channelState.channelBadgeIcon"
     />
     <ChannelListLoading v-else />
 

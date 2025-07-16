@@ -20,7 +20,9 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, ref, watchEffect } from 'vue';
 import { RouterView } from 'vue-router';
-import { navigationDirection } from './router/index-integration'; // Import the reactive navigationDirection
+import { useFetchFeature } from './composables/channels/useFetchFeature';
+import { navigationDirection } from './router/index-integration';
+import { usePlanStore } from './stores/plan';
 
 const MainLoading = defineAsyncComponent(() => (import('./components/ui/MainLoading.vue')))
 
@@ -32,6 +34,8 @@ const leaveActiveClass = ref('transition-all duration-100 ease-in');
 const leaveFromClass = ref('opacity-100 translate-x-0');
 const leaveToClass = ref('opacity-0 -translate-x-5');
 
+const { fetchFeature, loading } = useFetchFeature();
+const { getPlanData } = usePlanStore();
 // Watch for changes in navigationDirection and update transition classes
 watchEffect(() => {
   if (navigationDirection.value === 'back') {
@@ -55,28 +59,8 @@ watchEffect(() => {
 });
 
 
-const loading = ref(false);
-onMounted(() => {
-  loading.value = true;
-
-  // Simulate loading for load plan and etc...
-  setTimeout(() => {
-    loading.value = false;
-  }, 3000);
+onMounted(async () => {
+  await fetchFeature();
+  await getPlanData();
 });
 </script>
-
-
-<style scoped>
-/* Transition for Backdrop Fade */
-.fade-fade-enter-active,
-.fade-fade-leave-active {
-  /* Option 1: Increase duration for a more gentle fade */
-  transition: opacity 0.2s ease-in-out;
-}
-
-.fade-fade-enter-from,
-.fade-fade-leave-to {
-  opacity: 0;
-}
-</style>

@@ -5,14 +5,38 @@ import ImageInput from '@/components/form/ImageInput.vue';
 import Input from '@/components/form/Input.vue';
 import TextArea from '@/components/form/TextArea.vue';
 import { useUploadSdkImage } from '@/composables/images/useUploadSdkImage';
+import { useSweetAlert } from '@/composables/useSweetAlert';
 import WidgetFormLayout from '@/features/widget-builder/components/layout/WidgetFormLayout.vue';
 import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
 
 import ChannelListCard from './components/ChannelListCard.vue';
 import PreviewChannels from './components/PreviewChannels.vue';
 
-const { channelState } = storeToRefs(useQiscusLiveChatStore());
+const { channelState, channelList } = storeToRefs(useQiscusLiveChatStore());
 const { loading, data, error, upload } = useUploadSdkImage();
+const { showAlert } = useSweetAlert();
+
+// Validates if the Live Chat toggle can be disabled
+const canDisableLiveChat = (): boolean => {
+  return channelList.value.length > 0;
+};
+
+// Handles the toggle state change for Qiscus Live Chat
+const handleQiscusLiveChatToggle = async (newValue: boolean): Promise<void> => {
+  // If trying to disable (newValue is false) and channelList is empty
+  if (!newValue && !canDisableLiveChat()) {
+    await showAlert.error({
+      title: 'Channel cannot be disabled.',
+      text: 'You need to activate at least one additional channel before you can disable the Live Chat Widget.',
+      confirmButtonText: 'Okay',
+      showCancelButton: false,
+    });
+    // Don't update the state - toggle remains as is
+    return;
+  }
+  // If validation passes, update the store value
+  channelState.value.isQiscusLiveChat = newValue;
+};
 
 const uploadImage = async (file: File) => {
   await upload(file);
@@ -66,7 +90,8 @@ const uploadImage = async (file: File) => {
         v-if="channelState.isChannelsEnabled"
         label="Enable Qiscus Live Chat"
         isSwitch
-        v-model="channelState.isQiscusLiveChat"
+        :model-value="channelState.isQiscusLiveChat"
+        @update:model-value="handleQiscusLiveChatToggle"
         id="qiscus-live-chat-switch"
       >
         <template #inputs>

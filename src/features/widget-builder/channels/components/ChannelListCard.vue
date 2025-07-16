@@ -15,7 +15,7 @@ import ModalChannelList from './ModalChannelList.vue';
 const qiscusLiveChatStore = useQiscusLiveChatStore();
 const isModalOpen = ref(false);
 const activeDropdown = ref<number | null>(null);
-const editingChannel = ref<IWidgetChannel | null>(null);
+const editingChannelData = ref<IWidgetChannel | null>(null);
 
 const toggleDropdown = (channelId: number) => {
   activeDropdown.value = activeDropdown.value === channelId ? null : channelId;
@@ -28,7 +28,7 @@ const closeDropdown = () => {
 const editChannel = (channelId: number) => {
   const channel = qiscusLiveChatStore.channelList.find((ch) => ch.id === channelId);
   if (channel) {
-    editingChannel.value = { ...channel };
+    editingChannelData.value = { ...channel };
     isModalOpen.value = true;
   }
   closeDropdown();
@@ -91,12 +91,14 @@ onUnmounted(() => {
             <!-- Icon & Name -->
             <div class="flex flex-1 items-center gap-3">
               <img
-                :src="CHANNEL_BADGE_URL[channel.icon as keyof typeof CHANNEL_BADGE_URL]"
+                v-if="channel.icon"
+                :src="
+                  channel.icon || CHANNEL_BADGE_URL[channel.icon as keyof typeof CHANNEL_BADGE_URL]
+                "
                 alt=""
                 class="h-6 w-6"
                 width="24"
                 height="24"
-                v-if="channel.icon"
               />
               <ChatIcon :size="24" v-else />
               <h4 class="text-text-title text-sm font-medium">{{ channel.name }}</h4>
@@ -119,7 +121,7 @@ onUnmounted(() => {
               <!-- Dropdown Menu -->
               <div
                 v-if="activeDropdown === channel.id"
-                class="bg-surface-primary-white shadow-small absolute top-0 right-15 z-10 flex w-[161px] flex-col items-start rounded-lg px-3 py-1"
+                class="bg-surface-primary-white shadow-small absolute top-0 right-8 z-10 flex w-[161px] flex-col items-start rounded-lg px-3 py-1"
               >
                 <button
                   @click="editChannel(channel.id)"
@@ -143,8 +145,8 @@ onUnmounted(() => {
 
   <!-- Modal Add Channel -->
   <ModalChannelList
-    v-model="isModalOpen"
-    :editingChannel="editingChannel"
-    @close="editingChannel = null"
+    :isOpen="isModalOpen"
+    v-model="editingChannelData"
+    @close="isModalOpen = false"
   />
 </template>

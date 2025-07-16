@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { type Component, computed, ref, watch } from 'vue';
+import { type Component, computed, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import RoundedTab from '@/components/common/Tabs/RoundedTab.vue';
@@ -97,7 +97,7 @@ watch(
 );
 
 // Store integration
-const { postWidgetConfig } = useQiscusLiveChatStore();
+const { postWidgetConfig, getWidgetConfig } = useQiscusLiveChatStore();
 const { appId } = useAppConfigStore();
 
 // Drawer state
@@ -127,7 +127,15 @@ const saveAndPreview = async () => {
 const params = useRoute().params;
 if (!params.id) {
   throw new Error('Channel ID is required');
-}
+};
+
+onMounted(async () => {
+  const { id } = params;
+  if (!id) return;
+  // Ensure id is string or number, not array
+  const channelId = (Array.isArray(id) ? id[0] : id) as string;
+  getWidgetConfig(appId, channelId);
+});
 </script>
 
 <template>

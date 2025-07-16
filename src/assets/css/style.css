@@ -9,14 +9,16 @@ html {
   scroll-behavior: smooth;
 }
 
-.fade-fade-enter-active,
-.fade-fade-leave-active {
-  /* Option 1: Increase duration for a more gentle fade */
-  transition: opacity 0.2s ease-in-out;
+/* Define the transition properties for both entering and leaving */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+  /* Adjust duration and easing as needed */
 }
 
-.fade-fade-enter-from,
-.fade-fade-leave-to {
+/* Starting state for entering, and ending state for leaving */
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
 

@@ -33,6 +33,12 @@ export interface IWidgetVariables {
   welcomeMessageStatus: boolean;
   welcomeText: string;
   welcomeTimeout: string;
+  welcomeBrandIcon: string;
+  welcomeGreetingText: string;
+  welcomeActionDescription: string;
+  welcomeActionIcon: string;
+  loginSecondDescription: string;
+  loginBrandLogo: string;
 }
 
 export interface IWidgetConfigResponse {
@@ -40,10 +46,6 @@ export interface IWidgetConfigResponse {
   widget: {
     variables: IWidgetVariables;
   };
-}
-export interface IActionWelcomeDialog {
-  label: string;
-  iconUrl: string;
 }
 export interface IAdditionalField {
   type: string;
@@ -74,7 +76,8 @@ export interface IWelcomeDialogState {
   isAttentionGrabber: boolean; //attentionGrabberStatus
   firstDescriptionWelcomeDialog: string; //welcomeText
   secondDescriptionWelcomeDialog: string;
-  descriptionWelcomeDialog: string;
+  actionDescriptionWelcomeDialog: string;
+  actionIconWelcomeDialog: string;
   welcomeTimeout: string; //welcomeTimeout
   openAtStart: boolean; //openAtStart
   isAttentionGrabberImage: boolean; //grabberImage
@@ -83,7 +86,6 @@ export interface IWelcomeDialogState {
   grabberTimeout: number | null; //grabberTimeout
   attentionGrabberImage: string; //attentionGrabberImage
   brandIconWelcomeDialog: string;
-  actionsWelcomeDialog: IActionWelcomeDialog[];
 }
 export interface ICallToActionState {
   isWithText: boolean;

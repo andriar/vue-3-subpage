@@ -24,11 +24,15 @@ export const qiscusApi = {
 export const whatsappApi = {
   get: (params: IParams) => apiV3.get<any[]>('/admin/channel/wa', { params }),
   getById: (id: number) => apiV2.get<any>(`/wa/${id}`),
+  update: (data: any) => apiV2.post<any>(`/wa/connect/${data.id}/update`, data),
 };
 export const telegramApi = {
   get: (params: IParams) => apiV3.get<any[]>('/admin/channel/telegram', { params }),
   update: (channelId: number | undefined, data: IUpdateTelegramChannel) =>
     apiV2.post<any[]>(`/telegram/connect/${channelId}/update`, data),
+  delete: (channelId: number | undefined) =>
+    apiV2.post<any[]>(`/telegram/connect/${channelId}/delete`),
+  create: (data: any) => apiV2.post<any[]>(`/telegram/connect`, data),
 };
 
 export const configApi = {
@@ -40,4 +44,12 @@ export const configApi = {
 export const botApi = {
   get: () => apiV1.get<any[]>('/app/bot'),
   changeStatus: (params: any) => apiV1.post<any[]>('/app/bot/activation', { params }),
+};
+
+export const featureApi = {
+  get: () => apiV2.get<any[]>('/features'),
+};
+
+export const planApi = {
+  get: () => apiV1.get<any[]>('/admin/my_plan'),
 };

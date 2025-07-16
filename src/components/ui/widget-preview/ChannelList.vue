@@ -59,7 +59,13 @@ const props = withDefaults(defineProps<Props>(), {
         class="hover:bg-surface-primary-blue/5 flex cursor-pointer justify-between rounded-xl p-4 px-4 shadow-[0px_4px_12px_0px_#0A0A0A1A]"
       >
         <div class="flex min-w-0 flex-1 items-center gap-2">
-          <img :src="CHANNEL_BADGE_URL.qiscus" alt="" class="h-6 w-6" width="24" height="24" />
+          <img
+            :src="props.imageUrl || CHANNEL_BADGE_URL.qiscus"
+            alt=""
+            class="h-6 w-6"
+            width="24"
+            height="24"
+          />
           <div class="min-w-0 flex-1 text-start text-sm font-medium break-words">
             {{ props.previewLiveChatName }}
           </div>

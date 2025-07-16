@@ -104,10 +104,10 @@ export interface IWidgetConfigPayload {
       welcomeMessageStatus: boolean;
       attentionGrabberStatus: boolean;
       welcomeText: string;
-      brandIconWelcomeDialog: string;
-      descriptionWelcomeDialog: string;
-      firstDescriptionWelcomeDialog: string;
-      secondDescriptionWelcomeDialog: string;
+      welcomeBrandIcon: string;
+      welcomeGreetingText: string;
+      welcomeActionDescription: string;
+      welcomeActionIcon: string;
       welcomeTimeout: string;
       openAtStart: boolean;
       grabberImage: boolean;
@@ -119,12 +119,11 @@ export interface IWidgetConfigPayload {
       // Login form data
       formGreet: string;
       formSubtitle: string;
-      firstDescription: string;
-      secondDescription: string;
+      loginSecondDescription: string;
       buttonText: string;
       customerIdentifierInputType: string;
       extra_fields: IAdditionalField[];
-      brandLogo: string;
+      loginBrandLogo: string;
 
       // Chat form data
       customerServiceName: string;
@@ -162,4 +161,13 @@ export interface IWidgetConfigPayload {
 export interface IUpdateTelegramChannel {
   name: string;
   is_active: boolean;
+}
+export interface ICreateTelegramChannel {
+  bot_token: string;
+  configs: {
+    offline_message: string;
+    online_message: string;
+    send_offline_each_message: boolean;
+    send_online_if_resolved: boolean;
+  } | null;
 }

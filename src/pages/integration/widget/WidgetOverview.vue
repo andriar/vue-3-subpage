@@ -65,8 +65,6 @@ import { useFetchConfig } from '@/composables/channels/useFetchConfigChannel';
 import { useUploadSdkImage } from '@/composables/images/useUploadSdkImage';
 import { useSweetAlert } from '@/composables/useSweetAlert';
 import QiscusBannerDoc from '@/pages/integration/qiscus/QiscusBannerDoc.vue';
-import { useAppConfigStore } from '@/stores/app-config';
-import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
 
 const route = useRoute();
 const router = useRouter();
@@ -75,8 +73,7 @@ const { fetchChannelById, data: widget } = useFetchQiscusDetail();
 const { update: updateChannel, error, loading } = useUpdateQiscus();
 const uConfig = useFetchConfig();
 const uBot = useFetchBot();
-const { getWidgetConfig } = useQiscusLiveChatStore();
-const { appId } = useAppConfigStore();
+// const { getWidgetConfig } = useQiscusLiveChatStore();
 const uSdkImage = useUploadSdkImage();
 
 const errorMessages = ref<string>('');
@@ -153,6 +150,6 @@ onMounted(async () => {
   setData();
 
   // get widget config
-  getWidgetConfig(appId, channel.id);
+  // getWidgetConfig(appId, channel.id);
 });
 </script>

@@ -9,13 +9,8 @@
         Choose your first channel to connect with by click a channel icon below to start connecting
         with your customers. To learn more regarding Qiscus Omnichannel Chat integration and
         tutorial, you can watch tutorial video demo in
-        <a
-          href="//drive.google.com/drive/folders/1JxTfQEkWK2v0MlViZ_YYTNOLDDo6dZPH"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-notification-link text-sm font-semibold underline"
-          >this link</a
-        >.
+        <a href="//drive.google.com/drive/folders/1JxTfQEkWK2v0MlViZ_YYTNOLDDo6dZPH" target="_blank"
+          rel="noopener noreferrer" class="text-notification-link text-sm font-semibold underline">this link</a>.
       </p>
     </div>
 
@@ -131,7 +126,7 @@ const channels = [
       'Build a custom channel that fits your needs—like Tokopedia, Shopee, Email, and more.',
   },
   {
-    type: 'bot_integration',
+    type: 'bot-integration',
     name: 'Bot Integration',
     group: 'other',
     icon: 'https://omnichannel.qiscus.com/img/bot_badge.svg',

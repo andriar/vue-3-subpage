@@ -50,7 +50,8 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
     isAttentionGrabber: false,
     firstDescriptionWelcomeDialog: 'Hello There,',
     secondDescriptionWelcomeDialog: 'Welcome to Qiscus!',
-    descriptionWelcomeDialog: 'Ask for Questions',
+    actionDescriptionWelcomeDialog: 'Ask for Questions',
+    actionIconWelcomeDialog: '',
     welcomeTimeout: '',
     openAtStart: false,
     isAttentionGrabberImage: true,
@@ -60,12 +61,6 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
     attentionGrabberImage:
       'https://d1edrlpyc25xu0.cloudfront.net/zalda-vvq7pksvblaiy7s/image/upload/U5zXXEv54V/file_example_PNG_500kB.png',
     brandIconWelcomeDialog: '',
-    actionsWelcomeDialog: [
-      {
-        label: 'Ask for Questions',
-        iconUrl: '',
-      },
-    ],
   });
   // state for login form
   const loginFormState = reactive<ILoginFormState>({
@@ -166,17 +161,18 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
 
         // set state welcome dialog
         welcomeDialogState.isWelcomeDialog = widget.welcomeMessageStatus;
-        welcomeDialogState.isAttentionGrabber = widget.attentionGrabberStatus;
-        welcomeDialogState.firstDescriptionWelcomeDialog = widget.welcomeText;
-        // welcomeDialogState.secondDescriptionWelcomeDialog = ???;
-        // welcomeDialogState.descriptionWelcomeDialog = ???
+        welcomeDialogState.brandIconWelcomeDialog = widget.welcomeBrandIcon;
+        welcomeDialogState.firstDescriptionWelcomeDialog = widget.welcomeGreetingText;
+        welcomeDialogState.secondDescriptionWelcomeDialog = widget.welcomeText;
+        welcomeDialogState.actionDescriptionWelcomeDialog = widget.welcomeActionDescription;
+        welcomeDialogState.actionIconWelcomeDialog = widget.welcomeActionIcon;
         welcomeDialogState.welcomeTimeout = widget.welcomeTimeout;
         welcomeDialogState.openAtStart = widget.openAtStart;
+        welcomeDialogState.isAttentionGrabber = widget.attentionGrabberStatus;
         welcomeDialogState.isAttentionGrabberImage = widget.grabberImage;
         welcomeDialogState.isAttentionGrabberText = widget.grabberTextStatus;
         welcomeDialogState.attentionGrabberText = widget.attentionGrabberText;
         welcomeDialogState.grabberTimeout = widget.grabberTimeout;
-        // welcomeDialogState.brandIconWelcomeDialog = ???
         welcomeDialogState.attentionGrabberImage = widget.attentionGrabberImage;
 
         // set state call to action
@@ -184,8 +180,9 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
         // set state channel widget
 
         // set state login form
+        loginFormState.brandLogo = widget.loginBrandLogo;
         loginFormState.firstDescription = widget.formGreet;
-        // loginFormState.secondDescription = ???;
+        loginFormState.secondDescription = widget.loginSecondDescription;
         loginFormState.formSubtitle = widget.formSubtitle;
         loginFormState.buttonText = widget.buttonText;
         loginFormState.customerIdentifier = widget.customerIdentifierInputType;
@@ -210,30 +207,28 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
           appID: appId,
           // welcome dialog data
           welcomeMessageStatus: welcomeDialogState.isWelcomeDialog,
-          attentionGrabberStatus: welcomeDialogState.isAttentionGrabber,
-          welcomeText: welcomeDialogState.firstDescriptionWelcomeDialog,
-          firstDescriptionWelcomeDialog: welcomeDialogState.firstDescriptionWelcomeDialog, //=> new data
-          secondDescriptionWelcomeDialog: welcomeDialogState.secondDescriptionWelcomeDialog, //=> new data
-          descriptionWelcomeDialog: welcomeDialogState.descriptionWelcomeDialog, //=> new data
+          welcomeBrandIcon: welcomeDialogState.brandIconWelcomeDialog, //=> new data
+          welcomeGreetingText: welcomeDialogState.firstDescriptionWelcomeDialog, //=> new data
+          welcomeText: welcomeDialogState.secondDescriptionWelcomeDialog,
+          welcomeActionIcon: welcomeDialogState.actionIconWelcomeDialog, //=> new data
+          welcomeActionDescription: welcomeDialogState.actionDescriptionWelcomeDialog, //=> new data
           welcomeTimeout: welcomeDialogState.welcomeTimeout,
           openAtStart: welcomeDialogState.openAtStart,
+          attentionGrabberStatus: welcomeDialogState.isAttentionGrabber,
           grabberImage: welcomeDialogState.isAttentionGrabberImage,
           grabberTextStatus: welcomeDialogState.isAttentionGrabberText,
           attentionGrabberText: welcomeDialogState.attentionGrabberText,
           grabberTimeout: welcomeDialogState.grabberTimeout ?? 0,
           attentionGrabberImage: welcomeDialogState.attentionGrabberImage,
-          brandIconWelcomeDialog: welcomeDialogState.brandIconWelcomeDialog, //=> new data
-          // actionsWelcomeDialog: welcomeDialogState.actionsWelcomeDialog, //=> new data
 
           // login form data
           formGreet: loginFormState.firstDescription,
-          firstDescription: loginFormState.firstDescription, //=> new data
-          secondDescription: loginFormState.secondDescription, //=> new data
+          loginSecondDescription: loginFormState.secondDescription, //=> new data
           formSubtitle: loginFormState.formSubtitle,
           buttonText: loginFormState.buttonText,
           customerIdentifierInputType: loginFormState.customerIdentifier,
           extra_fields: loginFormState.extraFields,
-          brandLogo: loginFormState.brandLogo, //=> new data
+          loginBrandLogo: loginFormState.brandLogo, //=> new data
 
           // chat form data
           customerServiceName: chatFormState.customerServiceName,
