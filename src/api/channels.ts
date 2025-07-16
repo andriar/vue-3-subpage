@@ -26,6 +26,12 @@ export const whatsappApi = {
   getById: (id: number) => apiV2.get<any>(`/wa/${id}`),
   update: (data: any) => apiV2.post<any>(`/wa/connect/${data.id}/update`, data),
 };
+
+export const instagramApi = {
+  get: (params: IParams) => apiV3.get<any[]>('/admin/channel/ig', { params }),
+  update: (data: any) => apiV2.post<any>(`/ig/connect/${data.id}/update`, data),
+};
+
 export const telegramApi = {
   get: (params: IParams) => apiV3.get<any[]>('/admin/channel/telegram', { params }),
   update: (channelId: number | undefined, data: IUpdateTelegramChannel) =>

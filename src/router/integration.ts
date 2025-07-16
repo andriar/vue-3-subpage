@@ -42,11 +42,32 @@ export const integrationRoutes: RouteRecordRaw[] = [
   {
     path: '/instagram',
     name: 'instagram',
-    component: () => null,
-    beforeEnter: () => {
-      window.location.href = `/integration?ch=instagram`;
-      return false;
-    },
+    redirect: { name: 'instagram-list' },
+    children: [
+      {
+        path: '',
+        name: 'instagram-list',
+        component: () => import('@/views/integration/instagram/InstagramChannelView.vue'),
+      },
+      {
+        path: 'create',
+        name: 'instagram-create',
+        component: () => null,
+        beforeEnter: () => {
+          window.location.href = `/integration?ch=instagram`;
+          return false;
+        },
+      },
+      {
+        path: ':id',
+        name: 'instagram-detail',
+        component: () => null,
+        beforeEnter: (to) => {
+          window.location.href = `/integration?ch=instagram&id=${to.params.id}`;
+          return false;
+        },
+      },
+    ],
   },
   {
     path: '/tiktok',
