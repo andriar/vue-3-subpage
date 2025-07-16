@@ -1,11 +1,11 @@
 {
-  "name": "asd-core",
+  "name": "omnichannel-qiscus",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "VITE_APP_ENTRY=src/main-integration.ts vite",
-    "build": "VITE_APP_ENTRY=src/main-customer.ts vue-tsc -b && vite build",
+    "build": "vue-tsc -b && vite build",
     "build:customer": "VITE_APP_ENTRY=src/main-customer.ts VITE_APP_BUILD_FLAVOR=customer vite build",
     "build:integration": "VITE_APP_ENTRY=src/main-integration.ts VITE_APP_BUILD_FLAVOR=integration vite build",
     "preview": "vite preview",
