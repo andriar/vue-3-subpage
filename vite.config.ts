@@ -42,12 +42,12 @@ export default defineConfig({
         // In library mode, entryFileNames and assetFileNames are often controlled
         // by the `lib` option's `fileName` and `cssFileName`
         // If you need more granular control over assets, you can still use them here
-        // assetFileNames: 'assets/[name].[hash].[ext]',
+        assetFileNames: 'assets/[name].[hash].[ext]',
       }
     }
   },
   define: {
-    'process.env': {},
+    'process.env.NODE_ENV': JSON.stringify('production'), 
     'process.browser': true,
     'process.node': false
   }
