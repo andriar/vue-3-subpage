@@ -2,6 +2,10 @@ import type { RouteRecordRaw } from 'vue-router';
 
 import ChannelView from '@/views/integration/ChannelView.vue';
 
+// Ensure RouteRecordRaw is imported
+
+// This array explicitly defines your integration routes.
+// It is correctly typed as RouteRecordRaw[].
 export const integrationRoutes: RouteRecordRaw[] = [
   {
     path: '/',
@@ -51,7 +55,7 @@ export const integrationRoutes: RouteRecordRaw[] = [
       },
       {
         path: 'create',
-        name: 'instagram-create',
+        name: 'instagram-new',
         component: () => null,
         beforeEnter: () => {
           window.location.href = `/integration?ch=instagram`;
@@ -72,29 +76,92 @@ export const integrationRoutes: RouteRecordRaw[] = [
   {
     path: '/tiktok',
     name: 'tiktok',
-    component: () => null,
-    beforeEnter: () => {
-      window.location.href = `/integration?ch=tiktok`;
-      return false;
-    },
+    redirect: { name: 'tiktok-list' },
+    children: [
+      {
+        path: '',
+        name: 'tiktok-list',
+        component: () => import('@/views/integration/tiktok/TiktokChannelView.vue'),
+      },
+      {
+        path: 'create',
+        name: 'tiktok-new',
+        component: () => null,
+        beforeEnter: () => {
+          window.location.href = `/integration?ch=tiktok`;
+          return false;
+        },
+      },
+      {
+        path: ':id',
+        name: 'tiktok-detail',
+        component: () => null,
+        beforeEnter: (to) => {
+          window.location.href = `/integration?ch=tiktok&id=${to.params.id}`;
+          return false;
+        },
+      },
+    ],
   },
   {
     path: '/facebook',
     name: 'facebook',
-    component: () => null,
-    beforeEnter: () => {
-      window.location.href = `/integration?ch=facebook`;
-      return false;
-    },
+    redirect: { name: 'facebook-list' },
+    children: [
+      {
+        path: '',
+        name: 'facebook-list',
+        component: () => import('@/views/integration/facebook/FbChannelView.vue'),
+      },
+      {
+        path: 'create',
+        name: 'facebook-new',
+        component: () => null,
+        beforeEnter: () => {
+          window.location.href = `/integration?ch=facebook`;
+          return false;
+        },
+      },
+      {
+        path: ':id',
+        name: 'facebook-detail',
+        component: () => null,
+        beforeEnter: (to) => {
+          window.location.href = `/integration?ch=facebook&id=${to.params.id}`;
+          return false;
+        },
+      },
+    ],
   },
   {
     path: '/line',
     name: 'line',
-    component: () => null,
-    beforeEnter: () => {
-      window.location.href = `/integration?ch=line`;
-      return false;
-    },
+    redirect: { name: 'line-list' },
+    children: [
+      {
+        path: '',
+        name: 'line-list',
+        component: () => import('@/views/integration/line/LineChannelView.vue'),
+      },
+      {
+        path: 'create',
+        name: 'line-new',
+        component: () => null,
+        beforeEnter: () => {
+          window.location.href = `/integration?ch=line`;
+          return false;
+        },
+      },
+      {
+        path: ':id',
+        name: 'line-detail',
+        component: () => null,
+        beforeEnter: (to) => {
+          window.location.href = `/integration?ch=line&id=${to.params.id}`;
+          return false;
+        },
+      },
+    ],
   },
   {
     path: '/telegram',

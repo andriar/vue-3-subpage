@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { createApiResponseSchema } from './common';
+import { createApiResponseSchema } from '../../common';
 
 export const BotDataSchema = z.object({
   bot_webhook_url: z.url(),

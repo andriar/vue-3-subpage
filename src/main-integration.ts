@@ -23,6 +23,9 @@ export interface QiscusAppConfig {
   sdkUserId: string;
   userSdkToken: string;
   widget?: WidgetConfig;
+  user: {
+    id: number;
+  };
 }
 
 export function createOmnichannelApp(container: string | Element, config: QiscusAppConfig) {
@@ -62,6 +65,9 @@ if (document.querySelector('#app')) {
     widget: {
       iframeUrl: import.meta.env.VITE_IFRAME_URL,
       env: import.meta.env.VITE_WIDGET_ENV || 'production',
+    },
+    user: {
+      id: import.meta.env.VITE_QISCUS_USER_ID,
     },
   });
 }

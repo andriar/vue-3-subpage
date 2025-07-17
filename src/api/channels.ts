@@ -1,7 +1,11 @@
 import type { IParams } from '@/types/api';
 import type { ICreateQiscusChannel, IUpdateTelegramChannel } from '@/types/channels';
 
-import apiV1, { apiV2, apiV3 } from './../utils/axios';
+import apiV1, { apiV2, apiV3, postFormData } from './../utils/axios';
+
+
+
+
 
 // API v1 examples
 export const channelsApi = {
@@ -32,6 +36,21 @@ export const instagramApi = {
   update: (data: any) => apiV2.post<any>(`/ig/connect/${data.id}/update`, data),
 };
 
+export const fbApi = {
+  get: (params: IParams) => apiV3.get<any[]>('/admin/channel/fb', { params }),
+  update: (data: any) => apiV2.post<any>(`/fb/connect/${data.id}/update`, data),
+};
+
+export const tiktokApi = {
+  get: (params: IParams) => apiV3.get<any[]>('/admin/channel/tiktok', { params }),
+  update: (data: any) => apiV2.post<any>(`/tiktok/connect/${data.id}/update`, data),
+};
+
+export const lineApi = {
+  get: (params: IParams) => apiV3.get<any[]>('/admin/channel/line', { params }),
+  update: (data: any) => apiV2.post<any>(`/line/connect/${data.id}/update`, data),
+};
+
 export const telegramApi = {
   get: (params: IParams) => apiV3.get<any[]>('/admin/channel/telegram', { params }),
   update: (channelId: number | undefined, data: IUpdateTelegramChannel) =>
@@ -50,12 +69,8 @@ export const configApi = {
 export const botApi = {
   get: () => apiV1.get<any[]>('/app/bot'),
   changeStatus: (params: any) => apiV1.post<any[]>('/app/bot/activation', { params }),
-};
-
-export const featureApi = {
-  get: () => apiV2.get<any[]>('/features'),
-};
-
-export const planApi = {
-  get: () => apiV1.get<any[]>('/admin/my_plan'),
+  integrate: (data: { bot_webhook_url: string; is_bot_enabled: boolean }) =>
+    postFormData<any[]>(apiV1, '/app/bot/integrate', data),
+  forceSendBot: (data: { is_force_send_bot: boolean }) =>
+    postFormData<any[]>(apiV2, '/app/bot/force_send', data),
 };

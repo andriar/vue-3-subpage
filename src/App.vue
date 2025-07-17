@@ -21,7 +21,9 @@
 import { defineAsyncComponent, onMounted, ref, watchEffect } from 'vue';
 import { RouterView } from 'vue-router';
 import { useFetchFeature } from './composables/channels/useFetchFeature';
+import { useSweetAlert } from './composables/useSweetAlert';
 import { navigationDirection } from './router/index-integration';
+import { useAppDetailStore } from './stores/app-detail';
 import { usePlanStore } from './stores/plan';
 
 const MainLoading = defineAsyncComponent(() => (import('./components/ui/MainLoading.vue')))
@@ -34,8 +36,7 @@ const leaveActiveClass = ref('transition-all duration-100 ease-in');
 const leaveFromClass = ref('opacity-100 translate-x-0');
 const leaveToClass = ref('opacity-0 -translate-x-5');
 
-const { fetchFeature, loading } = useFetchFeature();
-const { getPlanData } = usePlanStore();
+
 // Watch for changes in navigationDirection and update transition classes
 watchEffect(() => {
   if (navigationDirection.value === 'back') {
@@ -58,9 +59,25 @@ watchEffect(() => {
   leaveActiveClass.value = 'transition-all duration-100 ease-in';
 });
 
+const feature = useFetchFeature();
+const plan = usePlanStore();
+const app = useAppDetailStore()
 
-onMounted(async () => {
-  await fetchFeature();
-  await getPlanData();
+const { showAlert } = useSweetAlert()
+const loading = ref<boolean>(false)
+
+onMounted(() => {
+  loading.value = true
+  Promise.all([feature.fetchFeature(), plan.getPlanData(), app.fetch()]).then(() => {
+    loading.value = false
+  })
+    .catch(() => {
+      showAlert.error({
+        title: 'Error',
+        text: `Something went wrong.`,
+        confirmButtonText: 'Okay',
+        showCancelButton: false,
+      });
+    });
 });
 </script>

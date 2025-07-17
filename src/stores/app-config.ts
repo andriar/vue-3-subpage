@@ -2,20 +2,26 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
 export interface AppConfig {
+  baseUrl: string;
   userToken: string;
   appId: string;
   appVersion: string;
   sdkUserId: string;
   userSdkToken: string;
+  user: {
+    id: number;
+  };
 }
 
-export const useAppConfigStore = defineStore('appConfig', () => {
+export const useAppConfigStore = defineStore('app', () => {
   // State
   const userToken = ref<string>('');
   const appId = ref<string>('');
+  const baseUrl = ref<string>('');
   const appVersion = ref<string>('');
   const sdkUserId = ref<string>('');
   const userSdkToken = ref<string>('');
+  const userId = ref<number | null>(null);
 
   // Getters
   const isConfigured = () => {
@@ -46,26 +52,8 @@ export const useAppConfigStore = defineStore('appConfig', () => {
     appVersion.value = config.appVersion;
     sdkUserId.value = config.sdkUserId;
     userSdkToken.value = config.userSdkToken;
-  };
-
-  const setUserToken = (token: string) => {
-    userToken.value = token;
-  };
-
-  const setAppId = (id: string) => {
-    appId.value = id;
-  };
-
-  const setAppVersion = (version: string) => {
-    appVersion.value = version;
-  };
-
-  const setSdkUserId = (id: string) => {
-    sdkUserId.value = id;
-  };
-
-  const setUserSdkToken = (token: string) => {
-    userSdkToken.value = token;
+    userId.value = config.user.id;
+    baseUrl.value = config.baseUrl;
   };
 
   const clearConfig = () => {
@@ -81,6 +69,8 @@ export const useAppConfigStore = defineStore('appConfig', () => {
     userToken,
     appId,
     appVersion,
+    userId,
+    baseUrl,
 
     // Getters
     isConfigured,
@@ -89,11 +79,6 @@ export const useAppConfigStore = defineStore('appConfig', () => {
 
     // Actions
     setConfig,
-    setUserToken,
-    setAppId,
-    setAppVersion,
-    setSdkUserId,
-    setUserSdkToken,
     clearConfig,
   };
 });

@@ -2,23 +2,25 @@ import { ref } from 'vue';
 import { z } from 'zod';
 
 import { botApi } from '@/api/channels';
-import { type BotData, BotResponseSchema } from '@/types/schemas/channels/bot/bot';
+import {
+  type ForceSendBot,
+  ForceSendBotResponseSchema,
+} from '@/types/schemas/channels/bot/force-send-bot';
 
-export const useFetchBot = () => {
+export const useForceSendBot = () => {
   const loading = ref(false);
-  const data = ref<BotData | null>(null);
+  const data = ref<ForceSendBot | null>(null);
   const error = ref<Error | null>(null);
 
-  const fetch = async () => {
+  const forceSend = async (payload: { is_force_send_bot: boolean }) => {
     try {
       loading.value = true;
       error.value = null;
 
-      const response = await botApi.get();
+      const response = await botApi.forceSendBot(payload);
 
-      // Validate the response using Zod schema
-      const validatedResponse = BotResponseSchema.parse(response.data);
-      data.value = validatedResponse.data;
+      const validatedResponse = ForceSendBotResponseSchema.parse(response.data);
+      data.value = validatedResponse.data.bot;
     } catch (err) {
       // Log all errors for debugging
       console.error('Error fetching:', err);
@@ -42,6 +44,6 @@ export const useFetchBot = () => {
     loading,
     data,
     error,
-    fetch,
+    forceSend,
   };
 };
