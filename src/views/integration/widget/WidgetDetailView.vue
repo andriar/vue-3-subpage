@@ -65,7 +65,6 @@ import AutoResponderForm from '@/features/widget/components/forms/AutoResponderF
 import WidgetCode from '@/pages/integration/widget/WidgetCode.vue';
 import WidgetOverview from '@/pages/integration/widget/WidgetOverview.vue';
 import WidgetSettings from '@/pages/integration/widget/WidgetSetting.vue';
-import { useAppConfigStore } from '@/stores/app-config';
 import type { IWidgetChannel } from '@/types/channels';
 
 type TabName = string;
@@ -272,7 +271,6 @@ async function handleChangeAutoResponder(isEnabled: boolean) {
 
 // product update
 const {update: updateWidget, error: errorUpdateWidget, loading: loadingUpdateWidget} = useUpdateQiscus();
-const { appId } = useAppConfigStore();
 
 const isProductUpdateOpen = computed(() => {
   return activeTab.value === 'Live Chat Builder' && widget.value?.widget_version != '5';
