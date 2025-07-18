@@ -15,11 +15,12 @@ const props = defineProps({
     default: 200,
   },
 });
+
 </script>
 
 <template>
   <div>
-    <Vue3Lottie :animationData="source" :height="height" :width="width" />
+    <Vue3Lottie :animationData="source" :height="height" :width="width" v-bind="$attrs" />
   </div>
 </template>
 

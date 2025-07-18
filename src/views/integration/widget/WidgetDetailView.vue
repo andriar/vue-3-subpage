@@ -39,6 +39,11 @@
         </div>
       </form>
     </div>
+
+    <!-- product update -->
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50" v-if="isProductUpdateOpen">
+      <ProductUpdater @cancel="handleCancelProductUpdate" @update="handleUpdateProductUpdate" :loading="loadingUpdateWidget" />
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -54,11 +59,13 @@ import { useFetchQiscusDetail, useUpdateQiscus } from '@/composables/channels/qi
 import { useFetchConfig } from '@/composables/channels/useFetchConfigChannel';
 import { useUpdateConfig } from '@/composables/channels/useUpdateConfigChannel';
 import { useSweetAlert } from '@/composables/useSweetAlert';
+import ProductUpdater from '@/features/widget-builder/components/product-update/ProductUpdater.vue';
 import WidgetLiveChat from '@/features/widget-builder/pages/WidgetLiveChat.vue';
 import AutoResponderForm from '@/features/widget/components/forms/AutoResponderForm.vue';
 import WidgetCode from '@/pages/integration/widget/WidgetCode.vue';
 import WidgetOverview from '@/pages/integration/widget/WidgetOverview.vue';
 import WidgetSettings from '@/pages/integration/widget/WidgetSetting.vue';
+import { useAppConfigStore } from '@/stores/app-config';
 import type { IWidgetChannel } from '@/types/channels';
 
 type TabName = string;
@@ -141,7 +148,7 @@ const settingData = ref({
   is_secure: false,
 });
 
-const { fetchChannelById, data: widget } = useFetchQiscusDetail();
+const { fetchChannelById, data: widget} = useFetchQiscusDetail();
 const uConfig = useFetchConfig();
 const uBot = useFetchBot();
 
@@ -260,6 +267,53 @@ async function handleChangeAutoResponder(isEnabled: boolean) {
     confirmButtonText: 'Okay',
     showCancelButton: false,
   });
+}
+
+
+// product update
+const {update: updateWidget, error: errorUpdateWidget, loading: loadingUpdateWidget} = useUpdateQiscus();
+const { appId } = useAppConfigStore();
+
+const isProductUpdateOpen = computed(() => {
+  return activeTab.value === 'Live Chat Builder' && widget.value?.widget_version != '5';
+});
+
+const handleCancelProductUpdate = () => {
+  router.push({
+    path: route.path,
+    query: {
+      ...route.query,
+      sub: 'overview',
+    },
+  });
+};
+
+const handleUpdateProductUpdate = async () => {
+  if (!channel.id) return;
+
+  await updateWidget(channel.id, {
+    widget_version: '5',
+  });
+
+  if (errorUpdateWidget.value) {
+    handleCancelProductUpdate();
+
+    return showAlert.error({
+      title: 'Failed',
+      text: 'Failed to update Live Chat Version. Please try again.',
+      confirmButtonText: 'Okay',
+      showCancelButton: false,
+    });
+  };
+
+  fetchChannelById(channel.id);
+
+  showAlert.success({
+    title: 'Success',
+    text: 'Success updating Live Chat Version.',
+    confirmButtonText: 'Okay',
+    showCancelButton: false, 
+  })
 }
 
 onMounted(async () => {

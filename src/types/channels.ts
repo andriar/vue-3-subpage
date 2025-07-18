@@ -1,5 +1,9 @@
 import type { IAdditionalField } from './live-chat';
 
+
+
+
+
 export interface IWhatsappChannel {
   allocate_wa_call_webhook_url: string | null;
   badge_url: string;
@@ -74,7 +78,7 @@ export interface IAutoResponder {
 }
 
 export interface IWidgetChannel {
-  id?: string;
+  id: string;
   badge_url: string;
   name: string;
   is_active: boolean;

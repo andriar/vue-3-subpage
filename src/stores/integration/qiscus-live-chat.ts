@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia';
 import { reactive, ref } from 'vue';
 
+
+
 import { qiscusApi } from '@/api/channels';
 import type { IconName } from '@/components/icons/Icon.vue';
 import type {
@@ -160,11 +162,15 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
 
         // set state welcome dialog
         welcomeDialogState.isWelcomeDialog = widget.welcomeMessageStatus;
-        welcomeDialogState.brandIconWelcomeDialog = widget.welcomeBrandIcon;
-        welcomeDialogState.firstDescriptionWelcomeDialog = widget.welcomeGreetingText;
+        welcomeDialogState.brandIconWelcomeDialog =
+          widget.welcomeBrandIcon ?? welcomeDialogState.brandIconWelcomeDialog;
+        welcomeDialogState.firstDescriptionWelcomeDialog =
+          widget.welcomeGreetingText ?? welcomeDialogState.firstDescriptionWelcomeDialog;
         welcomeDialogState.secondDescriptionWelcomeDialog = widget.welcomeText;
-        welcomeDialogState.actionDescriptionWelcomeDialog = widget.welcomeActionDescription;
-        welcomeDialogState.actionIconWelcomeDialog = widget.welcomeActionIcon;
+        welcomeDialogState.actionDescriptionWelcomeDialog =
+          widget.welcomeActionDescription ?? welcomeDialogState.actionDescriptionWelcomeDialog;
+        welcomeDialogState.actionIconWelcomeDialog =
+          widget.welcomeActionIcon ?? welcomeDialogState.actionIconWelcomeDialog;
         welcomeDialogState.welcomeTimeout = widget.welcomeTimeout;
         welcomeDialogState.openAtStart = widget.openAtStart;
         welcomeDialogState.isAttentionGrabber = widget.attentionGrabberStatus;
@@ -179,9 +185,10 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
         // set state channel widget
 
         // set state login form
-        loginFormState.brandLogo = widget.loginBrandLogo;
+        loginFormState.brandLogo = widget.loginBrandLogo ?? loginFormState.brandLogo;
         loginFormState.firstDescription = widget.formGreet;
-        loginFormState.secondDescription = widget.loginSecondDescription;
+        loginFormState.secondDescription =
+          widget.loginSecondDescription ?? loginFormState.secondDescription;
         loginFormState.formSubtitle = widget.formSubtitle;
         loginFormState.buttonText = widget.buttonText;
         loginFormState.customerIdentifier = widget.customerIdentifierInputType;
