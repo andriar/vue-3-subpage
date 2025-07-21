@@ -7,7 +7,7 @@ const OtherChannelSchema = z.object({
   is_active: z.boolean().optional(),
   is_enable: z.boolean().optional(),
   name: z.string().optional(),
-  url: z.url().optional(),
+  url: z.string().optional(),
 
   // widget V5 new data
   id: z.number().optional(),

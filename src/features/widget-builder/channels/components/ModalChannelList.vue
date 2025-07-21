@@ -32,7 +32,11 @@ const modelValue = defineModel<NormalizedOtherChannel | null>({ required: false,
 
 // Form Validation
 const isFormValid = computed(() => {
-  return channelName.value.trim() !== '' && channelLink.value.trim() !== '';
+  return (
+    channelName.value.trim() !== '' &&
+    channelLink.value.trim() !== '' &&
+    channelBadgeIcon.value.trim() !== ''
+  );
 });
 
 const resetForm = (): void => {
