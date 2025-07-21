@@ -17,7 +17,7 @@
     <SubTab :tabs="dataTabs" v-model="activeTab" />
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-8">
-      <router-link :to="channel.type" v-for="channel in filteredChannels" :key="channel.id">
+      <router-link :to="channel.type" :id="`${channel.id}-card`" v-for="channel in filteredChannels" :key="channel.id">
         <ChannelCard :channel="channel" />
       </router-link>
     </div>
