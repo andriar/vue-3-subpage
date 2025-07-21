@@ -24,11 +24,11 @@
                      :style="isDragging ? { transform: `translateX(${getDragTransform(index)}px)` } : {}">
                     <Vue3Lottie 
                     :ref="(el) => setAnimationRef(el, index)"
-                    :width="850" height="auto" :loop="false" @onComplete="nextSlide" :autoPlay="index === 0 ? true : false" :animationData="animation.data" />
+                    :width="850" height="auto" :loop="false" :speed="2" :pauseOnHover="currentSlide === index ? true : false" @onComplete="nextSlide" :autoPlay="index === 0 ? true : false" :animationData="animation.data" />
                 </div>
             </div>
             <!-- Slider indicators -->
-            <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-2 rtl:space-x-reverse items-center">
+            <div class="absolute z-[100] flex -translate-x-1/2 bottom-5 left-1/2 space-x-2 rtl:space-x-reverse items-center">
                 <button 
                     v-for="(_, index) in ANIMATION_DATA"
                     :key="index"
@@ -40,8 +40,10 @@
                     @click="goToSlide(index)"
                 ></button>
             </div>
+            <!-- Shadow overlay stretching into animation -->
+            <div class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#0A0A0A0A] to-transparent pointer-events-none z-[110]"></div>
         </div>
-        <div class="flex items-center justify-between w-full p-4">
+        <div class="flex items-center justify-between w-full p-4 ">
             <Checkbox v-model="isChecked" label="Yes, I’m ready to switch to the new Live Chat version." id="product-update-checkbox" />
             <div class="flex items-center gap-2">
                 <Button @click="handleCancel" intent="secondary" type="button">Cancel</Button>
@@ -120,7 +122,7 @@ const nextSlide = () => {
     if (currentSlide.value < totalSlides - 1) {
         currentSlide.value++;
     } else {
-        currentSlide.value = 0; // Loop back to first slide
+        currentSlide.value = 0;
     }
     playAnimation();
 }
@@ -129,7 +131,7 @@ const previousSlide = () => {
     if (currentSlide.value > 0) {
         currentSlide.value--;
     } else {
-        currentSlide.value = totalSlides - 1; // Loop back to last slide
+        currentSlide.value = totalSlides - 1;
     }
     playAnimation();
 }
@@ -148,10 +150,13 @@ const handleKeydown = (event: KeyboardEvent) => {
 
 const playAnimation = (index?: number) => {
     const slideIndex = index ?? currentSlide.value;
+
+    // Play from the beginning
     if (animationRefs.value[slideIndex]) {
         animationRefs.value[slideIndex].goToAndPlay(0);
     }
 
+    // Pause all other animations
     for (let i = 0; i < animationRefs.value.length; i++) {
         if (i !== slideIndex) {
             animationRefs.value[i].pause();
@@ -162,11 +167,10 @@ const playAnimation = (index?: number) => {
 const onDragHandleAnimation = (index?: number) => {
     const slideIndex = index ?? currentSlide.value;
 
+    // Reset all other animations when dragging
     for (let i = 0; i < animationRefs.value.length; i++) {
         if (i !== slideIndex) {
             animationRefs.value[i].goToAndStop(0);
-        } else {
-            animationRefs.value[i].pause();
         }
     }
 }
@@ -182,7 +186,7 @@ const handleDragStart = (event: TouchEvent | MouseEvent) => {
     dragCurrentX.value = dragStartX.value;
     dragDistance.value = 0;
     onDragHandleAnimation();
-    // Prevent default to avoid text selection on desktop
+   
     event.preventDefault();
 }
 
@@ -199,17 +203,13 @@ const handleDragEnd = () => {
     
     isDragging.value = false;
     
-    // Determine if we should change slides based on drag distance
+    // Change slides based on drag distance
     if (Math.abs(dragDistance.value) > dragThreshold) {
         if (dragDistance.value > 0) {
-            // Dragged right, go to previous slide
             previousSlide();
         } else {
-            // Dragged left, go to next slide
             nextSlide();
         }
-    } else {
-        animationRefs.value[currentSlide.value].play();
     }
     
     // Reset drag state
@@ -226,7 +226,6 @@ const getDragTransform = (index: number) => {
 // Lifecycle hooks
 onMounted(() => {
     window.addEventListener('keydown', handleKeydown);
-    // Add global mouse event listeners for better drag support
     document.addEventListener('mousemove', handleDragMove);
     document.addEventListener('mouseup', handleDragEnd);
 });
