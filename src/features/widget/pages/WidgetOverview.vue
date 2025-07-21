@@ -3,21 +3,15 @@
     <!-- Banner documentation -->
     <QiscusBannerDoc />
     <div
-      class="border-stroke-regular bg-surface-secondary flex flex-col items-start justify-center gap-8 rounded-xl border p-6"
-    >
+      class="border-stroke-regular bg-surface-secondary flex flex-col items-start justify-center gap-8 rounded-xl border p-6">
       <p class="text-text-placeholder text-xs font-normal">
         Build your Qiscus Live Chat based on your need using our builder.
       </p>
 
-      <div class="flex w-140 flex-col gap-2">
+      <div class="flex w-full lg:w-140 flex-col gap-2">
         <div class="flex items-center gap-5">
-          <ImageInput
-            id="channel-badge"
-            v-model="channel.badge_url"
-            @error="(e) => (errorMessages = e)"
-            :isUploading="uSdkImage.loading.value"
-            @upload="uploadImage"
-          />
+          <ImageInput id="channel-badge" v-model="channel.badge_url" @error="(e) => (errorMessages = e)"
+            :isUploading="uSdkImage.loading.value" @upload="uploadImage" />
           <div class="flex flex-1 flex-col items-start gap-1">
             <h4 class="text-text-subtitle text-sm font-semibold">Channel Badge Icon</h4>
             <p class="text-text-placeholder text-xs font-normal">
@@ -33,16 +27,9 @@
         </Banner>
       </div>
 
-      <div class="w-[552px]">
-        <Input
-          label="Channel Name"
-          v-model="channel.name"
-          :disabled="false"
-          :error="false"
-          errorMessage="This field has an error"
-          id="default-input"
-          placeholder="Enter your channel name here"
-        />
+      <div class="w-full lg:w-[552px]">
+        <Input label="Channel Name" v-model="channel.name" :disabled="false" :error="false"
+          errorMessage="This field has an error" id="default-input" placeholder="Enter your channel name here" />
       </div>
     </div>
     <div class="flex justify-end gap-4">

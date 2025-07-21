@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-import type { IQiscusAppConfig, IUser, IWidgetConfig } from '@/types/app';
+import type { IQiscusAppConfig, IWidgetConfig } from '@/types/app';
+import type { IUser } from '@/types/user';
 import { initUser } from '@/utils/constant/user';
 
 export const useAppConfigStore = defineStore('app', () => {

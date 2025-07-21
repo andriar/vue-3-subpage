@@ -72,7 +72,7 @@ export { default as NotificationIcon } from './NotificationIcon.vue';
 export { default as OmnichannelIcon } from './OmnichannelIcon.vue';
 export { default as OpenTabIcon } from './OpenTabIcon.vue';
 export { default as PackageIcon } from './PackageIcon.vue';
-export { default as PalleteIcon } from './PalleteIcon.vue';
+export { default as PaletteIcon } from './PaletteIcon.vue';
 export { default as PhoneIcon } from './PhoneIcon.vue';
 export { default as PinIcon } from './PinIcon.vue';
 export { default as PlusIcon } from './PlusIcon.vue';

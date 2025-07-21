@@ -170,7 +170,7 @@ watch(
 </script>
 
 <template>
-  <div class="flex w-full items-start justify-between gap-8 self-stretch">
+  <div class="flex w-full flex-col lg:flex-row items-start justify-between gap-8 self-stretch">
     <div class="flex flex-1 flex-col gap-8">
       <WidgetFormLayout label="Login Form">
         <template #additional-info>
@@ -180,13 +180,8 @@ watch(
           </Banner>
         </template>
         <template #inputs>
-          <ImageInput
-            v-if="!channelState.isChannelsEnabled"
-            label="Brand Icon"
-            id="login-form-icon"
-            :isUploading="loading"
-            @upload="uploadImage"
-          >
+          <ImageInput v-if="!channelState.isChannelsEnabled" label="Brand Icon" id="login-form-icon"
+            :isUploading="loading" @upload="uploadImage">
             <template #tips>
               <div class="text-sm font-normal text-gray-800">
                 We recommend an image of at least 360x360 pixels. You can upload images in JPG,
@@ -194,43 +189,15 @@ watch(
               </div>
             </template>
           </ImageInput>
-          <TextArea
-            v-if="!channelState.isChannelsEnabled"
-            id="first-desc-login"
-            v-model="loginFormState.firstDescription"
-            label="First Descriptions"
-            :maxlength="50"
-          />
-          <TextArea
-            v-if="!channelState.isChannelsEnabled"
-            id="second-desc-login"
-            v-model="loginFormState.secondDescription"
-            label="Second Descriptions"
-            :maxlength="50"
-          />
-          <TextArea
-            id="subtitle-login"
-            v-model="loginFormState.formSubtitle"
-            label="Subtitle"
-            :maxlength="50"
-          />
-          <Input
-            id="button-form-login"
-            label="Button Form"
-            v-model="loginFormState.buttonText"
-            :maxlength="50"
-          />
-          <RadioInput
-            id="phone-number-login"
-            v-model="loginFormState.customerIdentifier"
-            label="Choose Customer Identifier"
-            :options="qiscusLiveChatStore.customerIdentifierOptions"
-          />
-          <Banner
-            v-if="loginFormState.customerIdentifier === 'phone'"
-            intent="positive"
-            type="outline"
-          >
+          <TextArea v-if="!channelState.isChannelsEnabled" id="first-desc-login"
+            v-model="loginFormState.firstDescription" label="First Descriptions" :maxlength="50" />
+          <TextArea v-if="!channelState.isChannelsEnabled" id="second-desc-login"
+            v-model="loginFormState.secondDescription" label="Second Descriptions" :maxlength="50" />
+          <TextArea id="subtitle-login" v-model="loginFormState.formSubtitle" label="Subtitle" :maxlength="50" />
+          <Input id="button-form-login" label="Button Form" v-model="loginFormState.buttonText" :maxlength="50" />
+          <RadioInput id="phone-number-login" v-model="loginFormState.customerIdentifier"
+            label="Choose Customer Identifier" :options="qiscusLiveChatStore.customerIdentifierOptions" />
+          <Banner v-if="loginFormState.customerIdentifier === 'phone'" intent="positive" type="outline">
             If you use phone number to login, we won't be able to send chat history and notes to the
             customer's email after the room is resolved.
           </Banner>
@@ -240,14 +207,8 @@ watch(
       <div class="flex flex-col gap-4 rounded-2xl border border-gray-300 bg-gray-200 p-6">
         <div class="flex w-full items-center justify-between">
           <span class="text-text-title text-base font-semibold">Additional Field</span>
-          <Button
-            id="add-more-field"
-            intent="flat"
-            type="button"
-            class="!px-0"
-            disableAnimation
-            @click="addAdditionalField"
-          >
+          <Button id="add-more-field" intent="flat" type="button" class="!px-0" disableAnimation
+            @click="addAdditionalField">
             <template #prefixIcon>
               <PlusIcon class="h-4 w-4" />
             </template>
@@ -255,15 +216,9 @@ watch(
           </Button>
         </div>
         <Divider v-if="loginFormState.extraFields?.length > 0 && loginFormState.extraFields" />
-        <ul
-          class="flex flex-col gap-6"
-          v-if="loginFormState.extraFields?.length > 0 && loginFormState.extraFields"
-        >
-          <li
-            v-for="(field, index) in loginFormState.extraFields"
-            :key="field.name"
-            class="flex items-center justify-between"
-          >
+        <ul class="flex flex-col gap-6" v-if="loginFormState.extraFields?.length > 0 && loginFormState.extraFields">
+          <li v-for="(field, index) in loginFormState.extraFields" :key="field.name"
+            class="flex items-center justify-between">
             <span class="text-text-title text-sm font-medium">{{ field.name }}</span>
             <DropdownMenu :options="getFieldOptions(index)" @select="handleFieldMenuSelect" />
           </li>
@@ -273,23 +228,16 @@ watch(
 
     <!-- PREVIEW -->
     <div class="bg-white-100 sticky top-20 z-40 flex flex-1 flex-col items-end gap-4 p-6">
-      <LoginForm
-        :isChannelEnabled="channelState.isChannelsEnabled"
-        :title="loginFormState.firstDescription"
-        :subtitle="loginFormState.secondDescription"
-        :description="loginFormState.formSubtitle"
-        :buttonText="loginFormState.buttonText"
-        :customerIdentifier="loginFormState.customerIdentifier"
-        :fields="
-          loginFormState.extraFields.map((field) => ({
-            id: field.name,
-            icon: field.iconField || DEFAULT_IMAGE_PREVIEW.LOGIN_BRAND_ICON,
-            type: field.type === 'dropdown' ? 'select' : field.type,
-            label: field.name,
-            placeholder: field.placeholder,
-          }))
-        "
-      />
+      <LoginForm :isChannelEnabled="channelState.isChannelsEnabled" :title="loginFormState.firstDescription"
+        :subtitle="loginFormState.secondDescription" :description="loginFormState.formSubtitle"
+        :buttonText="loginFormState.buttonText" :customerIdentifier="loginFormState.customerIdentifier" :fields="loginFormState.extraFields.map((field) => ({
+          id: field.name,
+          icon: field.iconField || DEFAULT_IMAGE_PREVIEW.LOGIN_BRAND_ICON,
+          type: field.type === 'dropdown' ? 'select' : field.type,
+          label: field.name,
+          placeholder: field.placeholder,
+        }))
+          " />
       <div class="bg-surface-disable h-16 w-16 rounded-full" />
     </div>
   </div>
@@ -301,40 +249,21 @@ watch(
     </template>
     <template #content>
       <div class="mb-9 flex flex-col gap-2">
-        <Select
-          id="field-type"
-          label="Field Type"
-          :options="qiscusLiveChatStore.fieldTypeOptionsAdditionalField"
-          v-model="additionalField.type"
-        />
+        <Select id="field-type" label="Field Type" :options="qiscusLiveChatStore.fieldTypeOptionsAdditionalField"
+          v-model="additionalField.type" />
         <div v-if="additionalField.type !== ''" class="flex flex-col gap-6">
-          <Input
-            id="name-field"
-            label="Title"
-            placeholder="e,g: Address, Number Phone"
-            v-model="additionalField.name"
-          />
-          <Input
-            id="placeholder-field"
-            label="Placeholder"
-            placeholder="e,g: Type your address here"
-            v-model="additionalField.placeholder"
-          />
+          <Input id="name-field" label="Title" placeholder="e,g: Address, Number Phone"
+            v-model="additionalField.name" />
+          <Input id="placeholder-field" label="Placeholder" placeholder="e,g: Type your address here"
+            v-model="additionalField.placeholder" />
           <template v-if="additionalField.type === 'dropdown' && additionalField.options">
             <DropdownItemInput v-model="additionalField.options" />
           </template>
           <div class="my-2 flex items-center">
-            <Checkbox
-              id="required-field"
-              label="Set this field to required"
-              v-model="additionalField.required"
-            />
+            <Checkbox id="required-field" label="Set this field to required" v-model="additionalField.required" />
           </div>
-          <IconSelectInput
-            id="icon-field"
-            v-model="additionalField.iconField"
-            :icons="qiscusLiveChatStore.iconsAdditionalField"
-          />
+          <IconSelectInput id="icon-field" v-model="additionalField.iconField"
+            :icons="qiscusLiveChatStore.iconsAdditionalField" />
         </div>
       </div>
     </template>
@@ -342,13 +271,8 @@ watch(
       <Button id="cancel-field" intent="secondary" size="small" @click="closeModal">
         Cancel
       </Button>
-      <Button
-        :disabled="!isAdditionalFieldValid"
-        id="add-field"
-        intent="primary"
-        size="small"
-        @click="addAdditionalFieldConfirm"
-      >
+      <Button :disabled="!isAdditionalFieldValid" id="add-field" intent="primary" size="small"
+        @click="addAdditionalFieldConfirm">
         {{ isEditMode ? 'Edit Field' : 'Add Field' }}
       </Button>
     </template>

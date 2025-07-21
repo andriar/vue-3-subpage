@@ -129,22 +129,12 @@ watch(
 </script>
 
 <template>
-  <div class="flex w-full items-start justify-between gap-8 self-stretch">
+  <div class="flex flex-col lg:flex-row w-full items-start justify-between gap-8 self-stretch">
     <div class="flex w-full flex-1 flex-col gap-8">
-      <WidgetFormLayout
-        id="welcome-dialog"
-        label="Welcome Dialogue"
-        v-model="welcomeDialog"
-        isSwitch
-      >
+      <WidgetFormLayout id="welcome-dialog" label="Welcome Dialogue" v-model="welcomeDialog" isSwitch>
         <template #inputs>
-          <ImageInput
-            label="Brand Icon"
-            id="welcome-dialog-image"
-            v-model="welcomeDialogState.brandIconWelcomeDialog"
-            :isUploading="brandIconUpload.loading.value"
-            @upload="(file) => handleImageUpload(file, 'brandIcon')"
-          >
+          <ImageInput label="Brand Icon" id="welcome-dialog-image" v-model="welcomeDialogState.brandIconWelcomeDialog"
+            :isUploading="brandIconUpload.loading.value" @upload="(file) => handleImageUpload(file, 'brandIcon')">
             <template #tips>
               <div class="text-sm font-normal text-gray-800">
                 We recommend an image of at least 360x360 pixels. You can upload images in JPG,
@@ -152,25 +142,12 @@ watch(
               </div>
             </template>
           </ImageInput>
-          <TextArea
-            id="first-desc-welcome"
-            v-model="welcomeDialogState.firstDescriptionWelcomeDialog"
-            label="Greeting Title"
-            :maxlength="50"
-          />
-          <TextArea
-            id="second-desc-welcome"
-            v-model="welcomeDialogState.secondDescriptionWelcomeDialog"
-            label="Welcome Message"
-            :maxlength="50"
-          />
-          <ImageInput
-            v-model="welcomeDialogState.actionIconWelcomeDialog"
-            label="Icon"
-            id="action-icon"
-            :isUploading="actionIconUpload.loading.value"
-            @upload="(file) => handleImageUpload(file, 'actionIcon')"
-          >
+          <TextArea id="first-desc-welcome" v-model="welcomeDialogState.firstDescriptionWelcomeDialog"
+            label="Greeting Title" :maxlength="50" />
+          <TextArea id="second-desc-welcome" v-model="welcomeDialogState.secondDescriptionWelcomeDialog"
+            label="Welcome Message" :maxlength="50" />
+          <ImageInput v-model="welcomeDialogState.actionIconWelcomeDialog" label="Icon" id="action-icon"
+            :isUploading="actionIconUpload.loading.value" @upload="(file) => handleImageUpload(file, 'actionIcon')">
             <template #tips>
               <div class="text-sm font-normal text-gray-800">
                 We recommend an image of at least 360x360 pixels. You can upload images in JPG,
@@ -178,37 +155,19 @@ watch(
               </div>
             </template>
           </ImageInput>
-          <Input
-            id="action-welcome"
-            v-model="welcomeDialogState.actionDescriptionWelcomeDialog"
-            label="Description"
-            :maxlength="50"
-          />
-          <InputCustom
-            v-model="welcomeDialogState.welcomeTimeout"
-            label="Appear Delay"
-            :maxlength="50"
-            type="number"
-            placeholder="0"
-          >
+          <Input id="action-welcome" v-model="welcomeDialogState.actionDescriptionWelcomeDialog" label="Description"
+            :maxlength="50" />
+          <InputCustom v-model="welcomeDialogState.welcomeTimeout" label="Appear Delay" :maxlength="50" type="number"
+            placeholder="0">
             <template #append-button>
               <div class="text-text-title text-sm font-medium">Seconds</div>
             </template>
           </InputCustom>
-          <Checkbox
-            id="auto-expand-checkbox"
-            v-model="welcomeDialogState.openAtStart"
-            label="Make Auto Expand"
-          />
+          <Checkbox id="auto-expand-checkbox" v-model="welcomeDialogState.openAtStart" label="Make Auto Expand" />
         </template>
       </WidgetFormLayout>
 
-      <WidgetFormLayout
-        id="attention-grabber"
-        label="Attention Grabber"
-        v-model="attentionGrabber"
-        isSwitch
-      >
+      <WidgetFormLayout id="attention-grabber" label="Attention Grabber" v-model="attentionGrabber" isSwitch>
         <template #additional-info>
           <Banner intent="warning" type="solid">
             <div class="flex items-center gap-4">
@@ -220,40 +179,18 @@ watch(
           </Banner>
         </template>
         <template #inputs>
-          <OptionalInput
-            id="attention-image-switch"
-            label="Image"
-            v-model="welcomeDialogState.isAttentionGrabberImage"
-          >
-            <DragDropInput
-              :accept="ACCEPTED_IMAGE_TYPES.PNG_JPG"
-              acceptText="PNG or JPG"
-              :maxSize="FILE_SIZE_LIMITS.IMAGE_EXTRA_LARGE"
-              :maxFiles="1"
+          <OptionalInput id="attention-image-switch" label="Image" v-model="welcomeDialogState.isAttentionGrabberImage">
+            <DragDropInput :accept="ACCEPTED_IMAGE_TYPES.PNG_JPG" acceptText="PNG or JPG"
+              :maxSize="FILE_SIZE_LIMITS.IMAGE_EXTRA_LARGE" :maxFiles="1"
               :isUploading="attentionGrabberImageUpload.loading.value"
-              @upload="(files) => files[0] && handleImageUpload(files[0], 'attentionGrabberImage')"
-            />
+              @upload="(files) => files[0] && handleImageUpload(files[0], 'attentionGrabberImage')" />
           </OptionalInput>
-          <OptionalInput
-            id="attention-grabber-switch"
-            label="Text"
-            v-model="welcomeDialogState.isAttentionGrabberText"
-          >
-            <TextArea
-              id="attention-grabber-text"
-              v-model="welcomeDialogState.attentionGrabberText"
-              label="Text Description"
-              :maxlength="50"
-            />
+          <OptionalInput id="attention-grabber-switch" label="Text" v-model="welcomeDialogState.isAttentionGrabberText">
+            <TextArea id="attention-grabber-text" v-model="welcomeDialogState.attentionGrabberText"
+              label="Text Description" :maxlength="50" />
           </OptionalInput>
-          <InputCustom
-            id="grabber-timeout"
-            v-model="grabberTimeoutString"
-            label="Appear Delay"
-            :maxlength="50"
-            type="number"
-            placeholder="0"
-          >
+          <InputCustom id="grabber-timeout" v-model="grabberTimeoutString" label="Appear Delay" :maxlength="50"
+            type="number" placeholder="0">
             <template #append-button>
               <div class="text-text-title text-sm font-medium">Seconds</div>
             </template>
@@ -263,27 +200,17 @@ watch(
     </div>
 
     <!-- PREVIEW -->
-    <div
-      v-if="welcomeDialogState.isWelcomeDialog"
-      class="sticky top-20 z-10 flex flex-1 flex-col items-end gap-4 p-6"
-    >
-      <WelcomingPage
-        :title="welcomeDialogState.firstDescriptionWelcomeDialog"
+    <div v-if="welcomeDialogState.isWelcomeDialog" class="sticky top-20 z-10 flex flex-1 flex-col items-end gap-4 p-6">
+      <WelcomingPage :title="welcomeDialogState.firstDescriptionWelcomeDialog"
         :subtitle="welcomeDialogState.secondDescriptionWelcomeDialog"
-        :imageUrl="welcomeDialogState.brandIconWelcomeDialog"
-        :actions="firstAction"
-      />
+        :imageUrl="welcomeDialogState.brandIconWelcomeDialog" :actions="firstAction" />
       <div class="bg-surface-disable h-16 w-16 rounded-full" />
     </div>
 
-    <div
-      v-else-if="welcomeDialogState.isAttentionGrabber"
-      class="sticky top-20 z-10 flex flex-1 flex-col items-end gap-4 p-6"
-    >
-      <AttentionGrabber
-        :imageUrl="welcomeDialogState.attentionGrabberImage"
-        :title="welcomeDialogState.attentionGrabberText"
-      />
+    <div v-else-if="welcomeDialogState.isAttentionGrabber"
+      class="sticky top-20 z-10 flex flex-1 flex-col items-end gap-4 p-6">
+      <AttentionGrabber :imageUrl="welcomeDialogState.attentionGrabberImage"
+        :title="welcomeDialogState.attentionGrabberText" />
       <div class="bg-surface-disable h-16 w-41 rounded-full" />
     </div>
 
