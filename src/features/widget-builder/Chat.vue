@@ -7,6 +7,7 @@ import ChatFormLoading from '@/components/ui/widget-preview/ChatFormLoading.vue'
 import { useUploadSdkImage } from '@/composables/images/useUploadSdkImage';
 import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
 
+import { Banner } from '@/components/common/common';
 import WIdgetFormLayout from './components/layout/WidgetFormLayout.vue';
 
 const { chatFormState } = storeToRefs(useQiscusLiveChatStore());
@@ -29,12 +30,19 @@ const uploadImage = async (file: File) => {
         <template #additional-info> </template>
         <template #inputs>
           <ImageInput v-model="chatFormState.customerServiceAvatar" :isUploading="loading" @upload="uploadImage"
-            label="Customer Service Avatar" id="customer-service-avatar">
+            label="Customer Service Avatar" id="customer-service-avatar" @error="(e) => (error = new Error(e))">
             <template #tips>
               <div class="text-sm font-normal text-gray-800">
                 We recommend an image of at least 360x360 pixels. You can upload images in JPG,
                 JPEG, or PNG format with a maximum size of 2MB.
               </div>
+            </template>
+            <template #alert>
+              <Banner v-if="error" intent="negative" size="small">
+                <p>
+                  {{ error }}
+                </p>
+              </Banner>
             </template>
           </ImageInput>
           <Input v-model="chatFormState.customerServiceName" :maxlength="50" label="Customer Service Name"

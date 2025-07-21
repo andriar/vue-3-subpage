@@ -11,6 +11,7 @@ import { useUploadSdkImage } from '@/composables/images/useUploadSdkImage';
 import { useSweetAlert } from '@/composables/useSweetAlert';
 import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
 
+import { Banner } from '@/components/common/common';
 import OptionalInput from './components/form/OptionalInput.vue';
 import WidgetFormLayout from './components/layout/WidgetFormLayout.vue';
 
@@ -100,12 +101,19 @@ watch(
 
           <OptionalInput id="icon-on-cta" label="Icon on Call to Action" v-model="callToActionState.isWithIcon">
             <ImageInput label="Icon Image" id="icon-image" v-model="callToActionState.iconImage" :isUploading="loading"
-              @upload="uploadImage">
+              @upload="uploadImage" @error="(e) => (error = new Error(e))">
               <template #tips>
                 <div class="text-sm font-normal text-gray-800">
                   We recommend an image of at least 360x360 pixels. You can upload images in JPG,
                   JPEG, or PNG format with a maximum size of 2MB.
                 </div>
+              </template>
+              <template #alert>
+                <Banner v-if="error" intent="negative" size="small">
+                  <p>
+                    {{ error }}
+                  </p>
+                </Banner>
               </template>
             </ImageInput>
           </OptionalInput>
