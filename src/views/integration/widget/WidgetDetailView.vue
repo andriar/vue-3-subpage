@@ -235,7 +235,7 @@ async function updateConversationSecurity(
   showAlert.success({
     title: 'Success',
     showCancelButton: false,
-    text: `Security enhancement settings for the Widget channel have been successfully ${
+    text: `Security enhancement settings for the Qiscus Live Chat channel have been successfully ${
       isSecure ? 'enabled' : 'disabled'
     }`,
   });

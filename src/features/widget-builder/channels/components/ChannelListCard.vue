@@ -28,12 +28,12 @@ const getFieldOptions = (channelId: number) => {
 
   return [
     {
-      label: 'Edit Channelasdf',
+      label: 'Edit Channel',
       value: 'edit',
       action: () => editChannel(channel.id),
     },
     {
-      label: 'Delete Channelasdf',
+      label: 'Delete Channel',
       value: 'delete',
       class: 'text-red-600',
       action: () => deleteChannel(channel.id),
