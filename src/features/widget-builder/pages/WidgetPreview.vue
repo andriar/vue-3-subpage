@@ -20,7 +20,7 @@ onMounted(() => {
     staging?: boolean;
   } = {
     options: {
-      channel_id: props.channelId,
+      channel_id: 548,
       mobileBreakPoint: 400,
       extra_fields: [],
     },
