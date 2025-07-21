@@ -2,6 +2,9 @@ import { ref } from 'vue';
 import type { RouteRecordRaw, Router } from 'vue-router';
 import { createRouter as createVueRouter, createWebHistory } from 'vue-router';
 
+
+
+import { isAuthenticated } from '@/utils/authValidation';
 import NotFound from '@/views/NotFound.vue';
 
 import integrationRoutes from './integration';
@@ -48,5 +51,21 @@ export function createRouter(appId?: string | number): Router {
       navigationDirection.value = info.direction as 'back' | 'forward' | 'replace' | 'initial';
     });
   }
+
+  router.beforeEach((to, _from, next) => {
+    const isAuth = isAuthenticated(to.meta.roles as number[]);
+
+    if (to.meta.requiresAuth) {
+      if (isAuth) {
+        // User is authenticated, proceed to the route
+        next();
+      } else {
+        // User is not authenticated, redirect to login
+        router.push('/redirect-logout');
+      }
+    } else {
+      next();
+    }
+  });
   return router;
 }
