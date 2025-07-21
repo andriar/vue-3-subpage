@@ -42,7 +42,6 @@ const ExtraFieldSchema = z.array(
   })
 );
 
-// Schema terpisah untuk welcome message
 const WelcomeDialogSchema = z.object({
   welcomeMessageStatus: z.boolean(),
   welcomeText: z.string(),
