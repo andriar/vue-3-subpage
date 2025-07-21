@@ -30,9 +30,7 @@ export const useFetchBot = () => {
       const validatedResponse = BotResponseSchema.parse(response.data);
       data.value = validatedResponse.data;
     } catch (err: any) {
-      if (axios.isCancel(err)) {
-        console.log('Bot fetch request cancelled:', err.message);
-      } else {
+      if (!axios.isCancel(err)) {
         handleComposableError(err, error, 'Error fetching bot');
         data.value = null;
       }

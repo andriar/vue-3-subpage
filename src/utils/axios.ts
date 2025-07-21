@@ -88,11 +88,9 @@ export const createAxiosInstance = (
         // Handle specific status codes
         switch (status) {
           case 401:
-            // Unauthorized - clear both localStorage and Pinia store
             localStorage.removeItem('auth_token');
             const appConfigStore = useAppConfigStore();
             appConfigStore.clearConfig();
-            // You can add router navigation here if needed
             break;
           case 403:
             // Forbidden
