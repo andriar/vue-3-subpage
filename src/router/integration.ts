@@ -197,6 +197,12 @@ export const integrationRoutes: RouteRecordRaw[] = [
         name: 'qiscus-create',
         component: () => import('@/views/integration/widget/WidgetCreateChannelView.vue'),
       },
+      {
+        path: ':id/preview',
+        name: 'qiscus-widget-preview',
+        component: () => import('@/features/widget-builder/pages/WidgetPreview.vue'),
+        props: false,
+      },
     ],
   },
   {

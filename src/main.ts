@@ -45,7 +45,7 @@ if (document.querySelector('#app')) {
     sdkUserId: import.meta.env.VITE_QISCUS_SDK_USER_ID || '',
     userSdkToken: import.meta.env.VITE_QISCUS_USER_SDK_TOKEN || '',
     widget: {
-      iframeUrl: import.meta.env.VITE_IFRAME_URL,
+      iframeUrl: import.meta.env.VITE_IFRAME_URL || import.meta.env.VITE_BASE_URL,
       env: import.meta.env.VITE_WIDGET_ENV || 'production',
     },
     user: {
