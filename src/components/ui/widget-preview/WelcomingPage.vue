@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Image from '@/components/common/Image.vue';
 import { ChatIcon, ChevronRightIcon } from '@/components/icons';
 import { DEFAULT_IMAGE_PREVIEW } from '@/utils/constant/images';
 
@@ -28,13 +29,18 @@ const props = withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <div :style="{ color: props.textColor }" class="flex w-[360px] flex-col rounded-4xl bg-white shadow-card-float">
+  <div
+    :style="{ color: props.textColor }"
+    class="shadow-card-float flex w-[360px] flex-col rounded-4xl bg-white"
+  >
     <div class="flex-1 gap-8 p-8">
       <!-- Header section -->
       <div class="flex flex-col gap-6">
         <!-- Logo section -->
-        <div v-if="!props.imageUrl" class="bg-surface-disable aspect-square h-7.5 w-7.5 animate-pulse rounded-full">
-        </div>
+        <div
+          v-if="!props.imageUrl"
+          class="bg-surface-disable aspect-square h-7.5 w-7.5 animate-pulse rounded-full"
+        ></div>
         <img v-else :src="props.imageUrl" alt="" class="h-8 w-8" width="32" height="32" />
 
         <!-- Title section -->
@@ -50,11 +56,21 @@ const props = withDefaults(defineProps<Props>(), {
 
       <div class="mt-8 flex flex-col gap-2">
         <template v-if="props.actions.some((action) => action.label)">
-          <button v-for="action in props.actions" :key="action.label"
-            class="hover:bg-surface-primary-blue/5 flex cursor-pointer rounded-xl p-4 shadow-card">
+          <button
+            v-for="action in props.actions"
+            :key="action.label"
+            class="hover:bg-surface-primary-blue/5 shadow-card flex cursor-pointer rounded-xl p-4"
+          >
             <div class="flex min-w-0 flex-1 gap-2">
               <div class="flex flex-shrink-0 items-center">
-                <img :src="action.iconUrl" alt="" class="h-6 w-6" width="24" height="24" v-if="action.iconUrl" />
+                <Image
+                  v-if="action.iconUrl"
+                  :src="action.iconUrl"
+                  :width="24"
+                  :height="24"
+                  alt="icon action"
+                  class="h-6 w-6"
+                />
                 <ChatIcon :size="24" v-else />
               </div>
               <div class="min-w-0 flex-1 text-start text-sm font-medium break-words">

@@ -2,6 +2,7 @@
 import { onMounted, onUnmounted, ref } from 'vue';
 
 import Button from '@/components/common/Button.vue';
+import DropdownMenu from '@/components/common/DropdownMenu.vue';
 import Switch from '@/components/common/Switch.vue';
 import { ChatIcon } from '@/components/icons';
 import Icon from '@/components/icons/Icon.vue';
@@ -12,13 +13,32 @@ import { CHANNEL_BADGE_URL } from '@/utils/constant/channels';
 import type { IWidgetChannel } from '../channels';
 import ModalChannelList from './ModalChannelList.vue';
 
+// --- Store ---
 const qiscusLiveChatStore = useQiscusLiveChatStore();
+
+// --- Local state ---
 const isModalOpen = ref(false);
 const activeDropdown = ref<number | null>(null);
 const editingChannelData = ref<IWidgetChannel | null>(null);
 
-const toggleDropdown = (channelId: number) => {
-  activeDropdown.value = activeDropdown.value === channelId ? null : channelId;
+// --- Method & function ---
+const getFieldOptions = (channelId: number) => {
+  const channel = qiscusLiveChatStore.channelList.find((ch) => ch.id === channelId);
+  if (!channel) return [];
+
+  return [
+    {
+      label: 'Edit Channelasdf',
+      value: 'edit',
+      action: () => editChannel(channel.id),
+    },
+    {
+      label: 'Delete Channelasdf',
+      value: 'delete',
+      class: 'text-red-600',
+      action: () => deleteChannel(channel.id),
+    },
+  ];
 };
 
 const closeDropdown = () => {
@@ -39,13 +59,14 @@ const deleteChannel = (channelId: number) => {
   closeDropdown();
 };
 
-// Close dropdown when clicking outside
+// --- Event handler ---
 const handleClickOutside = (event: Event) => {
   if (activeDropdown.value && !(event.target as Element).closest('.dropdown-container')) {
     closeDropdown();
   }
 };
 
+// --- Lifecycle hooks ---
 onMounted(() => {
   document.addEventListener('click', handleClickOutside);
 });
@@ -108,35 +129,7 @@ onUnmounted(() => {
             <Switch v-model="channel.enabled" variant="success" />
 
             <!-- More Button with Dropdown -->
-            <div class="dropdown-container relative">
-              <Button
-                intent="flat"
-                class="!px-0"
-                disableAnimation
-                @click="toggleDropdown(channel.id)"
-              >
-                <Icon name="more" :size="24" class="text-icon-black" />
-              </Button>
-
-              <!-- Dropdown Menu -->
-              <div
-                v-if="activeDropdown === channel.id"
-                class="bg-surface-primary-white shadow-small absolute -top-10 right-8 z-8 flex w-[161px] flex-col items-start rounded-lg px-3 py-1"
-              >
-                <button
-                  @click="editChannel(channel.id)"
-                  class="text-text-title border-stroke-regular w-full rounded-lg border-b px-3 py-4 text-start text-sm font-medium hover:bg-slate-100"
-                >
-                  Edit Channel
-                </button>
-                <button
-                  @click="deleteChannel(channel.id)"
-                  class="text-notification-error w-full rounded-lg px-3 py-4 text-start text-sm font-medium transition-colors hover:bg-red-50"
-                >
-                  Delete Channel
-                </button>
-              </div>
-            </div>
+            <DropdownMenu :options="getFieldOptions(channel.id)" />
           </div>
         </div>
       </div>

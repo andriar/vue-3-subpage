@@ -91,6 +91,7 @@ export const createAxiosInstance = (
             localStorage.removeItem('auth_token');
             const appConfigStore = useAppConfigStore();
             appConfigStore.clearConfig();
+            window.location.href = '/redirect-logout';
             break;
           case 403:
             // Forbidden

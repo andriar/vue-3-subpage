@@ -33,8 +33,9 @@ interface AdditionalField {
 }
 
 const qiscusLiveChatStore = useQiscusLiveChatStore();
-const { loginFormState } = storeToRefs(useQiscusLiveChatStore());
 const { loading, data, error, upload } = useUploadSdkImage();
+const { channelState } = storeToRefs(useQiscusLiveChatStore());
+const { loginFormState } = storeToRefs(useQiscusLiveChatStore());
 
 const additionalField = reactive<AdditionalField>({
   type: '',
@@ -76,11 +77,16 @@ const resetAdditionalField = () => {
   additionalField.name = '';
   additionalField.placeholder = '';
   additionalField.required = false;
-  additionalField.iconField = '';
+  additionalField.iconField = 'Date';
   additionalField.options = [];
   // Reset edit mode
   isEditMode.value = false;
   editingIndex.value = null;
+};
+
+const closeModal = () => {
+  resetAdditionalField();
+  isOpenModal.value = false;
 };
 
 // Update this function to handle both add and edit
@@ -92,8 +98,7 @@ const addAdditionalFieldConfirm = () => {
     // Add mode: push new field
     loginFormState.value.extraFields.push({ ...additionalField });
   }
-  resetAdditionalField();
-  isOpenModal.value = false;
+  closeModal();
 };
 
 const getFieldOptions = (index: number) => {
@@ -170,12 +175,13 @@ watch(
       <WidgetFormLayout label="Login Form">
         <template #additional-info>
           <Banner intent="positive" type="outline">
-            This configuration sets the base color theme for your live chat, affecting the header
-            text, action buttons, and chat bubbles.
+            The login form will be displayed first, unless the welcome dialogue or attention grabber
+            is enabled.
           </Banner>
         </template>
         <template #inputs>
           <ImageInput
+            v-if="!channelState.isChannelsEnabled"
             label="Brand Icon"
             id="login-form-icon"
             :isUploading="loading"
@@ -189,12 +195,14 @@ watch(
             </template>
           </ImageInput>
           <TextArea
+            v-if="!channelState.isChannelsEnabled"
             id="first-desc-login"
             v-model="loginFormState.firstDescription"
             label="First Descriptions"
             :maxlength="50"
           />
           <TextArea
+            v-if="!channelState.isChannelsEnabled"
             id="second-desc-login"
             v-model="loginFormState.secondDescription"
             label="Second Descriptions"
@@ -266,10 +274,12 @@ watch(
     <!-- PREVIEW -->
     <div class="bg-white-100 sticky top-20 z-40 flex flex-1 flex-col items-end gap-4 p-6">
       <LoginForm
+        :isChannelEnabled="channelState.isChannelsEnabled"
         :title="loginFormState.firstDescription"
         :subtitle="loginFormState.secondDescription"
         :description="loginFormState.formSubtitle"
         :buttonText="loginFormState.buttonText"
+        :customerIdentifier="loginFormState.customerIdentifier"
         :fields="
           loginFormState.extraFields.map((field) => ({
             id: field.name,
@@ -285,12 +295,7 @@ watch(
   </div>
 
   <!-- Update the Modal title and confirmText based on mode -->
-  <Modal
-    :isOpen="isOpenModal"
-    @close="isOpenModal = false"
-    :confirmText="isEditMode ? 'Update Field' : 'Add Field'"
-    @confirm="addAdditionalFieldConfirm"
-  >
+  <Modal :isOpen="isOpenModal" @close="closeModal" @confirm="addAdditionalFieldConfirm">
     <template #title>
       {{ isEditMode ? 'Edit Additional Field' : 'Add Additional Field' }}
     </template>
@@ -334,7 +339,7 @@ watch(
       </div>
     </template>
     <template #footer>
-      <Button id="cancel-field" intent="secondary" size="small" @click="isOpenModal = false">
+      <Button id="cancel-field" intent="secondary" size="small" @click="closeModal">
         Cancel
       </Button>
       <Button

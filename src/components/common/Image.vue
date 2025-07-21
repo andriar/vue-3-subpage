@@ -1,16 +1,30 @@
 <template>
-  <div class="relative" :style="{ 'width': width + 'px', 'height': height + 'px' }">
-    <img v-show="!isLoading" :src="currentSrc" :alt="alt" @error="handleImageError" @load="handleImageLoad"
-      class="transition-all duration-300 ease-in-out z-0" :width="width" :height="height" v-bind="$attrs" />
+  <div class="relative" :style="{ width: width + 'px', height: height + 'px' }">
+    <img
+      v-show="!isLoading"
+      v-bind="$attrs"
+      :src="currentSrc"
+      :alt="alt"
+      :width="width"
+      :height="height"
+      @load="handleImageLoad"
+      @error="handleImageError"
+      class="z-0 transition-all duration-300 ease-in-out"
+    />
 
-    <SpinnerIcon v-if="isLoading" :size="width - 5"
-      class="absolute z-10 top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 animate-spin text-green-600" />
+    <SpinnerIcon
+      v-if="isLoading"
+      :size="width - 5"
+      class="absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 animate-spin text-green-600"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { CHANNEL_BADGE_URL } from '@/utils/constant/channels';
 import { ref, watch } from 'vue';
+
+import { CHANNEL_BADGE_URL } from '@/utils/constant/channels';
+
 import SpinnerIcon from '../icons/SpinnerIcon.vue';
 
 // Define props using defineProps, which is globally available in <script setup>
@@ -43,13 +57,12 @@ const isLoading = ref(false);
 watch(
   () => props.src,
   (newSrc) => {
-    isLoading.value = true
+    isLoading.value = true;
     currentSrc.value = newSrc;
     hasError.value = false; // Reset error state for the new image
   },
   { immediate: true }
 );
-
 
 const handleImageLoad = () => {
   isLoading.value = false; // Set loading to false when image loads successfully
