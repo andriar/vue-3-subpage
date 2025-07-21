@@ -18,7 +18,6 @@ import LoginForm from '@/features/widget-builder/LoginForm.vue';
 import WelcomeDialog from '@/features/widget-builder/WelcomeDialog.vue';
 import Channels from '@/features/widget-builder/channels/Channels.vue';
 import ColorScheme from '@/features/widget-builder/color-scheme/ColorScheme.vue';
-import WidgetPreview from '@/features/widget-builder/pages/WidgetPreview.vue';
 import { useAppConfigStore } from '@/stores/app-config';
 import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
 
@@ -97,13 +96,10 @@ watch(
   }
 );
 
-const props = defineProps<{
-  channelId: string | number;
-}>();
-
 // Store integration
 const { postWidgetConfig, getWidgetConfig } = useQiscusLiveChatStore();
 const { appId } = useAppConfigStore();
+const iframeSrc = ref(`${window.location.origin + window.location.pathname}/preview`);
 
 // Drawer state
 const isDrawerOpen = ref(false);
@@ -162,7 +158,8 @@ onMounted(async () => {
 
     <Drawer :isOpen="isDrawerOpen" @close="isDrawerOpen = false">
       <!-- Preview content should come from store/props -->
-      <WidgetPreview v-if="isDrawerOpen" :channel-id="props.channelId" />
+      <iframe ref="dynamicIframeRef" :src="iframeSrc" title="Live Chat Preview"
+        style="width: 100%; height: 100%"></iframe>
     </Drawer>
   </div>
 </template>
