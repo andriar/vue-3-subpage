@@ -1,3 +1,5 @@
+import type { IUser } from './user';
+
 export interface IWidgetConfig {
   iframeUrl?: string;
   env: 'production' | 'latest' | 'staging';
@@ -11,7 +13,4 @@ export interface IQiscusAppConfig {
   userSdkToken: string;
   widget: IWidgetConfig;
   user: IUser;
-}
-export interface IUser {
-  id: number;
 }

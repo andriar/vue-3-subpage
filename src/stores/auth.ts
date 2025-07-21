@@ -1,15 +1,19 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-export const useAuthStore = defineStore('auth', () => {
-  const user = ref<any>(null);
-  const sdkUser = ref<any>(null);
 
-  const setUser = (data: any) => {
+
+import type { ISdkUser, IUser } from '@/types/user';
+
+export const useAuthStore = defineStore('auth', () => {
+  const user = ref<IUser | null>(null);
+  const sdkUser = ref<ISdkUser | null>(null);
+
+  const setUser = (data: IUser) => {
     user.value = data;
   };
 
-  const setSdkUser = (data: any) => {
+  const setSdkUser = (data: ISdkUser) => {
     sdkUser.value = data;
   };
 
