@@ -222,7 +222,7 @@ onMounted(async () => {
             </div>
 
             <div class="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-4">
-              <InputCustom v-model="data.agent_id" label="Agent ID" disabled>
+              <InputCustom id="agent-id-input" v-model="data.agent_id" label="Agent ID" disabled>
                 <template #append-button>
                   <button type="button"
                     class="text-primary flex cursor-pointer gap-2 hover:bg-gray-400 active:text-primary-hover p-1 rounded-sm"
@@ -232,7 +232,7 @@ onMounted(async () => {
                   </button>
                 </template>
               </InputCustom>
-              <InputCustom v-model="data.app_id" label="App ID" disabled>
+              <InputCustom id="app-id-input" v-model="data.app_id" label="App ID" disabled>
                 <template #append-button>
                   <button type="button"
                     class="text-primary flex cursor-pointer gap-2 hover:bg-gray-400 active:text-primary-hover p-1 rounded-sm"
@@ -242,7 +242,9 @@ onMounted(async () => {
                   </button>
                 </template>
               </InputCustom>
-              <InputCustom v-model="data.secret_key" label="Qiscus Secret Key" type="password" disabled></InputCustom>
+              <InputCustom id="secret-key-input" v-model="data.secret_key" label="Qiscus Secret Key" type="password"
+                disabled>
+              </InputCustom>
             </div>
           </div>
 
@@ -257,7 +259,7 @@ onMounted(async () => {
               </p>
             </div>
             <div class="mt-4">
-              <InputCustom v-model="data.bot_url" disabled>
+              <InputCustom id="bot-url-input" v-model="data.bot_url" disabled>
                 <template #append-button>
                   <button type="button"
                     class="text-primary flex cursor-pointer gap-2 hover:bg-gray-400 active:text-primary-hover p-1 rounded-sm"
@@ -284,7 +286,7 @@ onMounted(async () => {
             </div>
 
             <div class="mt-4">
-              <InputCustom v-model="data.webhook_url"> </InputCustom>
+              <InputCustom id="webhook-url-input" v-model="data.webhook_url"> </InputCustom>
             </div>
           </div>
 

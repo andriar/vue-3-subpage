@@ -2,7 +2,7 @@
   <div class="w-full">
     <div class="flex items-center justify-between p-4">
       <!-- Search Input -->
-      <InputCustom v-model="searchQuery" placeholder="Search channel name" clearable>
+      <InputCustom id="search-input" v-model="searchQuery" placeholder="Search channel name" clearable>
         <template #suffix-icon>
           <Icon name="search" />
         </template>

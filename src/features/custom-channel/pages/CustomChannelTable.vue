@@ -1,7 +1,8 @@
 <template>
   <div class="flex h-full w-full flex-col">
     <div class="flex flex-col md:flex-row gap-2 md:items-center md:justify-between p-4">
-      <InputCustom v-model="searchQuery" placeholder="Search channel name" class="md:min-w-[340px]" clearable>
+      <InputCustom id="search-input" v-model="searchQuery" placeholder="Search channel name" class="md:min-w-[340px]"
+        clearable>
         <template #suffix-icon>
           <SearchIcon :size="24" />
         </template>
@@ -32,7 +33,7 @@
                     :height="24" class="aspect-square rounded-full object-cover max-w-6 max-h-6" />
                   <span class="text-text-title overflow-hidden font-medium text-ellipsis whitespace-nowrap">{{
                     channel.name
-                    }}</span>
+                  }}</span>
                 </div>
               </td>
               <td class="border-stroke-regular cursor-pointer border-b px-6 py-4">

@@ -265,18 +265,19 @@ onMounted(() => {
     </div>
 
     <div class="mt-4 text-left">
-      <Input v-model="inputValue" placeholder="Enter your name" />
-      <Input v-model="inputValue" placeholder="Enter your name" disabled />
-      <Input v-model="inputValue" placeholder="Enter your name" error errorMessage="This is an error message" />
+      <Input id="input-id" v-model="inputValue" placeholder="Enter your name" />
+      <Input id="input-id" v-model="inputValue" placeholder="Enter your name" disabled />
+      <Input id="input-id" v-model="inputValue" placeholder="Enter your name" error
+        errorMessage="This is an error message" />
     </div>
 
     <div class="mt-4 flex w-full flex-col gap-4 text-left">
-      <InputCustom v-model="inputValue" placeholder="Enter your name" clearable disabled>
+      <InputCustom id="input-custom" v-model="inputValue" placeholder="Enter your name" clearable disabled>
         <template #suffix-icon>
           <Icon name="search" />
         </template>
       </InputCustom>
-      <InputCustom v-model="inputValue" placeholder="Enter your name" type="text" clearable>
+      <InputCustom id="input-custom" v-model="inputValue" placeholder="Enter your name" type="text" clearable>
         <template #suffix-icon>
           <Icon name="eye" />
         </template>
@@ -285,8 +286,8 @@ onMounted(() => {
           <Icon name="copy" class="text-primary h-4 w-4" />
         </template>
       </InputCustom>
-      <InputCustom v-model="inputValue" placeholder="Enter your name" type="text" clearable />
-      <InputCustom v-model="inputValue" placeholder="Enter your name" type="text" clearable
+      <InputCustom id="input-custom" v-model="inputValue" placeholder="Enter your name" type="text" clearable />
+      <InputCustom id="input-custom" v-model="inputValue" placeholder="Enter your name" type="text" clearable
         errorMessage="This is an error message" error />
     </div>
 
