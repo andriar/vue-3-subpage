@@ -220,10 +220,11 @@ onMounted(async () => {
               </p>
             </div>
 
-            <div class="mt-4 grid grid-cols-2 gap-x-8 gap-y-4">
+            <div class="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-4">
               <InputCustom v-model="data.agent_id" label="Agent ID" disabled>
                 <template #append-button>
-                  <button type="button" class="text-primary flex cursor-pointer gap-2"
+                  <button type="button"
+                    class="text-primary flex cursor-pointer gap-2 hover:bg-gray-400 active:text-primary-hover p-1 rounded-sm"
                     @click="copyToClipboard(data.agent_id)">
                     Copy
                     <CopyIcon :size="18" />
@@ -232,7 +233,8 @@ onMounted(async () => {
               </InputCustom>
               <InputCustom v-model="data.app_id" label="App ID" disabled>
                 <template #append-button>
-                  <button type="button" class="text-primary flex cursor-pointer gap-2"
+                  <button type="button"
+                    class="text-primary flex cursor-pointer gap-2 hover:bg-gray-400 active:text-primary-hover p-1 rounded-sm"
                     @click="copyToClipboard(data.app_id)">
                     Copy
                     <CopyIcon :size="18" />
@@ -256,7 +258,8 @@ onMounted(async () => {
             <div class="mt-4">
               <InputCustom v-model="data.bot_url" disabled>
                 <template #append-button>
-                  <button type="button" class="text-primary flex cursor-pointer gap-2"
+                  <button type="button"
+                    class="text-primary flex cursor-pointer gap-2 hover:bg-gray-400 active:text-primary-hover p-1 rounded-sm"
                     @click="copyToClipboard(data.bot_url)">
                     Copy
                     <CopyIcon :size="18" />

@@ -148,7 +148,6 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
   const updateChannel = (channelId: number, updatedData: WidgetChannelUpdateData): void => {
     const index = channelList.value.findIndex((channel) => channel.id === channelId);
     if (index !== -1 && channelList.value[index]) {
-      // TypeScript akan memastikan kita hanya update field yang valid
       Object.assign(channelList.value[index], updatedData);
     }
   };
@@ -158,7 +157,6 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
       const { data } = await qiscusApi.getWidgetConfig(appId, channelId);
       if (data) {
         const widget: IWidgetVariables = data.data.widget.variables;
-        console.log('widget', widget.isChannelWidgetEnabled);
         // set state welcome dialog
         welcomeDialogState.isWelcomeDialog = widget.welcomeMessageStatus;
         welcomeDialogState.brandIconWelcomeDialog = widget.welcomeBrandIcon;

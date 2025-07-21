@@ -7,7 +7,7 @@ import { Button, Drawer } from '@/components/common/common';
 import {
   ChatOutlineIcon,
   IntegrationIcon,
-  PalleteIcon,
+  PaletteIcon,
   ServerIcon,
   TableIcon,
   ToggleLeftIcon,
@@ -49,7 +49,7 @@ const tabs: Tab[] = [
   { label: 'Chat', icon: ChatOutlineIcon, component: Chat, queryParam: 'chat' },
   {
     label: 'Color Scheme',
-    icon: PalleteIcon,
+    icon: PaletteIcon,
     component: ColorScheme,
     queryParam: 'color',
   },
@@ -147,9 +147,9 @@ onMounted(async () => {
   <div>
     <div class="bg-white-100 flex w-full flex-col rounded-2xl border-[1px] border-gray-300">
       <div
-        class="bg-white-100 sticky top-0 z-50 flex w-full items-center justify-between rounded-t-2xl border-b-[1px] border-gray-300 p-4">
+        class="bg-white-100 sticky top-0 z-50 flex w-full items-center justify-between rounded-t-2xl border-b-[1px] border-gray-300 p-4 gap-2">
         <RoundedTab :tabs="tabs" v-model="activeTab" />
-        <Button @click="saveAndPreview" :loading="isLoading" :disabled="isLoading">
+        <Button class="min-w-max" @click="saveAndPreview" :loading="isLoading" :disabled="isLoading">
           Save & Preview
         </Button>
       </div>
