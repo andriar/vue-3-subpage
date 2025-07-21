@@ -9,8 +9,7 @@ import Input from '@/components/form/Input.vue';
 import TextArea from '@/components/form/TextArea.vue';
 import { useUploadSdkImage } from '@/composables/images/useUploadSdkImage';
 import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
-
-import type { IWidgetChannel, WidgetChannelFormData } from '../channels';
+import type { NormalizedOtherChannel } from '@/types/schemas/channels/qiscus-widget/config-qiscus-widget';
 
 const qiscusLiveChatStore = useQiscusLiveChatStore();
 const { loading, data, error, upload } = useUploadSdkImage();
@@ -29,7 +28,7 @@ const emit = defineEmits<{
   (e: 'close'): void;
 }>();
 
-const modelValue = defineModel<IWidgetChannel | null>({ required: false, default: null });
+const modelValue = defineModel<NormalizedOtherChannel | null>({ required: false, default: null });
 
 // Form Validation
 const isFormValid = computed(() => {
@@ -50,20 +49,24 @@ const closeModal = () => {
 };
 
 const handleAddChannel = (): void => {
-  const formData: WidgetChannelFormData = {
+  const formData = {
     name: channelName.value,
-    link: channelLink.value,
-    icon: channelBadgeIcon.value,
+    url: channelLink.value,
+    badge_url: channelBadgeIcon.value,
+    is_enable: false,
   };
 
   if (modelValue.value) {
-    // Update existing channel - TypeScript akan infer type yang benar
-    qiscusLiveChatStore.updateChannel(modelValue.value.id, formData);
+    const updatedChannel: NormalizedOtherChannel = {
+      id: modelValue.value.id,
+      ...formData,
+      is_active: modelValue.value.is_active,
+    };
+    qiscusLiveChatStore.updateChannel(modelValue.value.id, updatedChannel);
   } else {
-    // Add new channel - TypeScript akan infer type yang benar
     qiscusLiveChatStore.addChannel({
       ...formData,
-      enabled: false,
+      is_enable: false,
     });
   }
   closeModal();
@@ -84,8 +87,8 @@ watch(
   (newChannel) => {
     if (newChannel) {
       channelName.value = newChannel.name || '';
-      channelLink.value = newChannel.link || '';
-      channelBadgeIcon.value = newChannel.icon || '';
+      channelLink.value = newChannel.url || '';
+      channelBadgeIcon.value = newChannel.badge_url || '';
     } else {
       // Reset form when not editing
       resetForm();
@@ -103,24 +106,44 @@ watch(
         <Banner :closeable="false" intent="positive" type="solid">
           <p class="text-text-title text-sm font-medium">
             To learn more regarding Link Channel, you can check this
-            <a class="text-notification-link underline" href="https://docs.qiscus.com" target="_blank">
+            <a
+              class="text-notification-link underline"
+              href="https://docs.qiscus.com"
+              target="_blank"
+            >
               Documentation.
             </a>
           </p>
         </Banner>
 
-        <Input v-model="channelName" :disabled="false" :error="false" errorMessage="This field has an error"
-          id="default-input" label="Channel Name" placeholder="Type your channel name " />
+        <Input
+          v-model="channelName"
+          :disabled="false"
+          :error="false"
+          errorMessage="This field has an error"
+          id="default-input"
+          label="Channel Name"
+          placeholder="Type your channel name "
+        />
 
-        <TextArea v-model="channelLink" id="description" label="Channel Link"
-          placeholder="Enter the channel URL (ex: https://ig.me/m/username)" />
+        <TextArea
+          v-model="channelLink"
+          id="description"
+          label="Channel Link"
+          placeholder="Enter the channel URL (ex: https://ig.me/m/username)"
+        />
 
         <!-- Channel Badge Icon -->
         <div>
           <!-- <label for="channel-badge-icon"> Channel Badge Icon</label> -->
           <div class="flex items-baseline gap-2">
-            <ImageInput id="channel-badge-icon" label="Channel Badge Icon" v-model="channelBadgeIcon"
-              :isUploading="loading" @upload="uploadImage">
+            <ImageInput
+              id="channel-badge-icon"
+              label="Channel Badge Icon"
+              v-model="channelBadgeIcon"
+              :isUploading="loading"
+              @upload="uploadImage"
+            >
               <template #tips>
                 <div class="text-sm font-normal text-gray-800">
                   We recommend an image of at least 360x360 pixels. You can upload images in JPG,

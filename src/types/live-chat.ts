@@ -56,7 +56,7 @@ export interface IAdditionalField {
   placeholder: string;
   required: boolean;
   iconField?: string;
-  options?: string[];
+  options?: { id: number; label: string }[];
 }
 
 export interface ILoginFormState {

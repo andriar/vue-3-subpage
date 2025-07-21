@@ -435,17 +435,20 @@ onMounted(() => {
         introduction="Welcome to Qiscus!"
         :channels="[
           {
-            label: 'WhatsApp',
-            iconUrl: CHANNEL_BADGE_URL.whatsapp,
+            id: 1,
+            name: 'WhatsApp',
+            badge_url: CHANNEL_BADGE_URL.whatsapp,
           },
           {
-            label: 'Instagram',
-            iconUrl: CHANNEL_BADGE_URL.instagram,
+            id: 2,
+            name: 'Instagram',
+            badge_url: CHANNEL_BADGE_URL.instagram,
           },
 
           {
-            label: 'TikTok',
-            iconUrl: CHANNEL_BADGE_URL.tiktok,
+            id: 3,
+            name: 'TikTok',
+            badge_url: CHANNEL_BADGE_URL.tiktok,
           },
         ]"
       />

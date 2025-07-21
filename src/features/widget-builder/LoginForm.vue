@@ -18,26 +18,18 @@ import LoginForm from '@/components/ui/widget-preview/LoginForm.vue';
 import { useUploadSdkImage } from '@/composables/images/useUploadSdkImage';
 import WidgetFormLayout from '@/features/widget-builder/components/layout/WidgetFormLayout.vue';
 import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
+import type { IAdditionalField } from '@/types/live-chat';
 import { DEFAULT_IMAGE_PREVIEW } from '@/utils/constant/images';
 
 import DropdownItemInput from './components/form/DropdownItemInput.vue';
 import IconSelectInput from './components/form/IconSelectInput.vue';
-
-interface AdditionalField {
-  type: string;
-  name: string;
-  placeholder: string;
-  required: boolean;
-  iconField?: string;
-  options?: string[];
-}
 
 const qiscusLiveChatStore = useQiscusLiveChatStore();
 const { loading, data, error, upload } = useUploadSdkImage();
 const { channelState } = storeToRefs(useQiscusLiveChatStore());
 const { loginFormState } = storeToRefs(useQiscusLiveChatStore());
 
-const additionalField = reactive<AdditionalField>({
+const additionalField = reactive<IAdditionalField>({
   type: '',
   name: '',
   placeholder: '',
@@ -121,7 +113,7 @@ const getFieldOptions = (index: number) => {
 };
 
 // Update editField to set edit mode
-const editField = (field: AdditionalField) => {
+const editField = (field: IAdditionalField) => {
   // Find the index of the field being edited
   const index = loginFormState.value.extraFields.findIndex(
     (f) => f.name === field.name && f.type === field.type && f.placeholder === field.placeholder

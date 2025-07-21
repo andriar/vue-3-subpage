@@ -3,14 +3,14 @@ import { onMounted, onUnmounted, ref } from 'vue';
 
 import Button from '@/components/common/Button.vue';
 import DropdownMenu from '@/components/common/DropdownMenu.vue';
+import Image from '@/components/common/Image.vue';
 import Switch from '@/components/common/Switch.vue';
 import { ChatIcon } from '@/components/icons';
 import Icon from '@/components/icons/Icon.vue';
 import Divider from '@/components/ui/Divider.vue';
 import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
-import { CHANNEL_BADGE_URL } from '@/utils/constant/channels';
+import type { NormalizedOtherChannel } from '@/types/schemas/channels/qiscus-widget/config-qiscus-widget';
 
-import type { IWidgetChannel } from '../channels';
 import ModalChannelList from './ModalChannelList.vue';
 
 // --- Store ---
@@ -19,7 +19,7 @@ const qiscusLiveChatStore = useQiscusLiveChatStore();
 // --- Local state ---
 const isModalOpen = ref(false);
 const activeDropdown = ref<number | null>(null);
-const editingChannelData = ref<IWidgetChannel | null>(null);
+const editingChannelData = ref<NormalizedOtherChannel | null>(null);
 
 // --- Method & function ---
 const getFieldOptions = (channelId: number) => {
@@ -41,28 +41,41 @@ const getFieldOptions = (channelId: number) => {
   ];
 };
 
-const closeDropdown = () => {
+const closeAllDropdowns = () => {
   activeDropdown.value = null;
+};
+
+const handleDropdownOpen = (channelId: number) => {
+  // Close other dropdowns and open this one
+  activeDropdown.value = channelId;
+};
+
+const handleDropdownToggle = (channelId: number, isOpen: boolean) => {
+  if (isOpen) {
+    activeDropdown.value = channelId;
+  } else if (activeDropdown.value === channelId) {
+    activeDropdown.value = null;
+  }
 };
 
 const editChannel = (channelId: number) => {
   const channel = qiscusLiveChatStore.channelList.find((ch) => ch.id === channelId);
-  if (channel) {
+  if (channel && channel.id) {
     editingChannelData.value = { ...channel };
     isModalOpen.value = true;
   }
-  closeDropdown();
+  closeAllDropdowns();
 };
 
 const deleteChannel = (channelId: number) => {
   qiscusLiveChatStore.removeChannel(channelId);
-  closeDropdown();
+  closeAllDropdowns();
 };
 
 // --- Event handler ---
 const handleClickOutside = (event: Event) => {
-  if (activeDropdown.value && !(event.target as Element).closest('.dropdown-container')) {
-    closeDropdown();
+  if (activeDropdown.value && !(event.target as Element).closest('.relative')) {
+    closeAllDropdowns();
   }
 };
 
@@ -111,25 +124,28 @@ onUnmounted(() => {
           <div class="flex w-full items-center gap-4">
             <!-- Icon & Name -->
             <div class="flex flex-1 items-center gap-3">
-              <img
-                v-if="channel.icon"
-                :src="
-                  channel.icon || CHANNEL_BADGE_URL[channel.icon as keyof typeof CHANNEL_BADGE_URL]
-                "
+              <Image
+                v-if="channel.badge_url"
+                :src="channel.badge_url"
+                :width="24"
+                :height="24"
                 alt=""
                 class="h-6 w-6"
-                width="24"
-                height="24"
               />
               <ChatIcon :size="24" v-else />
               <h4 class="text-text-title text-sm font-medium">{{ channel.name }}</h4>
             </div>
 
             <!-- Status -->
-            <Switch v-model="channel.enabled" variant="success" />
+            <Switch v-model="channel.is_enable" variant="success" />
 
             <!-- More Button with Dropdown -->
-            <DropdownMenu :options="getFieldOptions(channel.id)" />
+            <DropdownMenu
+              :options="getFieldOptions(channel.id)"
+              :isOpen="activeDropdown === channel.id"
+              @open="handleDropdownOpen(channel.id)"
+              @toggle="(isOpen) => handleDropdownToggle(channel.id, isOpen)"
+            />
           </div>
         </div>
       </div>
