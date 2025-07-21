@@ -3,11 +3,19 @@ import { onMounted, onUnmounted } from 'vue';
 
 import { useAppConfigStore } from '@/stores/app-config';
 
-defineProps<{ channelId: string | number }>();
 const { appId, widget, baseUrl } = useAppConfigStore();
 const isStaging = widget?.env === 'staging';
 const isLatest = widget?.env === 'latest';
 const iframeUrl = widget?.iframeUrl || '';
+
+const getPathSegment = (indexFromEnd: number = 1): string => {
+  const pathname: string = window.location.pathname;
+  const pathSegments: string[] = pathname.split('/').filter((segment) => segment !== '');
+  const actualIndex: number = pathSegments.length - indexFromEnd;
+  return pathSegments[actualIndex] || '';
+};
+
+const channelId: string = getPathSegment(2);
 
 onMounted(() => {
   let configs: {
@@ -20,7 +28,7 @@ onMounted(() => {
     staging?: boolean;
   } = {
     options: {
-      channel_id: 548,
+      channel_id: channelId,
       mobileBreakPoint: 400,
       extra_fields: [],
     },
