@@ -3,7 +3,7 @@ import { onMounted, onUnmounted } from 'vue';
 
 import { useAppConfigStore } from '@/stores/app-config';
 
-const props = defineProps<{ channelId: string | number }>();
+defineProps<{ channelId: string | number }>();
 const { appId, widget, baseUrl } = useAppConfigStore();
 const isStaging = widget?.env === 'staging';
 const isLatest = widget?.env === 'latest';
