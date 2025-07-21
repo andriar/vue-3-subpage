@@ -105,7 +105,7 @@ onUnmounted(() => {
             </div>
 
             <!-- Status -->
-            <Switch v-model="channel.enabled" variant="success" />
+            <Switch id="enable-channel-switch" v-model="channel.enabled" variant="success" />
 
             <!-- More Button with Dropdown -->
             <DropdownMenu :options="getFieldOptions(channel.id)" />

@@ -300,8 +300,8 @@ onMounted(async () => {
             <div class="flex justify-between gap-8 text-sm text-text-subtitle">
               <div v-html="item.content"></div>
               <div>
-                <Switch variant="success" :model-value="data.is_enable" @update:model-value="handleActivateBot"
-                  size="medium" />
+                <Switch id="enable-bot-switch" variant="success" :model-value="data.is_enable"
+                  @update:model-value="handleActivateBot" size="medium" />
               </div>
             </div>
           </template>
@@ -309,7 +309,7 @@ onMounted(async () => {
             <div class="flex justify-between gap-8 text-sm text-text-subtitle">
               {{ item.content }}
               <div>
-                <Switch variant="success" size="medium" :model-value="data.is_enable_chat"
+                <Switch id="enable-force-bot-switch" variant="success" size="medium" :model-value="data.is_enable_chat"
                   @update:model-value="handleForceSendBot" />
               </div>
             </div>

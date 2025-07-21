@@ -41,8 +41,8 @@
 
             <!-- Action (Switch) -->
             <td class="border-stroke-regular border-b px-6 py-4 text-right">
-              <Switch v-model="channel.isActive" size="small" variant="success" @click.stop="() => ''"
-                @update:model-value="updateChannelStatus(channel.id, $event)" />
+              <Switch id="enable-channel-switch" v-model="channel.isActive" size="small" variant="success"
+                @click.stop="() => ''" @update:model-value="updateChannelStatus(channel.id, $event)" />
             </td>
           </tr>
         </tbody>

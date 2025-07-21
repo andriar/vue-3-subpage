@@ -25,7 +25,7 @@ const uploadImage = async (file: File) => {
 <template>
   <div class="flex w-full flex-col lg:flex-row items-start justify-between gap-8 self-stretch">
     <div class="flex w-full flex-1 flex-col gap-8">
-      <WIdgetFormLayout label="Chat">
+      <WIdgetFormLayout id="widget-form-layout" label="Chat">
         <template #additional-info> </template>
         <template #inputs>
           <ImageInput v-model="chatFormState.customerServiceAvatar" :isUploading="loading" @upload="uploadImage"

@@ -172,7 +172,7 @@ watch(
 <template>
   <div class="flex w-full flex-col lg:flex-row items-start justify-between gap-8 self-stretch">
     <div class="flex flex-1 flex-col gap-8">
-      <WidgetFormLayout label="Login Form">
+      <WidgetFormLayout id="widget-form-layout" label="Login Form">
         <template #additional-info>
           <Banner intent="positive" type="outline">
             The login form will be displayed first, unless the welcome dialogue or attention grabber

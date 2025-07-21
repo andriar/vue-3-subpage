@@ -133,7 +133,7 @@ onMounted(() => {
               <div class="flex justify-between gap-8 text-text-subtitle text-sm">
                 <div v-html="item.content"></div>
                 <div>
-                  <Switch variant="success" v-model="isEnableTelegram" size="medium" />
+                  <Switch id="enable-channel-switch" variant="success" v-model="isEnableTelegram" size="medium" />
                 </div>
               </div>
             </template>
@@ -141,7 +141,7 @@ onMounted(() => {
               <div class="flex justify-between gap-8 text-text-subtitle text-sm">
                 {{ item.content }}
                 <div>
-                  <Switch variant="success" size="medium" v-model="isEnableAutoResponder" />
+                  <Switch id="enable-telegram-switch" variant="success" size="medium" v-model="isEnableAutoResponder" />
                 </div>
               </div>
               <Button id="open-autoresponder-btn" intent="secondary" class="mt-4"

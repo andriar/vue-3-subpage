@@ -33,7 +33,7 @@
                     :width="24" :height="24" class="aspect-square rounded-full object-cover max-w-6 max-h-6" />
                   <span class="text-text-title overflow-hidden font-medium text-ellipsis whitespace-nowrap">{{
                     channel.name
-                    }}</span>
+                  }}</span>
                 </div>
               </td>
               <td class="border-stroke-regular cursor-pointer border-b px-6 py-4">
@@ -45,7 +45,7 @@
                 </div>
               </td>
               <td class="border-stroke-regular border-b px-6 py-4 text-right">
-                <Switch v-model="channel.isActive" size="small" variant="success" @click.stop
+                <Switch id="enable-channel-switch" v-model="channel.isActive" size="small" variant="success" @click.stop
                   @update:model-value="updateChannelStatus(channel.id, $event)" />
               </td>
             </tr>

@@ -429,7 +429,7 @@ onMounted(async () => {
               <div class="flex justify-between gap-8 text-sm text-text-subtitle">
                 <div v-html="item.content"></div>
                 <div>
-                  <Switch variant="success" :model-value="isEnableTelegram"
+                  <Switch id="enable-telegram-switch" variant="success" :model-value="isEnableTelegram"
                     @update:model-value="toggleTelegramIntegration" size="medium" />
                 </div>
               </div>
@@ -438,8 +438,8 @@ onMounted(async () => {
               <div class="flex justify-between gap-8 text-sm text-text-subtitle">
                 {{ item.content }}
                 <div>
-                  <Switch variant="success" size="medium" :modelValue="isEnableAutoResponder"
-                    @update:modelValue="toggleAutoResponder" />
+                  <Switch id="enable-autoresponder-switch" variant="success" size="medium"
+                    :modelValue="isEnableAutoResponder" @update:modelValue="toggleAutoResponder" />
                 </div>
               </div>
               <Button id="open-autoresponder-btn" intent="secondary" class="mt-4" @click="openAutoResponderForm">Set

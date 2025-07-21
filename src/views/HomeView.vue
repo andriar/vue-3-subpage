@@ -212,10 +212,10 @@ onMounted(() => {
     </div>
 
     <div class="mt-4 flex justify-center gap-4">
-      <Switch v-model="isChecked" variant="success" aria-label="Success switch" />
-      <Switch v-model="isChecked" variant="warning" aria-label="Warning switch" />
-      <Switch v-model="isChecked" variant="danger" aria-label="Danger switch" />
-      <Switch v-model="isChecked" variant="default" aria-label="Default switch" />
+      <Switch id="switch" v-model="isChecked" variant="success" aria-label="Success switch" />
+      <Switch id="switch" v-model="isChecked" variant="warning" aria-label="Warning switch" />
+      <Switch id="switch" v-model="isChecked" variant="danger" aria-label="Danger switch" />
+      <Switch id="switch" v-model="isChecked" variant="default" aria-label="Default switch" />
     </div>
 
     <div>

@@ -89,7 +89,7 @@ watch(
   <div class="flex flex-col lg:flex-row w-full items-start gap-8 self-stretch">
     <!-- Form Section -->
     <div class="flex w-full flex-1 flex-col gap-8">
-      <WidgetFormLayout label="Call to Action Button">
+      <WidgetFormLayout id="widget-form-layout" label="Call to Action Button">
         <template #additional-info> </template>
 
         <template #inputs>

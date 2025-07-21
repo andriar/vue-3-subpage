@@ -4,7 +4,7 @@
       <div class="flex justify-between gap-8">
         {{ item.content }}
         <div>
-          <Switch variant="success" size="medium" v-model="autoResponderEnabled" />
+          <Switch id="enable-autoresponder-switch" variant="success" size="medium" v-model="autoResponderEnabled" />
         </div>
       </div>
       <Button id="open-autoresponder-btn" intent="secondary" class="mt-4" @click="handleOpenAutoResponderForm">Set
@@ -15,7 +15,7 @@
       <div class="flex justify-between gap-8">
         <div v-html="item.content"></div>
         <div>
-          <Switch variant="success" v-model="enhanceSecurityEnabled" size="medium" />
+          <Switch id="enable-security-switch" variant="success" v-model="enhanceSecurityEnabled" size="medium" />
         </div>
       </div>
     </template>
