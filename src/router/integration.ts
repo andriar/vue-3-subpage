@@ -1,5 +1,8 @@
 import type { RouteRecordRaw } from 'vue-router';
 
+
+
+import { ROLES } from '@/utils/enum/roles';
 import ChannelView from '@/views/integration/ChannelView.vue';
 
 export const integrationRoutes: RouteRecordRaw[] = [
@@ -7,6 +10,10 @@ export const integrationRoutes: RouteRecordRaw[] = [
     path: '/',
     name: 'Home',
     component: ChannelView,
+    meta: {
+      requiresAuth: true,
+      roles: [ROLES.ADMIN],
+    },
   },
   {
     path: '/whatsapp',
@@ -17,6 +24,10 @@ export const integrationRoutes: RouteRecordRaw[] = [
         path: '',
         name: 'whatsapp-list',
         component: () => import('@/views/integration/whatsapp/WhatsappChannelView.vue'),
+        meta: {
+          requiresAuth: true,
+          roles: [ROLES.ADMIN],
+        },
       },
       // wip
       {
@@ -48,6 +59,10 @@ export const integrationRoutes: RouteRecordRaw[] = [
         path: '',
         name: 'instagram-list',
         component: import('@/views/integration/instagram/InstagramChannelView.vue'),
+        meta: {
+          requiresAuth: true,
+          roles: [ROLES.ADMIN],
+        },
       },
       {
         path: 'create',
@@ -78,6 +93,10 @@ export const integrationRoutes: RouteRecordRaw[] = [
         path: '',
         name: 'tiktok-list',
         component: () => import('@/views/integration/tiktok/TiktokChannelView.vue'),
+        meta: {
+          requiresAuth: true,
+          roles: [ROLES.ADMIN],
+        },
       },
       {
         path: 'create',
@@ -108,6 +127,10 @@ export const integrationRoutes: RouteRecordRaw[] = [
         path: '',
         name: 'facebook-list',
         component: () => import('@/views/integration/facebook/FbChannelView.vue'),
+        meta: {
+          requiresAuth: true,
+          roles: [ROLES.ADMIN],
+        },
       },
       {
         path: 'create',
@@ -138,6 +161,10 @@ export const integrationRoutes: RouteRecordRaw[] = [
         path: '',
         name: 'line-list',
         component: () => import('@/views/integration/line/LineChannelView.vue'),
+        meta: {
+          requiresAuth: true,
+          roles: [ROLES.ADMIN],
+        },
       },
       {
         path: 'create',
@@ -168,11 +195,19 @@ export const integrationRoutes: RouteRecordRaw[] = [
         path: '',
         name: 'telegram-detail',
         component: () => import('@/views/integration/telegram/TelegramView.vue'),
+        meta: {
+          requiresAuth: true,
+          roles: [ROLES.ADMIN],
+        },
       },
       {
         path: 'create',
         name: 'telegram-create',
         component: () => import('@/views/integration/telegram/TelegramCreateChannelView.vue'),
+        meta: {
+          requiresAuth: true,
+          roles: [ROLES.ADMIN],
+        },
       },
     ],
   },
@@ -185,17 +220,29 @@ export const integrationRoutes: RouteRecordRaw[] = [
         path: '',
         name: 'qiscus-list',
         component: () => import('@/views/integration/widget/WidgetChannelView.vue'),
+        meta: {
+          requiresAuth: true,
+          roles: [ROLES.ADMIN],
+        },
       },
       {
         path: ':id',
         name: 'qiscus-detail',
         component: () => import('@/views/integration/widget/WidgetDetailView.vue'),
         props: true,
+        meta: {
+          requiresAuth: true,
+          roles: [ROLES.ADMIN],
+        },
       },
       {
         path: 'create',
         name: 'qiscus-create',
         component: () => import('@/views/integration/widget/WidgetCreateChannelView.vue'),
+        meta: {
+          requiresAuth: true,
+          roles: [ROLES.ADMIN],
+        },
       },
     ],
   },
@@ -208,6 +255,10 @@ export const integrationRoutes: RouteRecordRaw[] = [
         path: '',
         name: 'custom_channel-list',
         component: () => import('@/views/integration/custom-channel/CustomChannelView.vue'),
+        meta: {
+          requiresAuth: true,
+          roles: [ROLES.ADMIN],
+        },
       },
       {
         path: 'create',
@@ -233,6 +284,10 @@ export const integrationRoutes: RouteRecordRaw[] = [
     path: '/bot-integration',
     name: 'bot-integration',
     component: () => import('@/views/integration/bot/BotView.vue'),
+    meta: {
+      requiresAuth: true,
+      roles: [ROLES.ADMIN],
+    },
   },
 ];
 

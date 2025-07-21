@@ -83,7 +83,7 @@ export const createAxiosInstance = (
             localStorage.removeItem('auth_token');
             const appConfigStore = useAppConfigStore();
             appConfigStore.clearConfig();
-            // You can add router navigation here if needed
+            window.location.href = '/redirect-logout';
             break;
           case 403:
             // Forbidden
