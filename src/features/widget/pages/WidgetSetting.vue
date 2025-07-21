@@ -7,7 +7,9 @@
           <Switch variant="success" size="medium" v-model="autoResponderEnabled" />
         </div>
       </div>
-      <Button intent="secondary" class="mt-4" @click="handleOpenAutoResponderForm">Set Channel Auto Responder</Button>
+      <Button id="open-autoresponder-btn" intent="secondary" class="mt-4" @click="handleOpenAutoResponderForm">Set
+        Channel
+        Auto Responder</Button>
     </template>
     <template #item-id-2="{ item }">
       <div class="flex justify-between gap-8">

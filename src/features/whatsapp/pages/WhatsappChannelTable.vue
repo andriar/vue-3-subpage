@@ -6,8 +6,8 @@
           <SearchIcon :size="24" />
         </template>
       </InputCustom>
-      <Button @click="handleNewIntegration" variant="primary" class="flex items-center gap-2 w-fit" size="small"
-        no-animation>
+      <Button id="new-integration" @click="handleNewIntegration" variant="primary" class="flex items-center gap-2 w-fit"
+        size="small" no-animation>
         <PlusIcon :size="24" />
         New Integration
       </Button>
@@ -33,7 +33,7 @@
                     :width="24" :height="24" class="aspect-square rounded-full object-cover max-w-6 max-h-6" />
                   <span class="text-text-title overflow-hidden font-medium text-ellipsis whitespace-nowrap">{{
                     channel.name
-                    }}</span>
+                  }}</span>
                 </div>
               </td>
               <td class="border-stroke-regular cursor-pointer border-b px-6 py-4">

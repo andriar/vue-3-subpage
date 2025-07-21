@@ -145,7 +145,8 @@ onMounted(async () => {
       <div
         class="bg-white-100 sticky top-0 z-50 flex w-full items-center justify-between rounded-t-2xl border-b-[1px] border-gray-300 p-4 gap-2">
         <RoundedTab :tabs="tabs" v-model="activeTab" />
-        <Button class="min-w-max" @click="saveAndPreview" :loading="isLoading" :disabled="isLoading">
+        <Button id="save-preview-btn" class="min-w-max" @click="saveAndPreview" :loading="isLoading"
+          :disabled="isLoading">
           Save & Preview
         </Button>
       </div>

@@ -78,19 +78,12 @@ onUnmounted(() => {
 
 <template>
   <div class="w-full">
-    <div
-      class="border-stroke-regular bg-surface-secondary flex w-full flex-col gap-y-4 rounded-lg border p-6"
-    >
+    <div class="border-stroke-regular bg-surface-secondary flex w-full flex-col gap-y-4 rounded-lg border p-6">
       <!-- header channel list -->
       <div class="flex w-full items-center justify-between">
         <h4 class="text-text-title text-base font-semibold">Another Channel</h4>
-        <Button
-          intent="flat"
-          size="small"
-          class="text-text-primary gap-2 !px-0"
-          @click="isModalOpen = true"
-          disableAnimation
-        >
+        <Button id="add-more-channel-btn" intent="flat" size="small" class="text-text-primary gap-2 !px-0"
+          @click="isModalOpen = true" disableAnimation>
           <Icon name="plus" :size="18" class="" />
           <span class="text-xs font-semibold"> Add More Channel </span>
         </Button>
@@ -99,28 +92,14 @@ onUnmounted(() => {
       <Divider v-if="qiscusLiveChatStore.channelList.length > 0" />
 
       <!-- channel list -->
-      <div
-        v-if="qiscusLiveChatStore.channelList.length > 0"
-        class="flex flex-col items-start gap-6"
-      >
-        <div
-          v-for="channel in qiscusLiveChatStore.channelList"
-          :key="channel.id"
-          class="flex w-full items-center gap-4"
-        >
+      <div v-if="qiscusLiveChatStore.channelList.length > 0" class="flex flex-col items-start gap-6">
+        <div v-for="channel in qiscusLiveChatStore.channelList" :key="channel.id"
+          class="flex w-full items-center gap-4">
           <div class="flex w-full items-center gap-4">
             <!-- Icon & Name -->
             <div class="flex flex-1 items-center gap-3">
-              <img
-                v-if="channel.icon"
-                :src="
-                  channel.icon || CHANNEL_BADGE_URL[channel.icon as keyof typeof CHANNEL_BADGE_URL]
-                "
-                alt=""
-                class="h-6 w-6"
-                width="24"
-                height="24"
-              />
+              <img v-if="channel.icon" :src="channel.icon || CHANNEL_BADGE_URL[channel.icon as keyof typeof CHANNEL_BADGE_URL]
+                " alt="" class="h-6 w-6" width="24" height="24" />
               <ChatIcon :size="24" v-else />
               <h4 class="text-text-title text-sm font-medium">{{ channel.name }}</h4>
             </div>
@@ -137,9 +116,5 @@ onUnmounted(() => {
   </div>
 
   <!-- Modal Add Channel -->
-  <ModalChannelList
-    :isOpen="isModalOpen"
-    v-model="editingChannelData"
-    @close="isModalOpen = false"
-  />
+  <ModalChannelList :isOpen="isModalOpen" v-model="editingChannelData" @close="isModalOpen = false" />
 </template>

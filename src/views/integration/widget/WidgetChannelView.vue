@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col gap-8 px-12 py-8">
-    <router-link to="/" class="text-primary flex items-center gap-2 font-semibold">
+    <router-link to="/" id="route-integration" class="text-primary flex items-center gap-2 font-semibold">
       <BackIcon :size="20" class="text-primary" />
       Integration
     </router-link>

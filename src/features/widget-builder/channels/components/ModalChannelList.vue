@@ -133,8 +133,8 @@ watch(
       </div>
     </template>
     <template #footer>
-      <Button intent="secondary" size="small" @click="closeModal">Cancel</Button>
-      <Button :disabled="!isFormValid" intent="primary" size="small" @click="handleAddChannel">
+      <Button id="modal-close-btn" intent="secondary" size="small" @click="closeModal">Cancel</Button>
+      <Button id="modal-submit-btn" :disabled="!isFormValid" intent="primary" size="small" @click="handleAddChannel">
         {{ modelValue ? 'Update Channel' : 'Add Channel' }}
       </Button>
     </template>

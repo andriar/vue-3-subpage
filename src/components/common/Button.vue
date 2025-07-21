@@ -10,7 +10,7 @@ interface ButtonProps {
   to?: string;
   type?: 'button' | 'submit' | 'reset';
   disableAnimation?: boolean;
-  id?: string;
+  id: string;
 }
 
 const props = withDefaults(defineProps<ButtonProps>(), {

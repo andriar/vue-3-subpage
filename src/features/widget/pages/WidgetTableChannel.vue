@@ -7,7 +7,8 @@
         </template>
       </InputCustom>
 
-      <Button to="/qiscus/create" variant="primary" class="flex items-center gap-2 w-fit" size="small" no-animation>
+      <Button id="new-integration-btn" to="/qiscus/create" variant="primary" class="flex items-center gap-2 w-fit"
+        size="small" no-animation>
         <PlusIcon :size="24" />
         New Integration
       </Button>
@@ -33,7 +34,7 @@
                     class="aspect-square rounded-full object-cover" :fallback-src="CHANNEL_BADGE_URL.qiscus" />
                   <span class="text-text-title overflow-hidden font-medium text-ellipsis whitespace-nowrap">{{
                     channel.name
-                    }}</span>
+                  }}</span>
                 </div>
               </td>
 

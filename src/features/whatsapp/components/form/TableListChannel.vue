@@ -8,7 +8,8 @@
         </template>
       </InputCustom>
 
-      <Button to="/whatsapp/create" variant="primary" class="flex items-center gap-2" size="small" no-animation>
+      <Button id="new-integration-btn" to="/whatsapp/create" variant="primary" class="flex items-center gap-2"
+        size="small" no-animation>
         <Icon name="plus" :size="16" />
         New Integration
       </Button>

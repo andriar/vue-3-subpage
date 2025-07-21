@@ -33,8 +33,8 @@
       </div>
     </div>
     <div class="flex justify-end gap-4">
-      <Button intent="secondary" @click="router.push('/qiscus')">Back</Button>
-      <Button type="submit" :disabled="isDisabled">Save</Button>
+      <Button id="back-btn" intent="secondary" @click="router.push('/qiscus')">Back</Button>
+      <Button id="submit-btn" type="submit" :disabled="isDisabled">Save</Button>
     </div>
   </form>
 </template>

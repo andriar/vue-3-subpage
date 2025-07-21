@@ -393,12 +393,13 @@ onMounted(async () => {
 <template>
   <div class="flex flex-col gap-8 px-12 py-8">
     <div class="flex items-center justify-between">
-      <router-link to="/" replace class="text-primary flex items-center gap-2 font-semibold">
+      <router-link to="/" id="route-integration" replace class="text-primary flex items-center gap-2 font-semibold">
         <BackIcon :size="20" />
         Integration
       </router-link>
 
-      <router-link to="/" replace class="text-primary flex items-center gap-2 font-semibold">
+      <router-link to="/" id="route-back-integration" replace
+        class="text-primary flex items-center gap-2 font-semibold">
         <HomeIcon :size="20" />
         Integration
       </router-link>
@@ -441,7 +442,8 @@ onMounted(async () => {
                     @update:modelValue="toggleAutoResponder" />
                 </div>
               </div>
-              <Button intent="secondary" class="mt-4" @click="openAutoResponderForm">Set Channel Auto Responder</Button>
+              <Button id="open-autoresponder-btn" intent="secondary" class="mt-4" @click="openAutoResponderForm">Set
+                Channel Auto Responder</Button>
             </template>
           </CollapsibleGroup>
         </template>
@@ -451,14 +453,16 @@ onMounted(async () => {
             <CreateTelegramForm v-model="channel" />
 
             <div v-if="isUserCreateChannel" class="flex justify-end gap-4">
-              <Button type="submit" @click="handleCreateChannel"
+              <Button id="next-btn" type="submit" @click="handleCreateChannel"
                 :disabled="createTelegramLoading || !channel.token">Next</Button>
             </div>
 
             <div v-else class="flex justify-between">
-              <Button intent="danger" @click="handleDeleteChannel" :disabled="deleteTelegramLoading">Delete
+              <Button id="delete-btn" intent="danger" @click="handleDeleteChannel"
+                :disabled="deleteTelegramLoading">Delete
                 Channel</Button>
-              <Button type="submit" @click="handleUpdateChannel" :disabled="updateTelegramLoading">Save Changes</Button>
+              <Button id="submit-btn" type="submit" @click="handleUpdateChannel" :disabled="updateTelegramLoading">Save
+                Changes</Button>
             </div>
           </form>
         </template>
@@ -468,8 +472,9 @@ onMounted(async () => {
         <AutoResponderForm v-model="configs" :is-bot="isBot" />
 
         <div class="mt-8 flex justify-end gap-4">
-          <Button intent="secondary" @click="closeAutoResponderForm">Back</Button>
-          <Button type="submit" @click="isUserCreateChannel ? createTelegramChannel() : handleUpdateAutoResponder()"
+          <Button id="close-autoresponder-btn" intent="secondary" @click="closeAutoResponderForm">Back</Button>
+          <Button id="submit-autoresponder-btn" type="submit"
+            @click="isUserCreateChannel ? createTelegramChannel() : handleUpdateAutoResponder()"
             :disabled="isConfigEmpty || createTelegramLoading || updateConfigLoading">
             Save Changes
           </Button>

@@ -164,12 +164,13 @@ onMounted(async () => {
 <template>
   <div class="flex flex-col gap-8 px-12 py-8">
     <div class="flex items-center justify-between">
-      <router-link to="/" replace class="text-primary flex items-center gap-2 font-semibold">
+      <router-link to="/" id="route-integration" replace class="text-primary flex items-center gap-2 font-semibold">
         <BackIcon :size="20" />
         Integration
       </router-link>
 
-      <router-link to="/" replace class="text-primary flex items-center gap-2 font-semibold">
+      <router-link to="/" id="route-back-integration" replace
+        class="text-primary flex items-center gap-2 font-semibold">
         <HomeIcon :size="20" />
         Integration
       </router-link>
@@ -288,7 +289,7 @@ onMounted(async () => {
           </div>
 
           <div class="flex justify-end gap-4">
-            <Button type="submit" :disabled="integrateLoading">Connect</Button>
+            <Button id="connect-btn" type="submit" :disabled="integrateLoading">Connect</Button>
           </div>
         </form>
       </transition>
