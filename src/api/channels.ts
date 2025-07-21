@@ -1,3 +1,5 @@
+import type { AxiosRequestConfig } from 'axios';
+
 import type { IParams } from '@/types/api';
 import type { ICreateQiscusChannel, IUpdateTelegramChannel } from '@/types/channels';
 
@@ -70,7 +72,7 @@ export const configApi = {
 };
 
 export const botApi = {
-  get: () => apiV1.get<any[]>('/app/bot'),
+  get: (config?: AxiosRequestConfig) => apiV1.get<any[]>('/app/bot', config),
   changeStatus: (params: any) => apiV1.post<any[]>('/app/bot/activation', { params }),
   integrate: (data: { bot_webhook_url: string; is_bot_enabled: boolean }) =>
     postFormData<any[]>(apiV1, '/app/bot/integrate', data),

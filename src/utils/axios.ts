@@ -1,3 +1,4 @@
+// services/axios/index.ts (modifications)
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import axios from 'axios';
 
@@ -68,6 +69,14 @@ export const createAxiosInstance = (
     },
     (error) => {
       // Handle common errors
+      if (axios.isCancel(error)) {
+        // This is a cancellation error, do not treat as a regular API error
+        if (import.meta.env.DEV) {
+          console.warn('Request was cancelled:', error.message);
+        }
+        return Promise.reject(error); // Re-throw so the calling code can catch it
+      }
+
       if (error.response) {
         const { status, data } = error.response;
 
@@ -79,7 +88,6 @@ export const createAxiosInstance = (
         // Handle specific status codes
         switch (status) {
           case 401:
-            // Unauthorized - clear both localStorage and Pinia store
             localStorage.removeItem('auth_token');
             const appConfigStore = useAppConfigStore();
             appConfigStore.clearConfig();
@@ -99,10 +107,10 @@ export const createAxiosInstance = (
             break;
         }
       } else if (error.request) {
-        // Network error
+        // Network error (no response received)
         console.error('Network error:', error.request);
       } else {
-        // Other error
+        // Other error (e.g., error in setting up request)
         console.error('Error:', error.message);
       }
 
@@ -123,7 +131,7 @@ export default apiV1;
 
 // Type definitions for API responses
 export interface ApiResponse<T = any> {
-  data: T;
+  data: T | null; // Data can be null if success is false
   message?: string;
   success: boolean;
   error?: string;
@@ -142,10 +150,24 @@ export const apiCall = async <T>(
       message: response.data?.message,
     };
   } catch (error: any) {
+    // Check if it's an Axios cancellation error
+    if (axios.isCancel(error)) {
+      if (import.meta.env.DEV) {
+        console.warn('API call cancelled:', error.message);
+      }
+      // Re-throw the error so the consumer knows it was cancelled,
+      // but return an APIResponse with success: false
+      return {
+        data: null,
+        success: false,
+        error: 'Request cancelled',
+      };
+    }
+
     return {
-      data: null as T,
+      data: null,
       success: false,
-      error: error.response?.data?.message || error.message,
+      error: error.response?.data?.message || error.message || 'An unknown error occurred',
     };
   }
 };
@@ -163,12 +185,14 @@ export const createFormData = (data: Record<string, any>): URLSearchParams => {
 export const postFormData = <T>(
   instance: AxiosInstance,
   url: string,
-  data: Record<string, any>
+  data: Record<string, any>,
+  config?: AxiosRequestConfig // Add config to allow passing signal
 ): Promise<AxiosResponse<T>> => {
   const formData = createFormData(data);
   return instance.post<T>(url, formData, {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
+    ...config, // Spread the config here
   });
 };
