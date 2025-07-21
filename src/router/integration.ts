@@ -244,6 +244,12 @@ export const integrationRoutes: RouteRecordRaw[] = [
           roles: [ROLES.ADMIN],
         },
       },
+      {
+        path: ':id/preview',
+        name: 'qiscus-widget-preview',
+        component: () => import('@/features/widget-builder/pages/WidgetPreview.vue'),
+        props: false,
+      },
     ],
   },
   {
