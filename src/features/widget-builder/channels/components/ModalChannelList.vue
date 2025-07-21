@@ -162,7 +162,7 @@ watch(
     <template #footer>
       <Button intent="secondary" size="small" @click="closeModal">Cancel</Button>
       <Button :disabled="!isFormValid" intent="primary" size="small" @click="handleAddChannel">
-        {{ modelValue ? 'Update Channel' : 'Add Channel' }}
+        {{ modelValue ? 'Edit Channel' : 'Add Channel' }}
       </Button>
     </template>
   </Modal>
