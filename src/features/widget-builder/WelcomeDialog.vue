@@ -157,8 +157,8 @@ watch(
           </ImageInput>
           <Input id="action-welcome" v-model="welcomeDialogState.actionDescriptionWelcomeDialog" label="Description"
             :maxlength="50" />
-          <InputCustom v-model="welcomeDialogState.welcomeTimeout" label="Appear Delay" :maxlength="50" type="number"
-            placeholder="0">
+          <InputCustom id="webhook-url-input" v-model="welcomeDialogState.welcomeTimeout" label="Appear Delay"
+            :maxlength="50" type="number" placeholder="0">
             <template #append-button>
               <div class="text-text-title text-sm font-medium">Seconds</div>
             </template>

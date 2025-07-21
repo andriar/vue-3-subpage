@@ -8,7 +8,7 @@ const props = defineProps<{
   label: string;
   modelValue?: boolean;
   isSwitch?: boolean;
-  id?: string;
+  id: string;
 }>();
 
 const emit = defineEmits<{
@@ -22,9 +22,7 @@ const modelValue = computed({
 </script>
 
 <template>
-  <div
-    class="border-stroke-regular bg-surface-secondary flex w-full flex-1 flex-col gap-4 rounded-lg border p-6"
-  >
+  <div class="border-stroke-regular bg-surface-secondary flex w-full flex-1 flex-col gap-4 rounded-lg border p-6">
     <!-- Header Section -->
     <div class="flex w-full items-center justify-between gap-2">
       <label class="text-text-title text-base font-semibold">{{ label }}</label>

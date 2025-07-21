@@ -96,12 +96,13 @@ onMounted(() => {
 <template>
   <div class="flex flex-col gap-8 px-12 py-8">
     <div class="flex items-center justify-between">
-      <router-link to="/" replace class="text-primary flex items-center gap-2 font-semibold">
+      <router-link to="/" id="route-integration" replace class="text-primary flex items-center gap-2 font-semibold">
         <BackIcon :size="20" />
         Integration
       </router-link>
 
-      <router-link to="/" replace class="text-primary flex items-center gap-2 font-semibold">
+      <router-link to="/" id="route-back-integration" replace
+        class="text-primary flex items-center gap-2 font-semibold">
         <HomeIcon :size="20" />
         Integration
       </router-link>
@@ -132,7 +133,7 @@ onMounted(() => {
               <div class="flex justify-between gap-8 text-text-subtitle text-sm">
                 <div v-html="item.content"></div>
                 <div>
-                  <Switch variant="success" v-model="isEnableTelegram" size="medium" />
+                  <Switch id="enable-channel-switch" variant="success" v-model="isEnableTelegram" size="medium" />
                 </div>
               </div>
             </template>
@@ -140,10 +141,11 @@ onMounted(() => {
               <div class="flex justify-between gap-8 text-text-subtitle text-sm">
                 {{ item.content }}
                 <div>
-                  <Switch variant="success" size="medium" v-model="isEnableAutoResponder" />
+                  <Switch id="enable-telegram-switch" variant="success" size="medium" v-model="isEnableAutoResponder" />
                 </div>
               </div>
-              <Button intent="secondary" class="mt-4" @click="handleOpenAutoResponderForm">Set Channel Auto
+              <Button id="open-autoresponder-btn" intent="secondary" class="mt-4"
+                @click="handleOpenAutoResponderForm">Set Channel Auto
                 Responder</Button>
             </template>
           </CollapsibleGroup>
@@ -156,12 +158,12 @@ onMounted(() => {
 
             <div class="mt-8 flex justify-end gap-4">
               <!-- <Button intent="secondary" to="/" replace>Back</Button> -->
-              <Button type="submit">Next</Button>
+              <Button id="next-btn" type="submit">Next</Button>
             </div>
 
             <div class="mt-8 flex justify-between">
-              <Button intent="danger">Delete Channel</Button>
-              <Button type="submit">Save Changes</Button>
+              <Button id="delete-btn" intent="danger">Delete Channel</Button>
+              <Button id="submit-btn" type="submit">Save Changes</Button>
             </div>
           </form>
         </template>
@@ -172,8 +174,8 @@ onMounted(() => {
         <AutoResponderForm v-model="configs" :is-bot="isBot" />
 
         <div class="mt-8 flex justify-end gap-4">
-          <Button intent="secondary" @click="handleCancelAutoResponder">Back</Button>
-          <Button type="submit">Save Changes</Button>
+          <Button id="cancel-autoresponder-btn" intent="secondary" @click="handleCancelAutoResponder">Back</Button>
+          <Button id="submit-autoresponder-btn" type="submit">Save Changes</Button>
         </div>
       </form>
     </div>

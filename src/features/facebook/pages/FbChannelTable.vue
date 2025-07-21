@@ -1,13 +1,14 @@
 <template>
   <div class="flex h-full w-full flex-col">
     <div class="flex flex-col md:flex-row gap-2 md:items-center md:justify-between p-4">
-      <InputCustom v-model="searchQuery" placeholder="Search channel name" class="md:min-w-[340px]" clearable>
+      <InputCustom id="search-input" v-model="searchQuery" placeholder="Search channel name" class="md:min-w-[340px]"
+        clearable>
         <template #suffix-icon>
           <SearchIcon :size="24" />
         </template>
       </InputCustom>
-      <Button @click="handleNewIntegration" variant="primary" class="flex items-center gap-2 w-fit" size="small"
-        no-animation>
+      <Button id="new-integration-btn" @click="handleNewIntegration" variant="primary"
+        class="flex items-center gap-2 w-fit" size="small" no-animation>
         <PlusIcon :size="24" />
         New Integration
       </Button>
@@ -32,7 +33,7 @@
                     :width="24" :height="24" class="aspect-square rounded-full object-cover max-w-6 max-h-6" />
                   <span class="text-text-title overflow-hidden font-medium text-ellipsis whitespace-nowrap">{{
                     channel.name
-                  }}</span>
+                    }}</span>
                 </div>
               </td>
               <td class="border-stroke-regular cursor-pointer border-b px-6 py-4">
@@ -44,7 +45,7 @@
                 </div>
               </td>
               <td class="border-stroke-regular border-b px-6 py-4 text-right">
-                <Switch v-model="channel.isActive" size="small" variant="success" @click.stop
+                <Switch id="enable-channel-switch" v-model="channel.isActive" size="small" variant="success" @click.stop
                   @update:model-value="updateChannelStatus(channel.id, $event)" />
               </td>
             </tr>
