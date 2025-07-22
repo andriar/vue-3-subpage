@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="update" class="flex flex-col gap-8">
+  <form id="widget-overview-form" @submit.prevent="update" class="flex flex-col gap-8">
     <!-- Banner documentation -->
     <QiscusBannerDoc />
     <div

@@ -124,18 +124,12 @@ function handleCancelAutoResponder() {
     <div class="mx-auto flex w-11/12 flex-col gap-8">
       <!-- Header -->
       <div class="flex items-center gap-3">
-        <Image
-          :src="CHANNEL_BADGE_URL.qiscus"
-          alt="Qiscus Logo"
-          class="h-6 w-6"
-          :width="24"
-          :height="24"
-        />
+        <Image :src="CHANNEL_BADGE_URL.qiscus" alt="Qiscus Logo" class="h-6 w-6" :width="24" :height="24" />
         <h2 class="text-black-700 text-xl font-semibold">New Integration - Qiscus Live Chat</h2>
       </div>
 
       <!-- Form section -->
-      <form @submit.prevent="confirmSubmit" v-if="!isAutoresponderFormOpen">
+      <form id="create-widget-form" @submit.prevent="confirmSubmit" v-if="!isAutoresponderFormOpen">
         <CreateWidgetForm v-model="channel" />
 
         <div class="mt-8 flex justify-end gap-4">
@@ -144,7 +138,7 @@ function handleCancelAutoResponder() {
         </div>
       </form>
 
-      <form @submit.prevent="handleSubmit" v-if="isAutoresponderFormOpen">
+      <form id="auto-responder-form" @submit.prevent="handleSubmit" v-if="isAutoresponderFormOpen">
         <AutoResponderForm v-model="channel.configs" :is-bot="isBot" />
 
         <div class="mt-8 flex justify-end gap-4">
