@@ -13,14 +13,19 @@
         :disabled="disabled"
         @blur="handleBlur"
       >
-        <span class="block truncate text-left">
+        <span
+          :class="[
+            selectedOption?.text ? 'text-text-title font-medium' : 'text-text-placeholder',
+            'block truncate text-left',
+          ]"
+        >
           {{ selectedOption?.text || placeholder }}
         </span>
         <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
           <ChevronDownIcon
             :class="
               [
-                'h-5 w-5 text-gray-400 transition-transform duration-200',
+                'text-icon-black h-5 w-5 transition-transform duration-200',
                 isOpen ? 'rotate-180' : '',
               ].join(' ')
             "
@@ -39,13 +44,13 @@
       >
         <div
           v-if="isOpen"
-          class="bg-surface-primary-white shadow-small absolute z-[1999] mt-1 max-h-60 w-full overflow-auto rounded-lg p-3"
+          class="bg-surface-primary-white shadow-small absolute z-[999] mt-1 max-h-60 w-full overflow-auto rounded-lg p-3"
         >
           <div
             v-for="option in options"
             :key="option.value"
             @click="selectOption(option)"
-            class="relative cursor-pointer py-2 pr-9 pl-3 select-none hover:bg-gray-50"
+            class="flex cursor-pointer items-center justify-between px-3 py-2 select-none hover:bg-gray-50"
           >
             <span
               :class="[
@@ -57,10 +62,7 @@
             </span>
 
             <!-- Check icon for selected option -->
-            <span
-              v-if="selectedValue === option.value"
-              class="text-icon-green absolute inset-y-0 right-0 flex items-center pr-4"
-            >
+            <span v-if="selectedValue === option.value" class="text-icon-green flex items-center">
               <CheckIcon class="h-5 w-5" />
             </span>
           </div>
@@ -162,7 +164,7 @@ const handleBlur = async () => {
 // CVA classes for styling
 const containerClasses = cva('mb-4');
 
-const labelClasses = cva('block text-sm font-medium text-gray-700 mb-1 rounded-md', {
+const labelClasses = cva('block text-sm font-normal text-text-subtitle mb-2 rounded-md ', {
   variants: {
     disabled: {
       true: 'opacity-60 cursor-not-allowed',
@@ -175,7 +177,7 @@ const selectWrapperClasses = cva('relative', {
 });
 
 const selectClasses = cva(
-  'relative w-full cursor-default rounded-md border py-3 pl-3 pr-10 text-left shadow-sm focus:outline-none focus:ring-1 sm:text-sm',
+  ' w-full cursor-default rounded-md border py-3 pl-3 pr-10 text-left shadow-sm focus:outline-none focus:ring-1 sm:text-sm',
   {
     variants: {
       disabled: {

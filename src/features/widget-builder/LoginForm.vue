@@ -234,6 +234,12 @@ const uploadImage = async (file: File) => {
             If you use phone number to login, we won't be able to send chat history and notes to the
             customer's email after the room is resolved.
           </Banner>
+          <Select
+            id="field-type"
+            label="Field Type"
+            :options="qiscusLiveChatStore.fieldTypeOptionsAdditionalField"
+            v-model="additionalField.type"
+          />
         </template>
       </WidgetFormLayout>
 
@@ -305,13 +311,15 @@ const uploadImage = async (file: File) => {
       {{ isEditMode ? 'Edit Additional Field' : 'Add Additional Field' }}
     </template>
     <template #content>
-      <div class="mb-9 flex flex-col gap-2">
-        <Select
-          id="field-type"
-          label="Field Type"
-          :options="qiscusLiveChatStore.fieldTypeOptionsAdditionalField"
-          v-model="additionalField.type"
-        />
+      <div class="mb-9 flex flex-col gap-2 overflow-visible">
+        <div class="modal-select-dropdown relative z-[10001]">
+          <Select
+            id="field-type"
+            label="Field Type"
+            :options="qiscusLiveChatStore.fieldTypeOptionsAdditionalField"
+            v-model="additionalField.type"
+          />
+        </div>
         <div v-if="additionalField.type !== ''" class="flex flex-col gap-6">
           <Input
             id="name-field"
@@ -359,3 +367,9 @@ const uploadImage = async (file: File) => {
     </template>
   </Modal>
 </template>
+
+<style>
+.modal-select-dropdown [class*='absolute'][class*='z-[999]'] {
+  @apply fixed z-[10002] w-[400px];
+}
+</style>
