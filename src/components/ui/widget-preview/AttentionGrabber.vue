@@ -31,22 +31,26 @@ const finalImageUrl = computed(() => {
   >
     <div
       v-if="isImageEnable"
-      class="bg-surface-disable grid h-[208px] max-h-[208px] min-h-[208px] w-full flex-1 place-items-center"
+      class="bg-surface-disable relative grid h-[208px] max-h-[208px] min-h-[208px] w-full flex-1 place-items-center"
     >
-      <ButtonIcon v-show="imageUrl" class="absolute top-4 right-4 text-white">
+      <ButtonIcon v-show="imageUrl" class="absolute top-4 right-4 z-10 text-white">
         <CloseIcon />
       </ButtonIcon>
-      <img :src="finalImageUrl" alt="image attention grabber" class="h-full w-full object-cover" />
+      <img
+        :src="finalImageUrl"
+        alt="image attention grabber"
+        class="absolute h-full w-full object-cover"
+      />
     </div>
-    <div v-if="isTextEnable" class="p-6 text-left break-words">
+    <div v-if="isTextEnable" class="relative p-6 text-left">
       <ButtonIcon
         v-if="!isImageEnable"
         v-show="imageUrl"
-        class="text-text-title absolute top-4 right-4"
+        class="text-text-title absolute top-4 right-4 z-10"
       >
         <CloseIcon />
       </ButtonIcon>
-      <p class="w-9/10 break-words">
+      <p class="word-wrap pr-12 break-words">
         {{ title }}
       </p>
     </div>
