@@ -38,7 +38,7 @@ const normalizeChannelData = (channels: OtherChannel[]): NormalizedOtherChannel[
     // If channel has valid ID, return as-is (it's already properly structured)
     return {
       ...channel,
-      id: channel.id, // TypeScript sekarang tahu ini pasti number
+      id: channel.id,
     };
   });
 };
