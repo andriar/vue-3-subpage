@@ -5,18 +5,12 @@ import { computed } from 'vue';
 import ChannelList from '@/components/ui/widget-preview/ChannelList.vue';
 import ChannelListLoading from '@/components/ui/widget-preview/ChannelListLoading.vue';
 import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
-import { CHANNEL_BADGE_URL } from '@/utils/constant/channels';
 
 const qiscusLiveChatStore = useQiscusLiveChatStore();
 const { channelState } = storeToRefs(qiscusLiveChatStore);
 
 const channelPreviewData = computed(() => {
-  return qiscusLiveChatStore.channelList
-    .filter((channel) => channel.enabled)
-    .map((channel) => ({
-      label: channel.name,
-      iconUrl: channel.icon || CHANNEL_BADGE_URL[channel.icon as keyof typeof CHANNEL_BADGE_URL],
-    }));
+  return qiscusLiveChatStore.channelList.filter((channel) => channel.is_enable);
 });
 </script>
 

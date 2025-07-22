@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 
 import { MoreIcon } from '@/components/icons';
 
@@ -15,23 +15,41 @@ interface Props {
   options: DropdownOption[];
   iconSize?: number;
   position?: 'left' | 'right';
+  isOpen?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   iconSize: 24,
   position: 'right',
+  isOpen: false,
 });
 
 const emit = defineEmits<{
   (e: 'select', option: DropdownOption): void;
+  (e: 'toggle', isOpen: boolean): void;
+  (e: 'open'): void;
 }>();
 
-const isOpen = ref(false);
+const internalIsOpen = ref(props.isOpen);
 const dropdownRef = ref<HTMLElement>();
+
+// Watch for external isOpen changes
+watch(
+  () => props.isOpen,
+  (newValue) => {
+    internalIsOpen.value = newValue;
+  }
+);
 
 const toggleDropdown = (event: Event) => {
   event.stopPropagation();
-  isOpen.value = !isOpen.value;
+
+  if (!internalIsOpen.value) {
+    emit('open'); // Notify parent that this dropdown wants to open
+  }
+
+  internalIsOpen.value = !internalIsOpen.value;
+  emit('toggle', internalIsOpen.value);
 };
 
 const selectOption = (option: DropdownOption) => {
@@ -39,11 +57,13 @@ const selectOption = (option: DropdownOption) => {
     option.action();
   }
   emit('select', option);
-  isOpen.value = false;
+  internalIsOpen.value = false;
+  emit('toggle', false);
 };
 
 const closeDropdown = () => {
-  isOpen.value = false;
+  internalIsOpen.value = false;
+  emit('toggle', false);
 };
 
 const handleClickOutside = (event: Event) => {
@@ -87,7 +107,7 @@ const positionClasses = {
       leave-to-class="transform opacity-0 scale-95"
     >
       <div
-        v-if="isOpen"
+        v-if="internalIsOpen"
         :class="[
           'absolute -top-10 z-50 min-w-40 rounded-lg border border-gray-300 bg-white py-1 shadow-lg',
           positionClasses[props.position],

@@ -6,7 +6,11 @@
         Qiscus Live Chat List
       </router-link>
 
-      <router-link to="/" id="route-integration" class="text-primary flex items-center gap-2 font-semibold">
+      <router-link
+        to="/"
+        id="route-integration"
+        class="text-primary flex items-center gap-2 font-semibold"
+      >
         <HomeIcon :size="20" />
         Integration
       </router-link>
@@ -14,7 +18,13 @@
 
     <div class="mx-auto flex w-11/12 flex-col gap-8">
       <div class="flex items-center gap-3">
-        <Image :src="CHANNEL_BADGE_URL.qiscus" alt="Qiscus Logo" class="h-6 w-6" :width="24" :height="24" />
+        <Image
+          :src="CHANNEL_BADGE_URL.qiscus"
+          alt="Qiscus Logo"
+          class="h-6 w-6"
+          :width="24"
+          :height="24"
+        />
 
         <h2 class="text-text-title text-xl font-semibold">Qiscus Live Chat</h2>
       </div>
@@ -22,15 +32,22 @@
       <div v-if="!isAutoresponderFormOpen" class="flex flex-col gap-8">
         <MainTab :tabs="tabLabels" v-model="activeTab" />
         <!-- Dynamic component rendering -->
-        <component :channel-id="props.id" :is="currentTabComponent" v-if="currentTabComponent" v-model="settingData"
-          @open-auto-responder-form="handleOpenAutoResponderForm" />
+        <component
+          :channel-id="props.id"
+          :is="currentTabComponent"
+          v-if="currentTabComponent"
+          v-model="settingData"
+          @open-auto-responder-form="handleOpenAutoResponderForm"
+        />
       </div>
 
       <form @submit.prevent="handleSubmitAutoResponder" v-if="isAutoresponderFormOpen">
         <AutoResponderForm v-model="channel.configs" :is-bot="isBot" />
 
         <div class="mt-8 flex justify-end gap-4">
-          <Button id="cancel-btn" intent="secondary" @click="handleCancelAutoResponder">Cancel</Button>
+          <Button id="cancel-btn" intent="secondary" @click="handleCancelAutoResponder"
+            >Cancel</Button
+          >
           <Button id="submit-btn" type="submit">Save Changes</Button>
         </div>
       </form>
@@ -224,8 +241,9 @@ async function updateConversationSecurity(
   showAlert.success({
     title: 'Success',
     showCancelButton: false,
-    text: `Security enhancement settings for the Widget channel have been successfully ${isSecure ? 'enabled' : 'disabled'
-      }`,
+    text: `Security enhancement settings for the Qiscus Live Chat channel have been successfully ${
+      isSecure ? 'enabled' : 'disabled'
+    }`,
   });
 }
 
