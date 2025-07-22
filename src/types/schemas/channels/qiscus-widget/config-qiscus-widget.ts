@@ -15,7 +15,7 @@ const OtherChannelSchema = z.object({
 
 const ChannelWidgetSchema = z.object({
   live_channel: z.object({
-    badge_url: z.url(),
+    badge_url: z.string(),
     is_enable: z.boolean(),
     name: z.string(),
   }),
