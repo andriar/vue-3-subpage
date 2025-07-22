@@ -1,7 +1,7 @@
 {
-  "name": "qiscus-vue3-ts-subpage",
+  "name": "omnichannel-qiscus",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -14,7 +14,8 @@
     "test:coverage": "vitest --coverage",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "format:vue": "prettier --write \"src/**/*.{vue,ts,js}\""
+    "format:vue": "prettier --write \"src/**/*.{vue,ts,js}\"",
+    "chromatic": "npx chromatic --project-token=chpt_c748ae2c699dcbe"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.10",
@@ -42,6 +43,7 @@
     "@vitest/browser": "^3.2.4",
     "@vitest/coverage-v8": "^3.2.4",
     "@vue/tsconfig": "^0.7.0",
+    "chromatic": "^13.1.2",
     "playwright": "^1.53.1",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.6.13",

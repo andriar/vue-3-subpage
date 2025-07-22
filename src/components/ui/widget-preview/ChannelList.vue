@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+
 import ButtonIcon from '@/components/common/ButtonIcon.vue';
+import { Image } from '@/components/common/common';
 import { ChatIcon, ChevronLeftIcon, ChevronRightIcon } from '@/components/icons';
 import { CHANNEL_BADGE_URL } from '@/utils/constant/channels';
 
@@ -30,10 +33,14 @@ const props = withDefaults(defineProps<Props>(), {
     },
   ],
 });
+
+const finalImageUrl = computed(() => {
+  return props.imageUrl || CHANNEL_BADGE_URL.qiscus;
+});
 </script>
 
 <template>
-  <div class="flex w-[360px] flex-col rounded-4xl bg-white shadow-[0px_8px_32px_0px_#0A0A0A1F]">
+  <div class="shadow-card-float flex w-[360px] flex-col rounded-4xl bg-white">
     <!-- Main Section -->
     <div class="flex flex-col gap-8 px-8 pt-8">
       <!-- Header Section -->
@@ -43,7 +50,7 @@ const props = withDefaults(defineProps<Props>(), {
         </ButtonIcon>
 
         <div class="text-surface-primary-blue flex flex-col">
-          <div class="mt-6 text-2xl break-words">{{ props.title }}</div>
+          <div class="text-2xl break-words">{{ props.title }}</div>
           <div class="text-2xl font-bold break-words">{{ props.subtitle }}</div>
         </div>
       </div>
@@ -56,16 +63,10 @@ const props = withDefaults(defineProps<Props>(), {
       <!-- Qiscus Live Chat -->
       <button
         v-if="props.enableQiscusLiveChat"
-        class="hover:bg-surface-primary-blue/5 flex cursor-pointer justify-between rounded-xl p-4 px-4 shadow-[0px_4px_12px_0px_#0A0A0A1A]"
+        class="hover:bg-surface-primary-blue/5 shadow-card flex cursor-pointer justify-between rounded-xl p-4 px-4"
       >
         <div class="flex min-w-0 flex-1 items-center gap-2">
-          <img
-            :src="props.imageUrl || CHANNEL_BADGE_URL.qiscus"
-            alt=""
-            class="h-6 w-6"
-            width="24"
-            height="24"
-          />
+          <Image :src="finalImageUrl" alt="qiscus livechat icon" :width="24" :height="24" />
           <div class="min-w-0 flex-1 text-start text-sm font-medium break-words">
             {{ props.previewLiveChatName }}
           </div>
@@ -80,16 +81,16 @@ const props = withDefaults(defineProps<Props>(), {
       <button
         v-for="action in props.channels"
         :key="action.label"
-        class="hover:bg-surface-primary-blue/5 flex cursor-pointer justify-between rounded-xl p-4 px-4 shadow-[0px_4px_12px_0px_#0A0A0A1A]"
+        class="hover:bg-surface-primary-blue/5 shadow-card flex cursor-pointer justify-between rounded-xl p-4 px-4"
       >
         <div class="flex min-w-0 flex-1 items-center gap-2">
-          <img
-            :src="action.iconUrl"
-            alt=""
-            class="h-6 w-6"
-            width="24"
-            height="24"
+          <Image
             v-if="action.iconUrl"
+            :src="action.iconUrl"
+            :width="24"
+            :height="24"
+            alt="icon channel"
+            class="h-6 w-6"
           />
           <ChatIcon :size="24" v-else />
           <div class="min-w-0 flex-1 text-start text-sm font-medium break-words">
@@ -111,7 +112,7 @@ const props = withDefaults(defineProps<Props>(), {
     </div>
 
     <!-- Footer Section (Powered by Qiscus) -->
-    <div class="border-t border-gray-300 py-2 text-center text-xs font-medium text-[#0A0A0A]">
+    <div class="text-black-700 border-t border-gray-300 py-2 text-center text-xs font-medium">
       Powered by <span class="text-link-400">Qiscus</span>
     </div>
   </div>

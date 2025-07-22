@@ -10,9 +10,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div
-    class="text-navy-500 flex w-[360px] flex-col rounded-4xl bg-white shadow-[0px_8px_32px_0px_#0A0A0A1F]"
-  >
+  <div class="text-navy-500 shadow-card-float flex w-[360px] flex-col rounded-4xl bg-white">
     <div class="p-8">
       <!-- Header -->
       <div class="flex items-center gap-3">
@@ -24,7 +22,7 @@ const props = defineProps<{
         <div v-else class="bg-surface-disable h-8 w-8 animate-pulse rounded-full" />
         <div
           v-if="props.title"
-          class="min-w-0 flex-1 text-sm font-medium break-words text-[#0A0A0A]"
+          class="text-black-700 min-w-0 flex-1 text-sm font-medium break-words"
         >
           {{ props.title }}
         </div>
@@ -54,7 +52,7 @@ const props = defineProps<{
       <div class="bg-surface-disable h-[56px] w-full animate-pulse rounded-full"></div>
     </div>
 
-    <div class="border-t border-gray-300 py-2 text-center text-xs font-medium text-[#0A0A0A]">
+    <div class="text-black-700 border-t border-gray-300 py-2 text-center text-xs font-medium">
       Powered by <span class="text-link-400">Qiscus</span>
     </div>
   </div>

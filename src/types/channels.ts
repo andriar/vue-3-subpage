@@ -78,7 +78,8 @@ export interface IAutoResponder {
 }
 
 export interface IWidgetChannel {
-  id: string;
+  app_code?: string;
+  id?: string;
   badge_url: string;
   name: string;
   is_active: boolean;
@@ -123,7 +124,7 @@ export interface IWidgetConfigPayload {
       // Login form data
       formGreet: string;
       formSubtitle: string;
-      loginSecondDescription: string;
+      formSecondGreet: string;
       buttonText: string;
       customerIdentifierInputType: string;
       extra_fields: IAdditionalField[];
@@ -165,6 +166,12 @@ export interface IWidgetConfigPayload {
 export interface IUpdateTelegramChannel {
   name: string;
   is_active: boolean;
+  configs: {
+    offline_message: string;
+    online_message: string;
+    send_offline_each_message: boolean;
+    send_online_if_resolved: boolean;
+  } | null;
 }
 export interface ICreateTelegramChannel {
   bot_token: string;

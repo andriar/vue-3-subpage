@@ -7,7 +7,7 @@ import { Button, Drawer } from '@/components/common/common';
 import {
   ChatOutlineIcon,
   IntegrationIcon,
-  PalleteIcon,
+  PaletteIcon,
   ServerIcon,
   TableIcon,
   ToggleLeftIcon,
@@ -48,7 +48,7 @@ const tabs: Tab[] = [
   { label: 'Chat', icon: ChatOutlineIcon, component: Chat, queryParam: 'chat' },
   {
     label: 'Color Scheme',
-    icon: PalleteIcon,
+    icon: PaletteIcon,
     component: ColorScheme,
     queryParam: 'color',
   },
@@ -99,6 +99,7 @@ watch(
 // Store integration
 const { postWidgetConfig, getWidgetConfig } = useQiscusLiveChatStore();
 const { appId } = useAppConfigStore();
+const iframeSrc = ref(`${window.location.origin + window.location.pathname}/preview`);
 
 // Drawer state
 const isDrawerOpen = ref(false);
@@ -127,7 +128,7 @@ const saveAndPreview = async () => {
 const params = useRoute().params;
 if (!params.id) {
   throw new Error('Channel ID is required');
-};
+}
 
 onMounted(async () => {
   const { id } = params;
@@ -139,24 +140,27 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="bg-white-100 flex w-full flex-col rounded-2xl border-[1px] border-gray-300">
-    <div
-      class="bg-white-100 sticky top-0 z-50 flex w-full items-center justify-between rounded-t-2xl border-b-[1px] border-gray-300 p-4"
-    >
-      <RoundedTab :tabs="tabs" v-model="activeTab" />
-      <Button @click="saveAndPreview" :loading="isLoading" :disabled="isLoading">
-        Save & Preview
-      </Button>
+  <div>
+    <div class="bg-white-100 flex w-full flex-col rounded-2xl border-[1px] border-gray-300">
+      <div
+        class="bg-white-100 sticky top-0 z-50 flex w-full items-center justify-between rounded-t-2xl border-b-[1px] border-gray-300 p-4 gap-2">
+        <RoundedTab :tabs="tabs" v-model="activeTab" />
+        <Button id="save-preview-btn" class="min-w-max" @click="saveAndPreview" :loading="isLoading"
+          :disabled="isLoading">
+          Save & Preview
+        </Button>
+      </div>
+
+      <div class="p-4">
+        <!-- Dynamic component rendering -->
+        <component :is="currentTabComponent" v-if="currentTabComponent" />
+      </div>
     </div>
 
-    <div class="p-4">
-      <!-- Dynamic component rendering -->
-      <component :is="currentTabComponent" v-if="currentTabComponent" />
-    </div>
+    <Drawer :isOpen="isDrawerOpen" @close="isDrawerOpen = false">
+      <!-- Preview content should come from store/props -->
+      <iframe ref="dynamicIframeRef" :src="iframeSrc" title="Live Chat Preview"
+        style="width: 100%; height: 100%"></iframe>
+    </Drawer>
   </div>
-
-  <Drawer :isOpen="isDrawerOpen" @close="isDrawerOpen = false">
-    <!-- Preview content should come from store/props -->
-    <WidgetPreview />
-  </Drawer>
 </template>

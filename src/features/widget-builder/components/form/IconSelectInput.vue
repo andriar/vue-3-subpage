@@ -36,8 +36,6 @@ const getIconClasses = (iconName: string) =>
 const selectIcon = (iconName: string) => {
   if (iconName !== props.modelValue) {
     emit('update:modelValue', iconName);
-  } else {
-    emit('update:modelValue', '');
   }
 };
 </script>

@@ -3,7 +3,7 @@
     <span class="text-text-subtitle">
       You will be charged an additional fee if you want to add a new Whatsapp integration.
     </span>
-    <div class="bg-[#FFF2D1] text-text-title px-2 py-3 rounded-md mt-8 text-sm">
+    <div class="bg-warning-light text-text-title px-2 py-3 rounded-md mt-8 text-sm">
       <div class="flex items-center" style="padding: 0 15px;">
         <svg width="24" height="24" viewBox="0 0 24 24" style="margin-right: 15px; width: 100px; height: 100px;"
           fill="none" xmlns="http://www.w3.org/2000/svg">

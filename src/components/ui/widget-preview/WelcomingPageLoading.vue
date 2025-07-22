@@ -1,5 +1,5 @@
 <template>
-  <div class="flex w-90 flex-col items-start gap-0 rounded-4xl shadow-[0px_8px_32px_0px_#0A0A0A1F]">
+  <div class="shadow-card-float flex w-90 flex-col items-start gap-0 rounded-4xl">
     <!-- Top Skeleton -->
     <div class="flex w-full flex-1 flex-col items-start gap-8 p-8">
       <div class="flex w-full flex-col items-start gap-6">

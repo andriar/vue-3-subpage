@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import { Button } from '@/components/common/common';
+import { Button, Image } from '@/components/common/common';
 import { BackIcon, HomeIcon } from '@/components/icons';
 import { useCreateQiscus } from '@/composables/channels/qiscus';
 import { useSweetAlert } from '@/composables/useSweetAlert';
@@ -17,6 +18,8 @@ const { showAlert } = useSweetAlert();
 const router = useRouter();
 const uQiscus = useCreateQiscus();
 const { postWidgetConfig } = useQiscusLiveChatStore();
+const { errorPostWidgetConfig } = storeToRefs(useQiscusLiveChatStore());
+
 const { appId } = useAppConfigStore();
 
 const isBot = ref(false);
@@ -88,8 +91,21 @@ async function handleSubmit() {
       showCancelButton: false,
     });
   }
+
   await postWidgetConfig(appId, uQiscus.data.value?.id as unknown as string);
 
+  if (errorPostWidgetConfig.value) {
+    console.log(errorPostWidgetConfig.value, 'errorPostWidgetConfig');
+
+    return showAlert.error({
+      title: 'Failed',
+      text: 'Failed to post widget config. Please try again.',
+      confirmButtonText: 'Okay',
+      showCancelButton: false,
+    });
+  }
+
+  // if success post widget config, redirect to detail page
   router.replace({ name: 'qiscus-detail', params: { id: uQiscus.data.value?.id } });
 }
 
@@ -106,7 +122,7 @@ function handleCancelAutoResponder() {
         Qiscus Live Chat List
       </router-link>
 
-      <router-link to="/" replace class="text-primary flex items-center gap-2 font-semibold">
+      <router-link to="/" id="route-integration" replace class="text-primary flex items-center gap-2 font-semibold">
         <HomeIcon :size="20" />
         Integration
       </router-link>
@@ -115,14 +131,8 @@ function handleCancelAutoResponder() {
     <div class="mx-auto flex w-11/12 flex-col gap-8">
       <!-- Header -->
       <div class="flex items-center gap-3">
-        <img
-          :src="CHANNEL_BADGE_URL.qiscus"
-          alt="Qiscus Logo"
-          class="h-6 w-6"
-          width="24"
-          height="24"
-        />
-        <h2 class="text-xl font-semibold text-[#0A0A0A]">New Integration - Qiscus Live Chat</h2>
+        <Image :src="CHANNEL_BADGE_URL.qiscus" alt="Qiscus Logo" class="h-6 w-6" :width="24" :height="24" />
+        <h2 class="text-xl font-semibold text-black-700">New Integration - Qiscus Live Chat</h2>
       </div>
 
       <!-- Form section -->
@@ -130,8 +140,8 @@ function handleCancelAutoResponder() {
         <CreateWidgetForm v-model="channel" />
 
         <div class="mt-8 flex justify-end gap-4">
-          <Button intent="secondary" to="/qiscus" replace>Back</Button>
-          <Button type="submit" :disabled="!isFormValid">Next</Button>
+          <Button id="back-btn" intent="secondary" to="/qiscus" replace>Back</Button>
+          <Button id="next-btn" type="submit" :disabled="!isFormValid">Next</Button>
         </div>
       </form>
 
@@ -139,8 +149,8 @@ function handleCancelAutoResponder() {
         <AutoResponderForm v-model="channel.configs" :is-bot="isBot" />
 
         <div class="mt-8 flex justify-end gap-4">
-          <Button intent="secondary" @click="handleCancelAutoResponder">Back</Button>
-          <Button type="submit">Save Changes</Button>
+          <Button id="close-autoresponder-btn" intent="secondary" @click="handleCancelAutoResponder">Back</Button>
+          <Button id="submit-autoresponder-btn" type="submit">Save Changes</Button>
         </div>
       </form>
     </div>

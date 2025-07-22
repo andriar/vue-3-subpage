@@ -1,16 +1,31 @@
 <template>
-  <img
-    :src="currentSrc"
-    :alt="alt"
-    @error="handleImageError"
-    class="transition-all duration-300 ease-in-out"
-    :width="width"
-    :height="height"
-  />
+  <div class="relative" :style="{ width: width + 'px', height: height + 'px' }">
+    <img
+      v-show="!isLoading"
+      v-bind="$attrs"
+      :src="currentSrc"
+      :alt="alt"
+      :width="width"
+      :height="height"
+      @load="handleImageLoad"
+      @error="handleImageError"
+      class="z-0 transition-all duration-300 ease-in-out"
+    />
+
+    <SpinnerIcon
+      v-if="isLoading"
+      :size="width - 5"
+      class="absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 animate-spin text-green-600"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+
+import { CHANNEL_BADGE_URL } from '@/utils/constant/channels';
+
+import SpinnerIcon from '../icons/SpinnerIcon.vue';
 
 // Define props using defineProps, which is globally available in <script setup>
 interface Props {
@@ -23,7 +38,7 @@ interface Props {
 
 // Assign the defined props to a variable. 'props' will be a reactive object.
 const props = withDefaults(defineProps<Props>(), {
-  fallbackSrc: 'https://via.placeholder.com/400x250?text=Image+Not+Found', // Default fallback image
+  fallbackSrc: CHANNEL_BADGE_URL.qiscus, // Default fallback image
   alt: 'Image',
   width: 24,
   height: 24,
@@ -35,16 +50,23 @@ const currentSrc = ref(props.src);
 
 // hasError is a flag to prevent multiple attempts to load the fallback image.
 const hasError = ref(false);
+const isLoading = ref(false);
 
 // Watch for changes in the `src` prop.
 // 'props.src' is already a reactive reference provided by defineProps.
 watch(
   () => props.src,
   (newSrc) => {
+    isLoading.value = true;
     currentSrc.value = newSrc;
     hasError.value = false; // Reset error state for the new image
-  }
+  },
+  { immediate: true }
 );
+
+const handleImageLoad = () => {
+  isLoading.value = false; // Set loading to false when image loads successfully
+};
 
 /**
  * Handles the 'error' event on the <img> tag.

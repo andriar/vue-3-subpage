@@ -1,8 +1,8 @@
 import { ref } from 'vue';
-import { z } from 'zod';
 
 import { configApi } from '@/api/channels';
 import { type ConfigChannel, ConfigChannelResponseSchema } from '@/types/schemas/config-channel';
+import { handleComposableError } from '@/utils/helper/errorHandler';
 
 export const useFetchConfig = () => {
   const loading = ref(false);
@@ -23,18 +23,7 @@ export const useFetchConfig = () => {
       const validatedResponse = ConfigChannelResponseSchema.parse(response.data);
       data.value = validatedResponse.data.channel_config;
     } catch (err) {
-      // Log all errors for debugging
-      console.error('Error fetching:', err);
-
-      // Handle Zod validation errors
-      if (err instanceof z.ZodError) {
-        console.error('Validation error:', err.issues);
-        error.value = new Error(
-          `Validation failed: ${err.issues.map((e) => e.message).join(', ')}`
-        );
-      } else {
-        error.value = err instanceof Error ? err : new Error('An unknown error occurred');
-      }
+      handleComposableError(err, error, 'Error fetching config channel');
       data.value = null;
     } finally {
       loading.value = false;

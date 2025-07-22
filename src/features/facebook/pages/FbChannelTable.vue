@@ -1,12 +1,15 @@
 <template>
   <div class="flex h-full w-full flex-col">
-    <div class="flex items-center justify-between p-4">
-      <InputCustom v-model="searchQuery" placeholder="Search channel name" class="min-w-[340px]" clearable>
+    <div class="flex flex-col md:flex-row gap-2 md:items-center md:justify-between p-4">
+      <InputCustom id="search-input" v-model="searchQuery" placeholder="Search channel name" class="md:min-w-[340px]"
+        clearable>
         <template #suffix-icon>
           <SearchIcon :size="24" />
         </template>
       </InputCustom>
-      <Button @click="handleNewIntegration" variant="primary" class="flex items-center gap-2" size="small" no-animation>
+      <Button id="new-integration-btn" @click="handleNewIntegration" variant="primary"
+        class="flex items-center gap-2 w-fit" size="small" no-animation>
+        <PlusIcon :size="24" />
         New Integration
       </Button>
     </div>
@@ -30,7 +33,7 @@
                     :width="24" :height="24" class="aspect-square rounded-full object-cover max-w-6 max-h-6" />
                   <span class="text-text-title overflow-hidden font-medium text-ellipsis whitespace-nowrap">{{
                     channel.name
-                  }}</span>
+                    }}</span>
                 </div>
               </td>
               <td class="border-stroke-regular cursor-pointer border-b px-6 py-4">
@@ -42,7 +45,7 @@
                 </div>
               </td>
               <td class="border-stroke-regular border-b px-6 py-4 text-right">
-                <Switch v-model="channel.isActive" size="small" variant="success" @click.stop
+                <Switch id="enable-channel-switch" v-model="channel.isActive" size="small" variant="success" @click.stop
                   @update:model-value="updateChannelStatus(channel.id, $event)" />
               </td>
             </tr>
@@ -56,7 +59,7 @@
         <div v-if="channels.length === 0 && !loadingList" class="absolute inset-0 flex items-center justify-center">
           <EmptyState title="No Results"
             description="You may want to try using different keywords or checking for the typos to find it."
-            image_url="https://omnichannel.qiscus.com/img/empty-customer.svg" />
+            image-url="https://omnichannel.qiscus.com/img/empty-customer.svg" />
         </div>
       </div>
 
@@ -80,7 +83,7 @@ import { useRouter } from 'vue-router';
 import loadingAnimationData from '@/assets/lottie/loading.json';
 import { Animate, Button, ButtonIcon, Image, Switch } from '@/components/common/common';
 import InputCustom from '@/components/form/InputCustom.vue';
-import { CopyIcon, SearchIcon } from '@/components/icons';
+import { CopyIcon, PlusIcon, SearchIcon } from '@/components/icons';
 import EmptyState from '@/components/ui/EmptyState.vue';
 import Pagination from '@/components/ui/Pagination.vue';
 import { useFetchFbChannel } from '@/composables/channels/facebook/useFetchFbChannel';

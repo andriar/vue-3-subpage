@@ -41,55 +41,35 @@ const goToNext = () => {
 
 <template>
   <div class="flex gap-2">
-    <Button
-      intent="flat"
-      disableAnimation
-      class="border-button-primary border !px-3 !py-1"
-      @click="goToPrevious"
-    >
+    <Button id="previous-btn" intent="flat" disableAnimation class="border-button-primary border !px-3 !py-1"
+      @click="goToPrevious">
       <template #prefixIcon>
         <BackIcon :size="18" />
       </template>
       <span class="text-xs font-semibold">Previous</span>
     </Button>
 
-    <Button
-      intent="flat"
-      disableAnimation
-      class="border-button-primary border !px-3 !py-1"
-      @click="goToNext"
-    >
+    <Button id="next-btn" intent="flat" disableAnimation class="border-button-primary border !px-3 !py-1"
+      @click="goToNext">
       <template #suffixIcon>
         <NextIcon :size="18" />
       </template>
       <span class="text-xs font-semibold">Next</span>
     </Button>
   </div>
-  <div
-    ref="carouselContainer"
-    class="flex w-100 snap-x snap-mandatory gap-10 overflow-x-hidden px-5 py-4"
-  >
+  <div ref="carouselContainer" class="flex w-100 snap-x snap-mandatory gap-10 overflow-x-hidden px-5 py-4">
     <!-- Welcome Page -->
     <div class="flex min-w-full snap-center flex-col items-end gap-4">
-      <WelcomingPage
-        title="Hello there!"
-        subtitle="Welcome to Qiscus!"
-        :textColor="colorWidgetState"
-        :imageUrl="''"
-        :actions="[]"
-      />
+      <WelcomingPage title="Hello there!" subtitle="Welcome to Qiscus!" :textColor="colorWidgetState" :imageUrl="''"
+        :actions="[]" />
 
       <CallToAction :color="colorWidgetState" />
     </div>
 
     <!-- Login Form -->
     <div class="flex min-w-full snap-center flex-col items-end gap-4">
-      <LoginFormLoading
-        title="Hello there,"
-        subtitle="Welcome to Qiscus!"
-        description="Please fill the details below before chatting with us!"
-        :color="colorWidgetState"
-      />
+      <LoginFormLoading title="Hello there," subtitle="Welcome to Qiscus!"
+        description="Please fill the details below before chatting with us!" :color="colorWidgetState" />
 
       <div class="bg-surface-disable h-16 w-16 rounded-full" />
     </div>
@@ -99,10 +79,8 @@ const goToNext = () => {
       <ChatFormLoading>
         <template #bubble>
           <div class="flex justify-end">
-            <div
-              class="rounded-t-[24px] rounded-br-[4px] rounded-bl-[24px] p-4 text-sm text-white"
-              :style="{ backgroundColor: colorWidgetState }"
-            >
+            <div class="rounded-t-[24px] rounded-br-[4px] rounded-bl-[24px] p-4 text-sm text-white"
+              :style="{ backgroundColor: colorWidgetState }">
               Hello there, Im Qiscus Folks!
             </div>
           </div>

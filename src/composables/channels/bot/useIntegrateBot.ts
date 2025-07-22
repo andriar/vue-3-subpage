@@ -1,11 +1,11 @@
 import { ref } from 'vue';
-import { z } from 'zod';
 
 import { botApi } from '@/api/channels';
 import {
   type IntegrateBot,
   IntegrateBotResponseSchema,
 } from '@/types/schemas/channels/bot/integrate-bot';
+import { handleComposableError } from '@/utils/helper/errorHandler';
 
 export const useIntegrateBot = () => {
   const loading = ref(false);
@@ -22,18 +22,7 @@ export const useIntegrateBot = () => {
       const validatedResponse = IntegrateBotResponseSchema.parse(response.data);
       data.value = validatedResponse.data.app;
     } catch (err) {
-      // Log all errors for debugging
-      console.error('Error fetching:', err);
-
-      // Handle Zod validation errors
-      if (err instanceof z.ZodError) {
-        console.error('Validation error:', err.issues);
-        error.value = new Error(
-          `Validation failed: ${err.issues.map((e) => e.message).join(', ')}`
-        );
-      } else {
-        error.value = err instanceof Error ? err : new Error('An unknown error occurred');
-      }
+      handleComposableError(err, error, 'Error integrate bot');
       data.value = null;
     } finally {
       loading.value = false;

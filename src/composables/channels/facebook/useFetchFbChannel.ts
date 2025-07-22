@@ -1,9 +1,9 @@
 import { ref } from 'vue';
-import z from 'zod';
 
 import { fbApi } from '@/api/channels';
 import { type FbChannelList, FbChannelResponseSchema } from '@/types/schemas/channels/fb-channel';
 import type { MetaPagination } from '@/types/schemas/common';
+import { handleComposableError } from '@/utils/helper/errorHandler';
 import { filterFilledObj } from '@/utils/helper/object';
 
 const initMeta: MetaPagination = {
@@ -36,15 +36,7 @@ export const useFetchFbChannel = () => {
       data.value = validatedResponse.data;
       meta.value = validatedResponse.meta;
     } catch (err) {
-      console.error('Error fetching:', err);
-      if (err instanceof z.ZodError) {
-        console.error('Validation error:', err.issues);
-        error.value = new Error(
-          `Validation failed: ${err.issues.map((e) => e.message).join(', ')}`
-        );
-      } else {
-        error.value = err instanceof Error ? err : new Error('An unknown error occurred');
-      }
+      handleComposableError(err, error, 'Error fetching fb channel');
       data.value = [];
       meta.value = { ...initMeta };
     } finally {

@@ -2,7 +2,7 @@
   <div class="text-text-title flex min-h-screen flex-col gap-8 px-12 py-8 text-sm">
     <div>
       <div class="mb-4 flex gap-3">
-        <img src="@/assets/icon-integration.svg" alt="Icon Integration" />
+        <IntegrationIcon alt="Icon Integration" />
         <h2 class="text-text-title text-xl font-semibold">Integration Channel</h2>
       </div>
       <p class="text-text-subtitle">
@@ -16,8 +16,8 @@
 
     <SubTab :tabs="dataTabs" v-model="activeTab" />
 
-    <div class="grid grid-cols-3 gap-8">
-      <router-link :to="channel.type" v-for="channel in filteredChannels" :key="channel.id">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-8">
+      <router-link :to="channel.type" :id="`${channel.id}-card`" v-for="channel in filteredChannels" :key="channel.id">
         <ChannelCard :channel="channel" />
       </router-link>
     </div>
@@ -30,6 +30,7 @@ import { useRouter } from 'vue-router';
 
 import ChannelCard from '@/components/common/Cards/ChannelCard.vue';
 import SubTab from '@/components/common/Tabs/SubTab.vue';
+import { IntegrationIcon } from '@/components/icons';
 
 const router = useRouter();
 

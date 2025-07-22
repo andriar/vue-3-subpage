@@ -8,22 +8,25 @@
           @input="onInput" @focus="isFocused = true" @blur="isFocused = false" :placeholder="placeholder"
           :disabled="disabled" />
 
-        <button v-if="clearable" class="invisible cursor-pointer transition-colors duration-300 ease-in-out" :class="{
-          visible: modelValue,
-        }" @click="onClear" :disabled="disabled">
-          <CloseIcon :size="20" class="h-5 w-5 text-[#A0A0A0] hover:text-[#0A0A0A]" />
+        <button v-if="clearable" type="button" id="clear-btn"
+          class="invisible cursor-pointer transition-colors duration-300 ease-in-out" :class="{
+            visible: modelValue,
+          }" @click="onClear" :disabled="disabled">
+          <CloseIcon :size="20" class="h-5 w-5 text-gray-800 hover:text-black-700  active:text-black-700/60" />
         </button>
 
-        <button v-if="type === 'password'" class="cursor-pointer" @click="togglePasswordVisibility">
-          <EyeIcon class="h-5 w-5 text-[#A0A0A0] hover:text-[#0A0A0A]" />
+        <button v-if="type === 'password'" type="button" id="show-password-btn" class="cursor-pointer"
+          @click="togglePasswordVisibility">
+          <EyeIcon class="h-5 w-5 text-gray-800 hover:text-black-700 active:text-black-700/60" />
         </button>
       </div>
 
-      <button v-if="$slots['append-button']" :class="appendButtonClasses({ disabled })">
+      <button v-if="$slots['append-button']" type="button" id="append-btn" :class="appendButtonClasses({ disabled })">
         <slot name="append-button" :disabled="disabled"></slot>
       </button>
 
-      <button v-if="$slots['append-button-icon']" :class="appendButtonIconClasses({ disabled })">
+      <button v-if="$slots['append-button-icon']" type="button" id="append-btn-icon"
+        :class="appendButtonIconClasses({ disabled })">
         <slot name="append-button-icon" :disabled="disabled"></slot>
       </button>
     </div>
@@ -41,7 +44,7 @@ interface Props {
   modelValue: string;
   label?: string;
   placeholder?: string;
-  id?: string;
+  id: string;
   disabled?: boolean;
   error?: boolean;
   errorMessage?: string;
@@ -104,7 +107,7 @@ const wrapperClasses = cva(
         true: 'border-red-500',
       },
       disabled: {
-        true: 'bg-surface-disable text-[#A0A0A0]',
+        true: 'bg-surface-disable text-gray-800',
       },
     },
     compoundVariants: [
@@ -126,7 +129,7 @@ const contentWrapperClasses = cva('flex w-full flex-row items-center gap-3 px-3 
   },
 });
 
-const inputClasses = cva('w-full outline-none text-sm font-medium leading-5 placeholder:text-[#A0A0A0]', {
+const inputClasses = cva('w-full outline-none text-sm font-medium leading-5 placeholder:text-gray-800', {
   variants: {
     disabled: {
       true: 'cursor-not-allowed !bg-surface-disable',
@@ -136,12 +139,12 @@ const inputClasses = cva('w-full outline-none text-sm font-medium leading-5 plac
 });
 
 const appendButtonClasses = cva(
-  'flex min-w-fit cursor-pointer items-center justify-center gap-2 border-l border-gray-300 bg-[#FAFAFA] px-3 py-2 text-sm font-medium',
+  'flex min-w-fit cursor-pointer items-center justify-center gap-2 border-l border-gray-300 bg-gray-200 px-3 py-2 text-sm font-medium',
   {
     variants: {
       disabled: {
-        true: 'bg-surface-disable text-[#A0A0A0]',
-        false: 'bg-[#FAFAFA] text-[#0A0A0A]',
+        true: 'bg-surface-disable text-gray-800',
+        false: 'bg-gray-200 text-black-700',
       },
     },
   }
@@ -152,7 +155,7 @@ const appendButtonIconClasses = cva(
   {
     variants: {
       disabled: {
-        true: 'text-[#A0A0A0]',
+        true: 'text-gray-800',
         false: 'text-primary',
       },
     },

@@ -103,49 +103,36 @@ watch(
         <Banner :closeable="false" intent="positive" type="solid">
           <p class="text-text-title text-sm font-medium">
             To learn more regarding Link Channel, you can check this
-            <a
-              class="text-notification-link underline"
-              href="https://docs.qiscus.com"
-              target="_blank"
-            >
+            <a class="text-notification-link underline" href="https://docs.qiscus.com" target="_blank">
               Documentation.
             </a>
           </p>
         </Banner>
 
-        <Input
-          v-model="channelName"
-          :disabled="false"
-          :error="false"
-          errorMessage="This field has an error"
-          id="default-input"
-          label="Channel Name"
-          placeholder="Type your channel name "
-        />
+        <Input v-model="channelName" :disabled="false" :error="false" errorMessage="This field has an error"
+          id="default-input" label="Channel Name" placeholder="Type your channel name " />
 
-        <TextArea
-          v-model="channelLink"
-          id="description"
-          label="Channel Link"
-          placeholder="Enter the channel URL (ex: https://ig.me/m/username)"
-        />
+        <TextArea v-model="channelLink" id="description" label="Channel Link"
+          placeholder="Enter the channel URL (ex: https://ig.me/m/username)" />
 
         <!-- Channel Badge Icon -->
         <div>
           <!-- <label for="channel-badge-icon"> Channel Badge Icon</label> -->
           <div class="flex items-baseline gap-2">
-            <ImageInput
-              id="channel-badge-icon"
-              label="Channel Badge Icon"
-              v-model="channelBadgeIcon"
-              :isUploading="loading"
-              @upload="uploadImage"
-            >
+            <ImageInput id="channel-badge-icon" label="Channel Badge Icon" v-model="channelBadgeIcon"
+              :isUploading="loading" @upload="uploadImage" @error="(e) => (error = new Error(e))">
               <template #tips>
-                <div class="text-sm font-normal text-[#A0A0A0]">
+                <div class="text-sm font-normal text-gray-800">
                   We recommend an image of at least 360x360 pixels. You can upload images in JPG,
                   JPEG, or PNG format with a maximum size of 2MB.
                 </div>
+              </template>
+              <template #alert>
+                <Banner v-if="error" intent="negative" size="small">
+                  <p>
+                    {{ error }}
+                  </p>
+                </Banner>
               </template>
             </ImageInput>
           </div>
@@ -153,8 +140,8 @@ watch(
       </div>
     </template>
     <template #footer>
-      <Button intent="secondary" size="small" @click="closeModal">Cancel</Button>
-      <Button :disabled="!isFormValid" intent="primary" size="small" @click="handleAddChannel">
+      <Button id="modal-close-btn" intent="secondary" size="small" @click="closeModal">Cancel</Button>
+      <Button id="modal-submit-btn" :disabled="!isFormValid" intent="primary" size="small" @click="handleAddChannel">
         {{ modelValue ? 'Update Channel' : 'Add Channel' }}
       </Button>
     </template>

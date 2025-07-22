@@ -35,7 +35,7 @@ const badgeClass = computed(() =>
           large: 'py-3 px-4 text-base rounded-lg',
         },
         disabled: {
-          true: '!transform-none !pointer-events-none  !bg-gray-200 !text-[#A0A0A0]',
+          true: '!transform-none !pointer-events-none  !bg-gray-200 !text-gray-800',
           false: 'cursor-pointer',
         },
       },

@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { cva } from 'class-variance-authority';
-import { computed } from 'vue';
-import { ref } from 'vue';
 import type { Component } from 'vue';
+import { computed, ref } from 'vue';
 
 import { ChevronDownIcon } from '@/components/icons';
 
@@ -28,7 +27,7 @@ const TabItemClass = cva(
     variants: {
       isActive: {
         true: 'relative after:h-1 text-primary-500',
-        false: 'text-[#0A0A0A]',
+        false: 'text-black-700',
       },
     },
     defaultVariants: {
@@ -61,27 +60,18 @@ function selectTab(tab: TabItem, child: TabItem | null) {
 
 <template>
   <ul class="flex w-full gap-0.5 border-b border-gray-300 bg-transparent text-sm select-none">
-    <li
-      v-for="tab in currentTabs"
-      :key="tab.id"
-      :class="TabItemClass({ isActive: modelValue.id === tab.id })"
-      @click="selectParentTab(tab)"
-    >
+    <li v-for="tab in currentTabs" :key="tab.id" :class="TabItemClass({ isActive: modelValue.id === tab.id })"
+      @click="selectParentTab(tab)">
       <component :is="tab.icon" v-if="tab.icon" width="16" height="16" class="text-primary-500" />
       {{ tab.label }}
       <ChevronDownIcon v-if="tab.children && tab.children.length > 0" width="16" height="16" />
 
       <ul
         class="absolute top-full left-0 z-10 w-auto min-w-full divide-y divide-gray-300 rounded-lg bg-white p-2 text-left shadow-lg"
-        v-if="showChildren?.id === tab.id && tab.children && tab.children.length > 0"
-      >
-        <li
-          v-for="child in tab.children"
-          :key="child.id"
+        v-if="showChildren?.id === tab.id && tab.children && tab.children.length > 0">
+        <li v-for="child in tab.children" :key="child.id"
           class="max-w-[300px] cursor-pointer overflow-hidden p-2 text-sm text-ellipsis whitespace-nowrap hover:font-medium"
-          :title="child.label"
-          @click.stop="selectTab(tab, child)"
-        >
+          :title="child.label" @click.stop="selectTab(tab, child)">
           {{ child.label }}
         </li>
       </ul>

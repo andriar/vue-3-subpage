@@ -2,26 +2,18 @@
   <div class="flex flex-col gap-8">
     <WidgetBannerDoc />
 
-    <div
-      class="flex flex-col items-start justify-center gap-8 rounded-xl border border-[#ECECEC] bg-[#FAFAFA] p-6"
-    >
-      <p class="text-xs text-[#A0A0A0]">
+    <div class="flex flex-col items-start justify-center gap-8 rounded-xl border border-gray-300 bg-gray-200 p-6">
+      <p class="text-xs text-gray-800">
         Build your Qiscus Live Chat based on your need using our builder.
       </p>
 
-      <div class="flex w-140 flex-col gap-2">
+      <div class="flex w-full lg:w-140 flex-col gap-2">
         <div class="flex items-center gap-5">
-          <ImageInput
-            id="widget-image"
-            v-model="formData.badge_url"
-            @error="(e) => (errorImageMessages = e)"
-            :isUploading="uSdkImage.loading.value"
-            @upload="uploadImage"
-            autocomplete="off"
-          />
+          <ImageInput id="widget-image" v-model="formData.badge_url" @error="(e) => (errorImageMessages = e)"
+            :isUploading="uSdkImage.loading.value" @upload="uploadImage" autocomplete="off" />
           <div class="flex flex-1 flex-col items-start gap-1">
-            <h4 class="text-sm font-semibold text-[#565656]">Channel Badge Icon</h4>
-            <p class="text-xs text-[#A0A0A0]">
+            <h4 class="text-sm font-semibold text-text-subtitle">Channel Badge Icon</h4>
+            <p class="text-xs text-gray-800">
               We recommend an image of at least 360x360 pixels. You can upload images in JPG, JPEG,
               or PNG format with a maximum size of 2MB.
             </p>
@@ -34,26 +26,17 @@
         </Banner>
       </div>
 
-      <div class="w-[552px]">
-        <Input
-          v-model="formData.name"
-          :disabled="false"
-          :error="false"
-          errorMessage="This field has an error"
-          id="default-input"
-          label="Channel Name"
-          placeholder="Enter your channel name here"
-        />
+      <div class="w-full lg:w-[552px]">
+        <Input v-model="formData.name" :disabled="false" :error="false" errorMessage="This field has an error"
+          id="default-input" label="Channel Name" placeholder="Enter your channel name here" />
       </div>
     </div>
 
     <!-- Term Section -->
-    <div
-      class="shadow-medium flex flex-col items-start justify-center gap-4 rounded-lg bg-white p-6"
-    >
+    <div class="shadow-medium flex flex-col items-start justify-center gap-4 rounded-lg bg-white p-6">
       <div class="flex flex-col items-start gap-2 text-sm">
-        <h5 class="font-semibold text-[#0A0A0A]">Term of condition</h5>
-        <p class="text-[#A0A0A0]">
+        <h5 class="font-semibold text-black-700">Term of condition</h5>
+        <p class="text-gray-800">
           By creating a new Qiscus Live Chat, you agree and acknowledge that the Enhance
           Conversation Security feature is automatically enabled. Customers will not be able to see
           the conversation history if they use a different device or browser, and this might impact
@@ -62,17 +45,13 @@
         </p>
       </div>
 
-      <Banner intent="positive" class="text-sm leading-5 font-medium text-[#0A0A0A]">
+      <Banner intent="positive" class="text-sm leading-5 font-medium text-black-700">
         This feature becomes accessible starting from Qiscus Omnichannel iOS v1.2.3, Qiscus
         Omnichannel Android v1.2.3, Qiscus Chat SDK Flutter v1.2.3, and Qiscus Chat SDK React Native
         v1.2.3.
       </Banner>
 
-      <Checkbox
-        id="agree-term-checkbox"
-        label="Agree with the term of condition"
-        v-model="formData.is_secure_toc"
-      />
+      <Checkbox id="agree-term-checkbox" label="Agree with the term of condition" v-model="formData.is_secure_toc" />
     </div>
   </div>
 </template>

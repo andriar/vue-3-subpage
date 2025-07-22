@@ -1,5 +1,4 @@
 import { ref } from 'vue';
-import { z } from 'zod';
 
 import { telegramApi } from '@/api/channels';
 import type { IPagination2 } from '@/types/api';
@@ -8,6 +7,7 @@ import {
   TelegramChannelResponseSchema,
 } from '@/types/schemas/channels/telegram/telegram-list-channel';
 import type { MetaPagination } from '@/types/schemas/common';
+import { handleComposableError } from '@/utils/helper/errorHandler';
 import { filterFilledObj } from '@/utils/helper/object';
 
 const initMeta: IPagination2 = {
@@ -36,18 +36,7 @@ export const useFetchTelegram = () => {
       data.value = validatedResponse.data;
       meta.value = validatedResponse.meta;
     } catch (err) {
-      // Log all errors for debugging
-      console.error('Error fetching:', err);
-
-      // Handle Zod validation errors
-      if (err instanceof z.ZodError) {
-        console.error('Validation error:', err.issues);
-        error.value = new Error(
-          `Validation failed: ${err.issues.map((e) => e.message).join(', ')}`
-        );
-      } else {
-        error.value = err instanceof Error ? err : new Error('An unknown error occurred');
-      }
+      handleComposableError(err, error, 'Error fetching telegram');
       data.value = [];
       meta.value = { ...initMeta };
     } finally {

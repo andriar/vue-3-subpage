@@ -27,7 +27,7 @@ const handleTabClick = (tab: string) => {
 </script>
 
 <template>
-  <ul class="flex w-fit items-center gap-1 select-none">
+  <ul class="flex w-fit items-center gap-1 select-none flex-wrap">
     <li v-for="tab in tabs" :key="tab.label" @click="handleTabClick(tab.label)"
       @keydown.enter="handleTabClick(tab.label)" @keydown.space="handleTabClick(tab.label)" :tabindex="0" role="tab"
       :aria-selected="props.modelValue === tab.label" :aria-controls="`tab-panel-${tab.label}`"
@@ -41,7 +41,7 @@ const handleTabClick = (tab: string) => {
       </span>
       <span :class="props.modelValue === tab.label ? 'text-primary' : 'text-text-title'">{{
         tab.label
-      }}</span>
+        }}</span>
     </li>
   </ul>
 </template>

@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import Image from '@/components/common/Image.vue';
 import { ChatIcon, ChevronRightIcon } from '@/components/icons';
+import { DEFAULT_IMAGE_PREVIEW } from '@/utils/constant/images';
 
 interface Props {
   imageUrl: string;
@@ -13,7 +15,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  imageUrl: '',
+  imageUrl: DEFAULT_IMAGE_PREVIEW.WELCOME_BRAND_ICON,
   title: 'Hello there,',
   subtitle: 'Welcome to Qiscus!',
   textColor: '#01416C',
@@ -29,7 +31,7 @@ const props = withDefaults(defineProps<Props>(), {
 <template>
   <div
     :style="{ color: props.textColor }"
-    class="flex w-[360px] flex-col rounded-4xl bg-white shadow-[0px_8px_32px_0px_#0A0A0A1F]"
+    class="shadow-card-float flex w-[360px] flex-col rounded-4xl bg-white"
   >
     <div class="flex-1 gap-8 p-8">
       <!-- Header section -->
@@ -57,17 +59,17 @@ const props = withDefaults(defineProps<Props>(), {
           <button
             v-for="action in props.actions"
             :key="action.label"
-            class="hover:bg-surface-primary-blue/5 flex cursor-pointer rounded-xl p-4 shadow-[0px_4px_12px_0px_#0A0A0A1A]"
+            class="hover:bg-surface-primary-blue/5 shadow-card flex cursor-pointer rounded-xl p-4"
           >
             <div class="flex min-w-0 flex-1 gap-2">
               <div class="flex flex-shrink-0 items-center">
-                <img
-                  :src="action.iconUrl"
-                  alt=""
-                  class="h-6 w-6"
-                  width="24"
-                  height="24"
+                <Image
                   v-if="action.iconUrl"
+                  :src="action.iconUrl"
+                  :width="24"
+                  :height="24"
+                  alt="icon action"
+                  class="h-6 w-6"
                 />
                 <ChatIcon :size="24" v-else />
               </div>

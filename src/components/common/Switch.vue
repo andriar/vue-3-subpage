@@ -1,26 +1,15 @@
 <template>
-  <button
-    type="button"
-    role="switch"
-    :disabled="disabled"
-    :aria-checked="modelValue"
-    :aria-label="ariaLabel"
-    :aria-describedby="ariaDescribedby"
-    :class="switchClass"
-    @click="handleToggle"
-    @keydown="handleKeydown"
-  >
-    <span
-      :class="[
-        'absolute top-0.5 left-0.5 rounded-full bg-white shadow-sm transition-transform duration-300',
-        thumbSizeClass,
-        {
-          'translate-x-5': modelValue && (size === 'medium' || size === 'small'),
-          'translate-x-7': modelValue && size === 'large',
-          'translate-x-0': !modelValue,
-        },
-      ]"
-    ></span>
+  <button type="button" role="switch" :disabled="disabled" :aria-checked="modelValue" :aria-label="ariaLabel"
+    :aria-describedby="ariaDescribedby" :class="switchClass" @click="handleToggle" @keydown="handleKeydown">
+    <span :class="[
+      'absolute top-0.5 left-0.5 rounded-full bg-white shadow-sm transition-transform duration-300',
+      thumbSizeClass,
+      {
+        'translate-x-5': modelValue && (size === 'medium' || size === 'small'),
+        'translate-x-7': modelValue && size === 'large',
+        'translate-x-0': !modelValue,
+      },
+    ]"></span>
   </button>
 </template>
 
@@ -35,7 +24,7 @@ interface SwitchProps {
   variant?: 'default' | 'success' | 'warning' | 'danger';
   ariaLabel?: string;
   ariaDescribedby?: string;
-  id?: string;
+  id: string;
 }
 
 const props = withDefaults(defineProps<SwitchProps>(), {

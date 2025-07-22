@@ -1,5 +1,4 @@
 import { ref } from 'vue';
-import z from 'zod';
 
 import { tiktokApi } from '@/api/channels';
 import {
@@ -7,6 +6,7 @@ import {
   TiktokChannelResponseSchema,
 } from '@/types/schemas/channels/tiktok-channel';
 import type { MetaPagination } from '@/types/schemas/common';
+import { handleComposableError } from '@/utils/helper/errorHandler';
 import { filterFilledObj } from '@/utils/helper/object';
 
 const initMeta: MetaPagination = {
@@ -39,15 +39,7 @@ export const useFetchTiktokChannel = () => {
       data.value = validatedResponse.data;
       meta.value = validatedResponse.meta;
     } catch (err) {
-      console.error('Error fetching:', err);
-      if (err instanceof z.ZodError) {
-        console.error('Validation error:', err.issues);
-        error.value = new Error(
-          `Validation failed: ${err.issues.map((e) => e.message).join(', ')}`
-        );
-      } else {
-        error.value = err instanceof Error ? err : new Error('An unknown error occurred');
-      }
+      handleComposableError(err, error, 'Error fetching tiktok channel');
       data.value = [];
       meta.value = { ...initMeta };
     } finally {

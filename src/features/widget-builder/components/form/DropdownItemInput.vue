@@ -33,14 +33,13 @@ const removeItem = (item: string) => {
 
 <template>
     <div class="flex flex-col gap-4 p-4 bg-gray-200 rounded-lg border border-gray-300">
-        <InputCustom label="Item Dropdown" v-model="itemDropdown">
+        <InputCustom id="dropdown-input" label="Item Dropdown" v-model="itemDropdown">
             <template #append-button-icon>
                 <PlusIcon :size="24" @click="addItem" />
             </template>
         </InputCustom>
         <div class="flex flex-wrap gap-2">
-            <Chip v-for="item in items" :key="item" :label="item"
-                :onClose="() => removeItem(item)" />
+            <Chip v-for="item in items" :key="item" :label="item" :onClose="() => removeItem(item)" />
         </div>
     </div>
 </template>

@@ -1,26 +1,20 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-export interface AppConfig {
-  baseUrl: string;
-  userToken: string;
-  appId: string;
-  appVersion: string;
-  sdkUserId: string;
-  userSdkToken: string;
-  user: {
-    id: number;
-  };
-}
+import type { IQiscusAppConfig, IWidgetConfig } from '@/types/app';
+import type { IUser } from '@/types/user';
+import { initUser } from '@/utils/constant/user';
 
 export const useAppConfigStore = defineStore('app', () => {
   // State
+  const baseUrl = ref<string>('');
   const userToken = ref<string>('');
   const appId = ref<string>('');
-  const baseUrl = ref<string>('');
   const appVersion = ref<string>('');
   const sdkUserId = ref<string>('');
   const userSdkToken = ref<string>('');
+  const widget = ref<IWidgetConfig | null>(null);
+  const user = ref<IUser>({ ...initUser });
   const userId = ref<number | null>(null);
 
   // Getters
@@ -46,14 +40,15 @@ export const useAppConfigStore = defineStore('app', () => {
   };
 
   // Actions
-  const setConfig = (config: AppConfig) => {
+  const setConfig = (config: IQiscusAppConfig) => {
+    baseUrl.value = config.baseUrl;
     userToken.value = config.userToken;
     appId.value = config.appId;
     appVersion.value = config.appVersion;
     sdkUserId.value = config.sdkUserId;
     userSdkToken.value = config.userSdkToken;
-    userId.value = config.user.id;
-    baseUrl.value = config.baseUrl;
+    widget.value = config.widget || null;
+    user.value = config.user || { ...initUser };
   };
 
   const clearConfig = () => {
@@ -71,6 +66,7 @@ export const useAppConfigStore = defineStore('app', () => {
     appVersion,
     userId,
     baseUrl,
+    widget,
 
     // Getters
     isConfigured,

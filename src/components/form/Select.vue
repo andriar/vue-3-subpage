@@ -118,7 +118,7 @@ const props = defineProps({
   },
   placeholder: {
     type: String,
-    default: 'Select an option',
+    default: 'Select your field type',
   },
 });
 
@@ -179,7 +179,7 @@ const selectClasses = cva(
   {
     variants: {
       disabled: {
-        true: 'cursor-not-allowed !text-[#A0A0A0] !bg-surface-disable',
+        true: 'cursor-not-allowed !text-gray-800 !bg-surface-disable',
         false: 'bg-white text-gray-900 cursor-pointer',
       },
       error: {

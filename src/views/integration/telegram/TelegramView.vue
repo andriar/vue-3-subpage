@@ -4,12 +4,14 @@ import { computed, onMounted, ref } from 'vue';
 import Banner from '@/components/common/Banner.vue';
 import CollapsibleGroup from '@/components/common/CollapsibleGroup.vue';
 import MainTab from '@/components/common/Tabs/MainTab.vue';
-import { Button, Switch } from '@/components/common/common';
+import { Button, Image, Switch } from '@/components/common/common';
 import { BackIcon, HomeIcon } from '@/components/icons';
-import { useCreateTelegram } from '@/composables/channels/telegram/useCreateTelegram';
-import { useDeleteTelegram } from '@/composables/channels/telegram/useDeleteTelegram';
-import { useFetchTelegram } from '@/composables/channels/telegram/useFetchTelegram';
-import { useUpdateTelegram } from '@/composables/channels/telegram/useUpdateTelegram';
+import {
+  useCreateTelegram,
+  useDeleteTelegram,
+  useFetchTelegram,
+  useUpdateTelegram,
+} from '@/composables/channels/telegram';
 import { useFetchConfig } from '@/composables/channels/useFetchConfigChannel';
 import { useUpdateConfig } from '@/composables/channels/useUpdateConfigChannel';
 import { useSweetAlert } from '@/composables/useSweetAlert';
@@ -150,137 +152,113 @@ async function createTelegramChannel() {
     bot_token: channel.value.token,
     configs: hasConfigValues()
       ? {
-          offline_message: configs.value.offline_message,
-          online_message: configs.value.online_message,
-          send_online_if_resolved: configs.value.send_online_if_resolved,
-          send_offline_each_message: configs.value.send_offline_each_message,
-        }
+        offline_message: configs.value.offline_message,
+        online_message: configs.value.online_message,
+        send_online_if_resolved: configs.value.send_online_if_resolved,
+        send_offline_each_message: configs.value.send_offline_each_message,
+      }
       : null,
   };
 
-  try {
-    await createTelegram(payload);
+  await createTelegram(payload);
 
-    if (createTelegramError.value) {
-      showAlert.error({
-        title: 'Error',
-        text: 'Failed to create Telegram channel. Please try again.',
-        showCancelButton: false,
-        confirmButtonText: 'Okay',
-      });
-      return;
-    }
-
-    showAlert.success({
-      title: 'Success',
-      text: 'Successfully add new channel',
-      showCancelButton: false,
-      confirmButtonText: 'Okay',
-    });
-
-    await fetchTelegram();
-    populateChannelData();
-
-    closeAutoResponderForm();
-  } catch (error) {
+  // --- Handle error ---
+  if (createTelegramError.value) {
     showAlert.error({
       title: 'Error',
       text: 'Failed to create Telegram channel. Please try again.',
       showCancelButton: false,
       confirmButtonText: 'Okay',
     });
+    return;
   }
+
+  // --- Handle success ---
+  showAlert.success({
+    title: 'Success',
+    text: 'Successfully add new channel',
+    showCancelButton: false,
+    confirmButtonText: 'Okay',
+  });
+
+  await fetchTelegram();
+  populateChannelData();
+
+  closeAutoResponderForm();
 }
 
 async function updateTelegramChannel() {
   const payload: IUpdateTelegramChannel = {
     name: channel.value.name,
     is_active: isEnableTelegram.value,
+    configs: hasConfigValues()
+      ? {
+        offline_message: configs.value.offline_message,
+        online_message: configs.value.online_message,
+        send_online_if_resolved: configs.value.send_online_if_resolved,
+        send_offline_each_message: configs.value.send_offline_each_message,
+      }
+      : null,
   };
 
-  try {
-    await updateTelegram(currentChannel.value?.id, payload);
+  await updateTelegram(currentChannel.value?.id, payload);
 
-    if (updateTelegramError.value) {
-      showAlert.error({
-        title: 'Error',
-        text: 'Failed to update Telegram. Please try again.',
-        confirmButtonText: 'Okay',
-        showCancelButton: false,
-      });
-      return;
-    }
-
-    showAlert.success({
-      title: 'Success',
-      text: 'Telegram has been updated.',
-      confirmButtonText: 'Okay',
-      showCancelButton: false,
-    });
-  } catch (error) {
+  // --- Handle error ---
+  if (updateTelegramError.value) {
     showAlert.error({
       title: 'Error',
       text: 'Failed to update Telegram. Please try again.',
       confirmButtonText: 'Okay',
       showCancelButton: false,
     });
+    return;
   }
+
+  // --- Handle success ---
+  showAlert.success({
+    title: 'Success',
+    text: 'Telegram has been updated.',
+    confirmButtonText: 'Okay',
+    showCancelButton: false,
+  });
 }
 
 async function deleteTelegramChannel() {
-  try {
-    await deleteTelegram(currentChannel.value?.id);
-    showAlert.success({
-      title: 'Success',
-      text: 'Delete channel has been succeeded.',
-      confirmButtonText: 'Okay',
-      showCancelButton: false,
-    });
+  await deleteTelegram(currentChannel.value?.id);
+  showAlert.success({
+    title: 'Success',
+    text: 'Delete channel has been succeeded.',
+    confirmButtonText: 'Okay',
+    showCancelButton: false,
+  });
 
-    await fetchTelegram();
-    populateChannelData();
-  } catch (error) {
-    console.error('Error deleting channel:', error);
-    showAlert.error({
-      title: 'Error',
-      text: 'Failed to delete channel. Please try again.',
-      confirmButtonText: 'Okay',
-      showCancelButton: false,
-    });
-  }
+  await fetchTelegram();
+  populateChannelData();
 }
 
 async function updateAutoResponder() {
-  try {
-    await updateConfig(currentChannel.value?.id || '', {
-      ...configs.value,
-      enabled: isEnableAutoResponder.value,
-      source: 'telegram',
-    });
+  await updateConfig(currentChannel.value?.id || '', {
+    ...configs.value,
+    enabled: isEnableAutoResponder.value,
+    source: 'telegram',
+  });
 
-    if (updateConfigError.value) {
-      return showAlert.error({
-        title: 'Error',
-        text: 'Failed to update channel auto responder. Please try again.',
-        confirmButtonText: 'Okay',
-        showCancelButton: false,
-      });
-    }
-
-    showAlert.success({
-      title: 'Success',
-      text: 'Successfully changes channel auto responder.',
-      showCancelButton: false,
-    });
-  } catch (error) {
-    console.error('Error update auto responder telegram:', error);
-    showAlert.error({
+  // --- Handle error ---
+  if (updateConfigError.value) {
+    return showAlert.error({
       title: 'Error',
       text: 'Failed to update channel auto responder. Please try again.',
       confirmButtonText: 'Okay',
       showCancelButton: false,
     });
   }
+
+  // --- Handle success ---
+  showAlert.success({
+    title: 'Success',
+    text: 'Successfully changes channel auto responder.',
+    showCancelButton: false,
+  });
 }
 
 // --- Handlers Function---
@@ -335,45 +313,70 @@ function handleUpdateAutoResponder() {
     });
 }
 
-function toggleTelegramIntegration(status: boolean) {
-  console.log('toggle Telegram integration status', status);
-  // Here, you would typically make an API call to update the Telegram integration status
+async function toggleTelegramIntegration(status: boolean) {
+  const payload: IUpdateTelegramChannel = {
+    name: channel.value.name,
+    is_active: status,
+    configs: hasConfigValues()
+      ? {
+        offline_message: configs.value.offline_message,
+        online_message: configs.value.online_message,
+        send_online_if_resolved: configs.value.send_online_if_resolved,
+        send_offline_each_message: configs.value.send_offline_each_message,
+      }
+      : null,
+  };
+
+  await updateTelegram(currentChannel.value?.id, payload);
+
+  // --- Handle error ---
+  if (updateTelegramError.value) {
+    showAlert.error({
+      title: 'Error',
+      text: 'Failed to update Telegram. Please try again.',
+      confirmButtonText: 'Okay',
+      showCancelButton: false,
+    });
+    return;
+  }
+
+  // --- Handle success ---
+  showAlert.success({
+    title: 'Success',
+    text: `Success ${status ? 'activating' : 'deactivating'} channel`,
+    confirmButtonText: 'Okay',
+    showCancelButton: false,
+  });
+
+  isEnableTelegram.value = status;
 }
 
 async function toggleAutoResponder(status: boolean) {
-  try {
-    await updateConfig(currentChannel.value?.id || '', {
-      ...configs.value,
-      enabled: status,
-      source: 'telegram',
-    });
+  await updateConfig(currentChannel.value?.id || '', {
+    ...configs.value,
+    enabled: status,
+    source: 'telegram',
+  });
 
-    if (updateConfigError.value) {
-      return showAlert.error({
-        title: 'Error',
-        text: 'Failed to update channel auto responder. Please try again.',
-        confirmButtonText: 'Okay',
-        showCancelButton: false,
-      });
-    }
-
-    showAlert.success({
-      title: 'Success',
-      text: 'Successfully changes channel auto responder.',
-      showCancelButton: false,
-    });
-
-    // Only update the state if API call is successful
-    isEnableAutoResponder.value = status;
-  } catch (error) {
-    console.error('Error update auto responder telegram:', error);
-    showAlert.error({
+  // --- Handle error ---
+  if (updateConfigError.value) {
+    return showAlert.error({
       title: 'Error',
       text: 'Failed to update channel auto responder. Please try again.',
       confirmButtonText: 'Okay',
       showCancelButton: false,
     });
   }
+
+  // --- Handle success ---
+  showAlert.success({
+    title: 'Success',
+    text: 'Successfully changes channel auto responder.',
+    showCancelButton: false,
+  });
+
+  // Only update the state if API call is successful
+  isEnableAutoResponder.value = status;
 }
 
 onMounted(async () => {
@@ -390,12 +393,13 @@ onMounted(async () => {
 <template>
   <div class="flex flex-col gap-8 px-12 py-8">
     <div class="flex items-center justify-between">
-      <router-link to="/" replace class="text-primary flex items-center gap-2 font-semibold">
+      <router-link to="/" id="route-integration" replace class="text-primary flex items-center gap-2 font-semibold">
         <BackIcon :size="20" />
         Integration
       </router-link>
 
-      <router-link to="/" replace class="text-primary flex items-center gap-2 font-semibold">
+      <router-link to="/" id="route-back-integration" replace
+        class="text-primary flex items-center gap-2 font-semibold">
         <HomeIcon :size="20" />
         Integration
       </router-link>
@@ -403,25 +407,16 @@ onMounted(async () => {
 
     <div class="mx-auto flex w-11/12 flex-col gap-8">
       <div class="flex items-center gap-3">
-        <img
-          :src="CHANNEL_BADGE_URL.telegram"
-          alt="Telegram Logo"
-          class="h-6 w-6"
-          width="24"
-          height="24"
-        />
-        <h2 class="text-xl font-semibold text-[#0A0A0A]">Telegram</h2>
+        <Image :src="CHANNEL_BADGE_URL.telegram" alt="Telegram Logo" class="h-6 w-6" :width="24" :height="24" />
+        <h2 class="text-xl font-semibold text-black-700">Telegram</h2>
       </div>
 
       <Banner>
-        <p class="text-sm font-medium text-[#0A0A0A]">
+        <p class="text-sm font-medium text-black-700">
           To integrate the Qiscus Omnichannel Chat with Telegram, you can check this
-          <a
-            class="text-notification-link font-semibold underline"
+          <a class="text-notification-link font-semibold underline"
             href="https://documentation.qiscus.com/omnichannel-chat/application#telegram"
-            target="_blank"
-            >Documentation</a
-          >.
+            target="_blank">Documentation</a>.
         </p>
       </Banner>
 
@@ -431,33 +426,24 @@ onMounted(async () => {
         <template v-if="activeTab == 'Settings'">
           <CollapsibleGroup :items="items">
             <template #item-id-1="{ item }">
-              <div class="flex justify-between gap-8 text-sm text-[#565656]">
+              <div class="flex justify-between gap-8 text-sm text-text-subtitle">
                 <div v-html="item.content"></div>
                 <div>
-                  <Switch
-                    variant="success"
-                    v-model="isEnableTelegram"
-                    @change="toggleTelegramIntegration"
-                    size="medium"
-                  />
+                  <Switch id="enable-telegram-switch" variant="success" :model-value="isEnableTelegram"
+                    @update:model-value="toggleTelegramIntegration" size="medium" />
                 </div>
               </div>
             </template>
             <template #item-id-2="{ item }">
-              <div class="flex justify-between gap-8 text-sm text-[#565656]">
+              <div class="flex justify-between gap-8 text-sm text-text-subtitle">
                 {{ item.content }}
                 <div>
-                  <Switch
-                    variant="success"
-                    size="medium"
-                    :modelValue="isEnableAutoResponder"
-                    @update:modelValue="toggleAutoResponder"
-                  />
+                  <Switch id="enable-autoresponder-switch" variant="success" size="medium"
+                    :modelValue="isEnableAutoResponder" @update:modelValue="toggleAutoResponder" />
                 </div>
               </div>
-              <Button intent="secondary" class="mt-4" @click="openAutoResponderForm"
-                >Set Channel Auto Responder</Button
-              >
+              <Button id="open-autoresponder-btn" intent="secondary" class="mt-4" @click="openAutoResponderForm">Set
+                Channel Auto Responder</Button>
             </template>
           </CollapsibleGroup>
         </template>
@@ -467,40 +453,33 @@ onMounted(async () => {
             <CreateTelegramForm v-model="channel" />
 
             <div v-if="isUserCreateChannel" class="flex justify-end gap-4">
-              <Button
-                type="submit"
-                @click="handleCreateChannel"
-                :disabled="createTelegramLoading || !channel.token"
-                >Next</Button
-              >
+              <Button id="next-btn" type="submit" @click="handleCreateChannel"
+                :disabled="createTelegramLoading || !channel.token">Next</Button>
             </div>
 
             <div v-else class="flex justify-between">
-              <Button intent="danger" @click="handleDeleteChannel" :disabled="deleteTelegramLoading"
-                >Delete Channel</Button
-              >
-              <Button type="submit" @click="handleUpdateChannel" :disabled="updateTelegramLoading"
-                >Save Changes</Button
-              >
+              <Button id="delete-btn" intent="danger" @click="handleDeleteChannel"
+                :disabled="deleteTelegramLoading">Delete
+                Channel</Button>
+              <Button id="submit-btn" type="submit" @click="handleUpdateChannel" :disabled="updateTelegramLoading">Save
+                Changes</Button>
             </div>
           </form>
         </template>
       </template>
 
-      <tempalte v-if="isAutoresponderFormOpen">
+      <template v-if="isAutoresponderFormOpen">
         <AutoResponderForm v-model="configs" :is-bot="isBot" />
 
         <div class="mt-8 flex justify-end gap-4">
-          <Button intent="secondary" @click="closeAutoResponderForm">Back</Button>
-          <Button
-            type="submit"
+          <Button id="close-autoresponder-btn" intent="secondary" @click="closeAutoResponderForm">Back</Button>
+          <Button id="submit-autoresponder-btn" type="submit"
             @click="isUserCreateChannel ? createTelegramChannel() : handleUpdateAutoResponder()"
-            :disabled="isConfigEmpty || createTelegramLoading || updateConfigLoading"
-          >
+            :disabled="isConfigEmpty || createTelegramLoading || updateConfigLoading">
             Save Changes
           </Button>
         </div>
-      </tempalte>
+      </template>
     </div>
   </div>
 </template>

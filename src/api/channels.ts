@@ -1,3 +1,5 @@
+import type { AxiosRequestConfig } from 'axios';
+
 import type { IParams } from '@/types/api';
 import type { ICreateQiscusChannel, IUpdateTelegramChannel } from '@/types/channels';
 
@@ -19,6 +21,8 @@ export const qiscusApi = {
     apiV2.get<any>(`/app/config/public-widget/${appId}/${channelId}`),
   postWidgetConfig: (channelId: string, data: any) =>
     apiV2.post<any>(`/qiscus/widget_configs/${channelId}`, data),
+  updateSecurity: (channelId: string | number, data: any) =>
+    apiV2.post<any>(`/qiscus/connect/${channelId}/update`, data),
 };
 
 export const whatsappApi = {
@@ -68,10 +72,12 @@ export const configApi = {
 };
 
 export const botApi = {
-  get: () => apiV1.get<any[]>('/app/bot'),
+  get: (config?: AxiosRequestConfig) => apiV1.get<any[]>('/app/bot', config),
   changeStatus: (params: any) => apiV1.post<any[]>('/app/bot/activation', { params }),
   integrate: (data: { bot_webhook_url: string; is_bot_enabled: boolean }) =>
     postFormData<any[]>(apiV1, '/app/bot/integrate', data),
   forceSendBot: (data: { is_force_send_bot: boolean }) =>
     postFormData<any[]>(apiV2, '/app/bot/force_send', data),
+  activate: (data: { is_active: boolean }) =>
+    postFormData<any[]>(apiV1, '/app/bot/activation', data),
 };

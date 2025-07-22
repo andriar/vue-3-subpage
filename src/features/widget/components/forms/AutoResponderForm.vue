@@ -34,8 +34,8 @@ const formData = computed({
   <div class="flex flex-col gap-8">
     <Banner intent="negative" type="outline" v-if="isBot">
       <div class="flex items-center gap-3">
-        <WarningIcon :size="24" class="text-[#EB5757]" />
-        <div class="text-sm text-[#0A0A0A]">
+        <WarningIcon :size="24" class="text-danger" />
+        <div class="text-sm text-black-700">
           Auto Responder is not working if the chatbot setting is enabled.
         </div>
       </div>
@@ -54,9 +54,9 @@ const formData = computed({
       </div>
     </Banner>
 
-    <div class="flex flex-col gap-6 rounded-lg bg-white p-6 shadow-[0px_4px_12px_0px_#0A0A0A1A]">
+    <div class="flex flex-col gap-6 rounded-lg bg-white p-6 shadow-card">
       <h2 class="font-semibold">
-        Channel Auto Responder <span class="font-medium text-[#A0A0A0]">(Optional)</span>
+        Channel Auto Responder <span class="font-medium text-gray-800">(Optional)</span>
       </h2>
 
       <Banner intent="positive">
@@ -67,9 +67,9 @@ const formData = computed({
       </Banner>
 
       <div class="flex flex-col gap-2">
-        <div class="text-sm text-[#565656]">Channel Auto Responder During Office Hour</div>
+        <div class="text-sm text-text-subtitle">Channel Auto Responder During Office Hour</div>
 
-        <div class="text-xs text-[#A0A0A0]">
+        <div class="text-xs text-gray-800">
           When you set the autoresponder message, it will only be sent once at the beginning of each
           conversation outside office hour.
         </div>
@@ -77,7 +77,7 @@ const formData = computed({
           :disabled="isBot" />
       </div>
 
-      <div class="flex items-center gap-2 text-sm font-semibold text-[#565656]">
+      <div class="flex items-center gap-2 text-sm font-semibold text-text-subtitle">
         <Checkbox id="send-online-checkbox"
           label="Keep sending every time a customer initiates a chat session even though the room has been resolved"
           v-model="formData.send_online_if_resolved" />
@@ -86,9 +86,9 @@ const formData = computed({
       <Divider />
 
       <div class="flex flex-col gap-2">
-        <div class="text-sm text-[#565656]">Channel Auto Responder Outside Office Hour</div>
+        <div class="text-sm text-text-subtitle">Channel Auto Responder Outside Office Hour</div>
 
-        <div class="text-xs text-[#A0A0A0]">
+        <div class="text-xs text-gray-800">
           When you set the autoresponder message, it will only be sent once at the beginning of each
           conversation outside office hour.
         </div>
@@ -96,7 +96,7 @@ const formData = computed({
           :disabled="isBot" />
       </div>
 
-      <div class="flex items-center gap-2 text-sm font-semibold text-[#565656]">
+      <div class="flex items-center gap-2 text-sm font-semibold text-text-subtitle">
         <Checkbox id="send-offline-checkbox" label="Sent every time a customer sends a message"
           v-model="formData.send_offline_each_message" />
       </div>

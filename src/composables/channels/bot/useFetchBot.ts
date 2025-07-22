@@ -1,42 +1,50 @@
-import { ref } from 'vue';
-import { z } from 'zod';
+// composables/useFetchBot.ts
+import axios from 'axios';
+import { onUnmounted, ref } from 'vue';
 
 import { botApi } from '@/api/channels';
 import { type BotData, BotResponseSchema } from '@/types/schemas/channels/bot/bot';
+import { handleComposableError } from '@/utils/helper/errorHandler';
 
 export const useFetchBot = () => {
   const loading = ref(false);
   const data = ref<BotData | null>(null);
   const error = ref<Error | null>(null);
 
+  let controller: AbortController | null = null;
+
   const fetch = async () => {
+    if (controller) {
+      controller.abort('New request initiated, cancelling previous.');
+    }
+
+    controller = new AbortController();
+    const signal = controller.signal;
+
     try {
       loading.value = true;
       error.value = null;
 
-      const response = await botApi.get();
+      const response = await botApi.get({ signal });
 
-      // Validate the response using Zod schema
       const validatedResponse = BotResponseSchema.parse(response.data);
       data.value = validatedResponse.data;
-    } catch (err) {
-      // Log all errors for debugging
-      console.error('Error fetching:', err);
-
-      // Handle Zod validation errors
-      if (err instanceof z.ZodError) {
-        console.error('Validation error:', err.issues);
-        error.value = new Error(
-          `Validation failed: ${err.issues.map((e) => e.message).join(', ')}`
-        );
-      } else {
-        error.value = err instanceof Error ? err : new Error('An unknown error occurred');
+    } catch (err: any) {
+      if (!axios.isCancel(err)) {
+        handleComposableError(err, error, 'Error fetching bot');
+        data.value = null;
       }
-      data.value = null;
     } finally {
       loading.value = false;
+      controller = null;
     }
   };
+
+  onUnmounted(() => {
+    if (controller) {
+      controller.abort('Component unmounted, cancelling bot fetch request.');
+    }
+  });
 
   return {
     loading,

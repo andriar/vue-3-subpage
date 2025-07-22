@@ -1,27 +1,19 @@
 <template>
   <teleport to="body">
     <transition name="drawer-backdrop-fade">
-      <div
-        v-if="isOpen"
-        class="bg-opacity-50 fixed inset-0 z-[998] flex items-center justify-center bg-[#0A0A0A99]"
-        @click="closeDrawer"
-      ></div>
+      <div v-if="isOpen" class="bg-opacity-50 fixed inset-0 z-[998] flex items-center justify-center bg-black-900/40"
+        @click="closeDrawer"></div>
     </transition>
 
     <transition name="modal-slide-fade">
-      <div
-        @click.stop
-        v-if="isOpen"
-        id="modal-container"
-        :class="[
-          dynamicWidthClass,
-          'z-[999] flex h-auto max-h-[90vh] max-w-full flex-col rounded-2xl bg-white shadow-xl',
-          'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
-        ]"
-      >
+      <div @click.stop v-if="isOpen" id="modal-container" :class="[
+        dynamicWidthClass,
+        'z-[999] flex h-auto max-h-[90vh] max-w-full flex-col rounded-2xl bg-white shadow-xl',
+        'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
+      ]">
         <div class="flex items-center justify-between border-b border-gray-200 p-6">
           <slot name="header">
-            <h2 class="text-xl font-semibold text-[#0A0A0A]">
+            <h2 class="text-xl font-semibold text-black-700">
               <slot name="title">Modal Title</slot>
             </h2>
             <CloseIcon @click="closeDrawer" class="cursor-pointer" />
@@ -32,8 +24,7 @@
           <slot name="content"> </slot>
         </div>
         <div
-          class="flex items-center justify-center gap-3.5 border-t border-gray-200 p-4 shadow-[0px_-4px_8px_0px_#00000014]"
-        >
+          class="flex items-center justify-center gap-3.5 border-t border-gray-200 p-4 shadow-[0px_-4px_8px_0px_#00000014]">
           <slot name="footer">
             <button @click="closeDrawer" class="rounded-md bg-gray-200 px-4 py-2 text-gray-800">
               Cancel

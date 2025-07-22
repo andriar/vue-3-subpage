@@ -22,7 +22,7 @@ const checkboxInputVariants = cva(
         false: 'bg-white border-gray-300',
       },
       disabled: {
-        true: '!cursor-not-allowed !border-[#A0A0A0] !bg-surface-disable !text-text-disable',
+        true: '!cursor-not-allowed !border-gray-800 !bg-surface-disable !text-text-disable',
         false: 'border-primary',
       },
     },
@@ -40,7 +40,7 @@ const checkboxIconVariants = cva('h-4 w-4 ', {
       false: 'hidden',
     },
     disabled: {
-      true: '!text-[#A0A0A0] !opacity-50',
+      true: '!text-gray-800 !opacity-50',
       false: 'text-white',
     },
   },
@@ -53,7 +53,7 @@ const checkboxIconVariants = cva('h-4 w-4 ', {
 const labelVariants = cva('text-text-subtitle text-sm font-medium', {
   variants: {
     disabled: {
-      true: 'text-[#A0A0A0]',
+      true: 'text-gray-800',
     },
   },
   defaultVariants: {
@@ -94,37 +94,15 @@ const toggleCheckbox = () => {
 
 <template>
   <label :for="uniqueId" :class="wrapperClasses" @click="toggleCheckbox">
-    <div
-      :class="[
-        inputClasses,
-        'relative flex items-center justify-center transition-all duration-200 ease-in-out',
-      ]"
-      :tabindex="disabled ? -1 : 0"
-      @keydown.space.prevent="toggleCheckbox"
-      @keydown.enter.prevent="toggleCheckbox"
-    >
-      <input
-        type="checkbox"
-        :id="uniqueId"
-        :checked="modelValue"
-        :disabled="disabled"
-        class="sr-only"
-        @change="toggleCheckbox"
-      />
-      <svg
-        v-if="modelValue"
-        :class="checkboxIconVariants({ checked: modelValue, disabled: disabled })"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M5 13l4 4L19 7"
-        ></path>
+    <div :class="[
+      inputClasses,
+      'relative flex items-center justify-center transition-all duration-200 ease-in-out',
+    ]" :tabindex="disabled ? -1 : 0" @keydown.space.prevent="toggleCheckbox" @keydown.enter.prevent="toggleCheckbox">
+      <input type="checkbox" :id="uniqueId" :checked="modelValue" :disabled="disabled" class="sr-only"
+        @change="toggleCheckbox" />
+      <svg v-if="modelValue" :class="checkboxIconVariants({ checked: modelValue, disabled: disabled })" fill="none"
+        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
       </svg>
     </div>
     <span :class="labelClasses">{{ label }}</span>

@@ -96,12 +96,13 @@ onMounted(() => {
 <template>
   <div class="flex flex-col gap-8 px-12 py-8">
     <div class="flex items-center justify-between">
-      <router-link to="/" replace class="text-primary flex items-center gap-2 font-semibold">
+      <router-link to="/" id="route-integration" replace class="text-primary flex items-center gap-2 font-semibold">
         <BackIcon :size="20" />
         Integration
       </router-link>
 
-      <router-link to="/" replace class="text-primary flex items-center gap-2 font-semibold">
+      <router-link to="/" id="route-back-integration" replace
+        class="text-primary flex items-center gap-2 font-semibold">
         <HomeIcon :size="20" />
         Integration
       </router-link>
@@ -110,12 +111,12 @@ onMounted(() => {
     <div class="mx-auto flex w-11/12 flex-col gap-8">
       <!-- Header -->
       <div class="flex items-center gap-3">
-        <img :src="CHANNEL_BADGE_URL.telegram" alt="Qiscus Logo" class="h-6 w-6" width="24" height="24" />
-        <h2 class="text-xl font-semibold text-[#0A0A0A]">Telegram</h2>
+        <Image :src="CHANNEL_BADGE_URL.telegram" alt="Telegram Logo" class="h-6 w-6" :width="24" :height="24" />
+        <h2 class="text-xl font-semibold text-black-700">Telegram</h2>
       </div>
 
       <Banner>
-        <p class="text-sm font-medium text-[#0A0A0A]">
+        <p class="text-sm font-medium text-black-700">
           To integrate the Qiscus Omnichannel Chat with Telegram, you can check this
           <a class="text-notification-link font-semibold underline"
             href="https://documentation.qiscus.com/omnichannel-chat/application#telegram"
@@ -129,21 +130,22 @@ onMounted(() => {
         <template v-if="activeTab == 'Settings'">
           <CollapsibleGroup :items="items">
             <template #item-id-1="{ item }">
-              <div class="flex justify-between gap-8 text-[#565656] text-sm">
+              <div class="flex justify-between gap-8 text-text-subtitle text-sm">
                 <div v-html="item.content"></div>
                 <div>
-                  <Switch variant="success" v-model="isEnableTelegram" size="medium" />
+                  <Switch id="enable-channel-switch" variant="success" v-model="isEnableTelegram" size="medium" />
                 </div>
               </div>
             </template>
             <template #item-id-2="{ item }">
-              <div class="flex justify-between gap-8 text-[#565656] text-sm">
+              <div class="flex justify-between gap-8 text-text-subtitle text-sm">
                 {{ item.content }}
                 <div>
-                  <Switch variant="success" size="medium" v-model="isEnableAutoResponder" />
+                  <Switch id="enable-telegram-switch" variant="success" size="medium" v-model="isEnableAutoResponder" />
                 </div>
               </div>
-              <Button intent="secondary" class="mt-4" @click="handleOpenAutoResponderForm">Set Channel Auto
+              <Button id="open-autoresponder-btn" intent="secondary" class="mt-4"
+                @click="handleOpenAutoResponderForm">Set Channel Auto
                 Responder</Button>
             </template>
           </CollapsibleGroup>
@@ -156,12 +158,12 @@ onMounted(() => {
 
             <div class="mt-8 flex justify-end gap-4">
               <!-- <Button intent="secondary" to="/" replace>Back</Button> -->
-              <Button type="submit">Next</Button>
+              <Button id="next-btn" type="submit">Next</Button>
             </div>
 
             <div class="mt-8 flex justify-between">
-              <Button intent="danger">Delete Channel</Button>
-              <Button type="submit">Save Changes</Button>
+              <Button id="delete-btn" intent="danger">Delete Channel</Button>
+              <Button id="submit-btn" type="submit">Save Changes</Button>
             </div>
           </form>
         </template>
@@ -172,8 +174,8 @@ onMounted(() => {
         <AutoResponderForm v-model="configs" :is-bot="isBot" />
 
         <div class="mt-8 flex justify-end gap-4">
-          <Button intent="secondary" @click="handleCancelAutoResponder">Back</Button>
-          <Button type="submit">Save Changes</Button>
+          <Button id="cancel-autoresponder-btn" intent="secondary" @click="handleCancelAutoResponder">Back</Button>
+          <Button id="submit-autoresponder-btn" type="submit">Save Changes</Button>
         </div>
       </form>
     </div>

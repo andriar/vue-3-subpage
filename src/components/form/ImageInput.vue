@@ -4,29 +4,20 @@
 
     <div class="mt-2 flex items-start gap-4">
       <!-- Upload Area -->
-      <div
-        @click="triggerFileInput"
-        class="flex w-fit cursor-pointer items-center rounded-lg border border-dashed transition-colors"
-        :class="[
+      <div @click="triggerFileInput"
+        class="flex w-fit cursor-pointer items-center rounded-lg border border-dashed transition-colors" :class="[
           error
             ? 'border-red-500 bg-red-50'
             : 'border-green-500 hover:border-green-600 hover:bg-green-50',
           props.isUploading ? 'cursor-not-allowed opacity-50' : '',
-        ]"
-      >
+        ]">
         <!-- Show uploaded image preview if available -->
-        <div v-if="modelValue" class="group relative">
-          <img
-            :src="modelValue"
-            :alt="fileName"
-            class="max-h-[68px] min-h-[68px] max-w-[68px] min-w-[68px] rounded-lg object-cover"
-          />
-          <button
-            @click.stop="triggerFileInput"
-            class="absolute inset-0 flex items-center justify-center rounded-lg bg-white text-[#0a0a0a] opacity-0 shadow-lg transition-all duration-200 group-hover:cursor-pointer group-hover:opacity-60"
-            type="button"
-            title="Replace image"
-          >
+        <div v-if="modelValue" class="group relative p-1.5">
+          <img :src="modelValue" :alt="fileName"
+            class="max-h-[68px] min-h-[68px] max-w-[68px] min-w-[68px] rounded-lg object-cover" />
+          <button @click.stop="triggerFileInput"
+            class="absolute inset-0 flex items-center justify-center rounded-lg bg-white text-black-700 opacity-0 shadow-lg transition-all duration-200 group-hover:cursor-pointer group-hover:opacity-60"
+            type="button" title="Replace image">
             <div v-if="props.isUploading" class="opacity-100">
               <SpinnerIcon :size="20" class="animate-spin text-green-600" />
             </div>
@@ -35,10 +26,7 @@
         </div>
 
         <!-- Upload icon when no image -->
-        <div
-          v-else
-          class="m-4 flex w-fit items-center justify-center rounded-lg bg-green-200 p-3.5"
-        >
+        <div v-else class="m-4 flex w-fit items-center justify-center rounded-lg bg-green-200 p-3.5">
           <div v-if="props.isUploading" class="relative">
             <SpinnerIcon :size="20" class="animate-spin text-green-600" />
           </div>
@@ -50,16 +38,12 @@
       <slot name="tips" />
     </div>
 
+    <!-- alert banner -->
+    <slot name="alert" />
+
     <!-- Hidden file input -->
-    <input
-      ref="fileInput"
-      type="file"
-      :id="id"
-      :accept="acceptedFormats"
-      @change="handleFileChange"
-      class="hidden"
-      :disabled="props.isUploading"
-    />
+    <input ref="fileInput" type="file" :id="id" :accept="acceptedFormats" @change="handleFileChange" class="hidden"
+      :disabled="props.isUploading" />
   </div>
 </template>
 
@@ -84,7 +68,7 @@ interface Emits {
   (e: 'error', error: string): void;
 }
 
-const containerClasses = cva('space-y-1');
+const containerClasses = cva('space-y-3');
 
 const props = withDefaults(defineProps<Props>(), {
   label: '',

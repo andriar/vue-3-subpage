@@ -3,8 +3,8 @@ import { computed, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import Modal from '@/components/common/Modal.vue';
+import CreatePostForm from '@/components/form/CreatePostForm.vue';
 import { useFetchPost } from '@/composables/posts/useFetchPost';
-import CreatePostForm from '@/pages/post/CreatePostForm.vue';
 
 interface Post {
   id: number;

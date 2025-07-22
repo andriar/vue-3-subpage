@@ -13,7 +13,7 @@ const props = defineProps<{
 <template>
   <div
     :style="{ color: props.color }"
-    class="flex w-[360px] flex-col rounded-4xl bg-white shadow-[0px_8px_32px_0px_#0A0A0A1F]"
+    class="shadow-card-float flex w-[360px] flex-col rounded-4xl bg-white"
   >
     <div class="flex flex-1 flex-col gap-8 p-8">
       <!-- Header -->
@@ -29,7 +29,7 @@ const props = defineProps<{
       <!-- Inputs Skeleton -->
       <div class="flex w-full flex-col gap-4">
         <div
-          class="bg-surface-disable flex w-full animate-pulse items-center gap-3 rounded-2xl px-3 py-4 shadow-[0px_4px_12px_0px_#0A0A0A1A]"
+          class="bg-surface-disable shadow-card flex w-full animate-pulse items-center gap-3 rounded-2xl px-3 py-4"
         >
           <div class="rounded-lg bg-white p-[7px]">
             <UserIcon :size="18" />
@@ -37,7 +37,7 @@ const props = defineProps<{
         </div>
 
         <div
-          class="bg-surface-disable flex w-full animate-pulse items-center gap-3 rounded-2xl px-3 py-4 shadow-[0px_4px_12px_0px_#0A0A0A1A]"
+          class="bg-surface-disable shadow-card flex w-full animate-pulse items-center gap-3 rounded-2xl px-3 py-4"
         >
           <div class="rounded-lg bg-white p-[7px]">
             <SignIcon :size="18" />
@@ -56,7 +56,7 @@ const props = defineProps<{
       </div>
     </div>
 
-    <div class="border-t border-gray-300 py-2 text-center text-xs font-medium text-[#0A0A0A]">
+    <div class="text-black-700 border-t border-gray-300 py-2 text-center text-xs font-medium">
       Powered by <span class="text-link-400">Qiscus</span>
     </div>
   </div>

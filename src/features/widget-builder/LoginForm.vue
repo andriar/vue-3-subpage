@@ -18,8 +18,8 @@ import LoginForm from '@/components/ui/widget-preview/LoginForm.vue';
 import { useUploadSdkImage } from '@/composables/images/useUploadSdkImage';
 import WidgetFormLayout from '@/features/widget-builder/components/layout/WidgetFormLayout.vue';
 import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
-
 import { DEFAULT_IMAGE_PREVIEW } from '@/utils/constant/images';
+
 import DropdownItemInput from './components/form/DropdownItemInput.vue';
 import IconSelectInput from './components/form/IconSelectInput.vue';
 
@@ -30,11 +30,12 @@ interface AdditionalField {
   required: boolean;
   iconField?: string;
   options?: string[];
-};
+}
 
 const qiscusLiveChatStore = useQiscusLiveChatStore();
-const { loginFormState } = storeToRefs(useQiscusLiveChatStore());
 const { loading, data, error, upload } = useUploadSdkImage();
+const { channelState } = storeToRefs(useQiscusLiveChatStore());
+const { loginFormState } = storeToRefs(useQiscusLiveChatStore());
 
 const additionalField = reactive<AdditionalField>({
   type: '',
@@ -76,11 +77,16 @@ const resetAdditionalField = () => {
   additionalField.name = '';
   additionalField.placeholder = '';
   additionalField.required = false;
-  additionalField.iconField = '';
+  additionalField.iconField = 'Date';
   additionalField.options = [];
   // Reset edit mode
   isEditMode.value = false;
   editingIndex.value = null;
+};
+
+const closeModal = () => {
+  resetAdditionalField();
+  isOpenModal.value = false;
 };
 
 // Update this function to handle both add and edit
@@ -92,8 +98,7 @@ const addAdditionalFieldConfirm = () => {
     // Add mode: push new field
     loginFormState.value.extraFields.push({ ...additionalField });
   }
-  resetAdditionalField();
-  isOpenModal.value = false;
+  closeModal();
 };
 
 const getFieldOptions = (index: number) => {
@@ -165,65 +170,41 @@ watch(
 </script>
 
 <template>
-  <div class="flex w-full items-start justify-between gap-8 self-stretch">
+  <div class="flex w-full flex-col lg:flex-row items-start justify-between gap-8 self-stretch">
     <div class="flex flex-1 flex-col gap-8">
-      <WidgetFormLayout label="Login Form">
+      <WidgetFormLayout id="widget-form-layout" label="Login Form">
         <template #additional-info>
           <Banner intent="positive" type="outline">
-            Figma ipsum component variant main layer. Slice figjam select select pencil. Share mask
-            draft edit invite subtract rotate variant. Create subtract hand auto pen object.
-            Community figjam flatten.
+            The login form will be displayed first, unless the welcome dialogue or attention grabber
+            is enabled.
           </Banner>
         </template>
         <template #inputs>
-          <ImageInput
-            label="Brand Icon"
-            id="login-form-icon"
-            :isUploading="loading"
-            @upload="uploadImage"
-          >
+          <ImageInput v-if="!channelState.isChannelsEnabled" label="Brand Icon" id="login-form-icon"
+            :isUploading="loading" @upload="uploadImage" @error="(e) => (error = new Error(e))">
             <template #tips>
-              <div class="text-sm font-normal text-[#A0A0A0]">
+              <div class="text-sm font-normal text-gray-800">
                 We recommend an image of at least 360x360 pixels. You can upload images in JPG,
                 JPEG, or PNG format with a maximum size of 2MB.
               </div>
             </template>
+            <template #alert>
+              <Banner v-if="error" intent="negative" size="small">
+                <p>
+                  {{ error }}
+                </p>
+              </Banner>
+            </template>
           </ImageInput>
-          <TextArea
-            id="first-desc-login"
-            v-model="loginFormState.firstDescription"
-            label="First Descriptions"
-            :maxlength="50"
-          />
-          <TextArea
-            id="second-desc-login"
-            v-model="loginFormState.secondDescription"
-            label="Second Descriptions"
-            :maxlength="50"
-          />
-          <TextArea
-            id="subtitle-login"
-            v-model="loginFormState.formSubtitle"
-            label="Subtitle"
-            :maxlength="50"
-          />
-          <Input
-            id="button-form-login"
-            label="Button Form"
-            v-model="loginFormState.buttonText"
-            :maxlength="50"
-          />
-          <RadioInput
-            id="phone-number-login"
-            v-model="loginFormState.customerIdentifier"
-            label="Choose Customer Identifier"
-            :options="qiscusLiveChatStore.customerIdentifierOptions"
-          />
-          <Banner
-            v-if="loginFormState.customerIdentifier === 'phone'"
-            intent="positive"
-            type="outline"
-          >
+          <TextArea v-if="!channelState.isChannelsEnabled" id="first-desc-login"
+            v-model="loginFormState.firstDescription" label="First Descriptions" :maxlength="50" />
+          <TextArea v-if="!channelState.isChannelsEnabled" id="second-desc-login"
+            v-model="loginFormState.secondDescription" label="Second Descriptions" :maxlength="50" />
+          <TextArea id="subtitle-login" v-model="loginFormState.formSubtitle" label="Subtitle" :maxlength="50" />
+          <Input id="button-form-login" label="Button Form" v-model="loginFormState.buttonText" :maxlength="50" />
+          <RadioInput id="phone-number-login" v-model="loginFormState.customerIdentifier"
+            label="Choose Customer Identifier" :options="qiscusLiveChatStore.customerIdentifierOptions" />
+          <Banner v-if="loginFormState.customerIdentifier === 'phone'" intent="positive" type="outline">
             If you use phone number to login, we won't be able to send chat history and notes to the
             customer's email after the room is resolved.
           </Banner>
@@ -233,14 +214,8 @@ watch(
       <div class="flex flex-col gap-4 rounded-2xl border border-gray-300 bg-gray-200 p-6">
         <div class="flex w-full items-center justify-between">
           <span class="text-text-title text-base font-semibold">Additional Field</span>
-          <Button
-            id="add-more-field"
-            intent="flat"
-            type="button"
-            class="!px-0"
-            disableAnimation
-            @click="addAdditionalField"
-          >
+          <Button id="add-more-field" intent="flat" type="button" class="!px-0" disableAnimation
+            @click="addAdditionalField">
             <template #prefixIcon>
               <PlusIcon class="h-4 w-4" />
             </template>
@@ -248,15 +223,9 @@ watch(
           </Button>
         </div>
         <Divider v-if="loginFormState.extraFields?.length > 0 && loginFormState.extraFields" />
-        <ul
-          class="flex flex-col gap-6"
-          v-if="loginFormState.extraFields?.length > 0 && loginFormState.extraFields"
-        >
-          <li
-            v-for="(field, index) in loginFormState.extraFields"
-            :key="field.name"
-            class="flex items-center justify-between"
-          >
+        <ul class="flex flex-col gap-6" v-if="loginFormState.extraFields?.length > 0 && loginFormState.extraFields">
+          <li v-for="(field, index) in loginFormState.extraFields" :key="field.name"
+            class="flex items-center justify-between">
             <span class="text-text-title text-sm font-medium">{{ field.name }}</span>
             <DropdownMenu :options="getFieldOptions(index)" @select="handleFieldMenuSelect" />
           </li>
@@ -266,86 +235,52 @@ watch(
 
     <!-- PREVIEW -->
     <div class="bg-white-100 sticky top-20 z-40 flex flex-1 flex-col items-end gap-4 p-6">
-      <LoginForm
-        :title="loginFormState.firstDescription"
-        :subtitle="loginFormState.secondDescription"
-        :description="loginFormState.formSubtitle"
-        :buttonText="loginFormState.buttonText"
-        :fields="
-          loginFormState.extraFields.map((field) => ({
-            id: field.name,
-            icon: field.iconField || DEFAULT_IMAGE_PREVIEW.LOGIN_BRAND_ICON,
-            type: field.type === 'dropdown' ? 'select' : field.type,
-            label: field.name,
-            placeholder: field.placeholder,
-          }))
-        "
-      />
+      <LoginForm :isChannelEnabled="channelState.isChannelsEnabled" :title="loginFormState.firstDescription"
+        :subtitle="loginFormState.secondDescription" :description="loginFormState.formSubtitle"
+        :buttonText="loginFormState.buttonText" :customerIdentifier="loginFormState.customerIdentifier" :fields="loginFormState.extraFields.map((field) => ({
+          id: field.name,
+          icon: field.iconField || DEFAULT_IMAGE_PREVIEW.LOGIN_BRAND_ICON,
+          type: field.type === 'dropdown' ? 'select' : field.type,
+          label: field.name,
+          placeholder: field.placeholder,
+        }))
+          " />
       <div class="bg-surface-disable h-16 w-16 rounded-full" />
     </div>
   </div>
 
   <!-- Update the Modal title and confirmText based on mode -->
-  <Modal
-    :isOpen="isOpenModal"
-    @close="isOpenModal = false"
-    :confirmText="isEditMode ? 'Update Field' : 'Add Field'"
-    @confirm="addAdditionalFieldConfirm"
-  >
+  <Modal :isOpen="isOpenModal" @close="closeModal" @confirm="addAdditionalFieldConfirm">
     <template #title>
       {{ isEditMode ? 'Edit Additional Field' : 'Add Additional Field' }}
     </template>
     <template #content>
       <div class="mb-9 flex flex-col gap-2">
-        <Select
-          id="field-type"
-          label="Field Type"
-          :options="qiscusLiveChatStore.fieldTypeOptionsAdditionalField"
-          v-model="additionalField.type"
-        />
+        <Select id="field-type" label="Field Type" :options="qiscusLiveChatStore.fieldTypeOptionsAdditionalField"
+          v-model="additionalField.type" />
         <div v-if="additionalField.type !== ''" class="flex flex-col gap-6">
-          <Input
-            id="name-field"
-            label="Title"
-            placeholder="e,g: Address, Number Phone"
-            v-model="additionalField.name"
-          />
-          <Input
-            id="placeholder-field"
-            label="Placeholder"
-            placeholder="e,g: Type your address here"
-            v-model="additionalField.placeholder"
-          />
+          <Input id="name-field" label="Title" placeholder="e,g: Address, Number Phone"
+            v-model="additionalField.name" />
+          <Input id="placeholder-field" label="Placeholder" placeholder="e,g: Type your address here"
+            v-model="additionalField.placeholder" />
           <template v-if="additionalField.type === 'dropdown' && additionalField.options">
             <DropdownItemInput v-model="additionalField.options" />
           </template>
           <div class="my-2 flex items-center">
-            <Checkbox
-              id="required-field"
-              label="Set this field to required"
-              v-model="additionalField.required"
-            />
+            <Checkbox id="required-field" label="Set this field to required" v-model="additionalField.required" />
           </div>
-          <IconSelectInput
-            id="icon-field"
-            v-model="additionalField.iconField"
-            :icons="qiscusLiveChatStore.iconsAdditionalField"
-          />
+          <IconSelectInput id="icon-field" v-model="additionalField.iconField"
+            :icons="qiscusLiveChatStore.iconsAdditionalField" />
         </div>
       </div>
     </template>
     <template #footer>
-      <Button id="cancel-field" intent="secondary" size="small" @click="isOpenModal = false">
+      <Button id="cancel-field" intent="secondary" size="small" @click="closeModal">
         Cancel
       </Button>
-      <Button
-        :disabled="!isAdditionalFieldValid"
-        id="add-field"
-        intent="primary"
-        size="small"
-        @click="addAdditionalFieldConfirm"
-      >
-        {{ isEditMode ? 'Update Field' : 'Add Field' }}
+      <Button :disabled="!isAdditionalFieldValid" id="add-field" intent="primary" size="small"
+        @click="addAdditionalFieldConfirm">
+        {{ isEditMode ? 'Edit Field' : 'Add Field' }}
       </Button>
     </template>
   </Modal>

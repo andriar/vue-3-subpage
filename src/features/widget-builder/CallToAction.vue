@@ -11,6 +11,7 @@ import { useUploadSdkImage } from '@/composables/images/useUploadSdkImage';
 import { useSweetAlert } from '@/composables/useSweetAlert';
 import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
 
+import { Banner } from '@/components/common/common';
 import OptionalInput from './components/form/OptionalInput.vue';
 import WidgetFormLayout from './components/layout/WidgetFormLayout.vue';
 
@@ -86,59 +87,40 @@ watch(
 </script>
 
 <template>
-  <div class="flex w-full items-start gap-8 self-stretch">
+  <div class="flex flex-col lg:flex-row w-full items-start gap-8 self-stretch">
     <!-- Form Section -->
     <div class="flex w-full flex-1 flex-col gap-8">
-      <WidgetFormLayout label="Call to Action Button">
+      <WidgetFormLayout id="widget-form-layout" label="Call to Action Button">
         <template #additional-info> </template>
 
         <template #inputs>
-          <OptionalInput
-            id="with-text-switch"
-            label="With Text"
-            v-model="callToActionState.isWithText"
-          >
-            <Input
-              id="live-chat-button-text"
-              v-model="callToActionState.liveChatButtonText"
-              class="w-full"
-              label="Live Chat Button Text"
-              placeholder="Talk to us"
-              :maxlength="50"
-            />
+          <OptionalInput id="with-text-switch" label="With Text" v-model="callToActionState.isWithText">
+            <Input id="live-chat-button-text" v-model="callToActionState.liveChatButtonText" class="w-full"
+              label="Live Chat Button Text" placeholder="Talk to us" :maxlength="50" />
           </OptionalInput>
 
-          <OptionalInput
-            id="icon-on-cta"
-            label="Icon on Call to Action"
-            v-model="callToActionState.isWithIcon"
-          >
-            <ImageInput
-              label="Icon Image"
-              id="icon-image"
-              v-model="callToActionState.iconImage"
-              :isUploading="loading"
-              @upload="uploadImage"
-            >
+          <OptionalInput id="icon-on-cta" label="Icon on Call to Action" v-model="callToActionState.isWithIcon">
+            <ImageInput label="Icon Image" id="icon-image" v-model="callToActionState.iconImage" :isUploading="loading"
+              @upload="uploadImage" @error="(e) => (error = new Error(e))">
               <template #tips>
-                <div class="text-sm font-normal text-[#A0A0A0]">
+                <div class="text-sm font-normal text-gray-800">
                   We recommend an image of at least 360x360 pixels. You can upload images in JPG,
                   JPEG, or PNG format with a maximum size of 2MB.
                 </div>
               </template>
+              <template #alert>
+                <Banner v-if="error" intent="negative" size="small">
+                  <p>
+                    {{ error }}
+                  </p>
+                </Banner>
+              </template>
             </ImageInput>
           </OptionalInput>
 
-          <InputCustom
-            errorMessage="Something went wrong."
-            id="border-radius-input"
-            label="Border Radius"
-            v-model="callToActionState.borderRadius"
-            placeholder="Type your radius border, ex: 16 or 32"
-            type="number"
-            :maxlength="50"
-            :min="0"
-          >
+          <InputCustom errorMessage="Something went wrong." id="border-radius-input" label="Border Radius"
+            v-model="callToActionState.borderRadius" placeholder="Type your radius border, ex: 16 or 32" type="number"
+            :maxlength="50" :min="0">
             <template #append-button="{ disabled }">
               <div :class="{ 'cursor-not-allowed opacity-50': disabled }">
                 <span>Pixels</span>
@@ -154,12 +136,9 @@ watch(
       <WelcomingPageLoading />
 
       <!-- CTA Preview -->
-      <CallToAction
-        :imageUrl="callToActionState.iconImage"
-        :title="callToActionState.liveChatButtonText"
-        :isUsingTitle="callToActionState.isWithText"
-        :rounded="Number(callToActionState.borderRadius)"
-      />
+      <CallToAction :imageUrl="callToActionState.iconImage" :title="callToActionState.liveChatButtonText"
+        :isUsingTitle="callToActionState.isWithText" :isUsingIcon="callToActionState.isWithIcon"
+        :rounded="Number(callToActionState.borderRadius)" />
     </div>
   </div>
 </template>

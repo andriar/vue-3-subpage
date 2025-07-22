@@ -2,18 +2,8 @@
   <div :class="containerClasses()">
     <label v-if="label" :for="id" :class="computedLabelClasses">{{ label }}</label>
     <div :class="computedInputWrapperClasses">
-      <textarea
-        ref="textareaRef"
-        v-bind="$attrs"
-        :id="id"
-        :value="modelValue"
-        @input="onInput"
-        :placeholder="placeholder"
-        :class="computedInputClasses"
-        :disabled="disabled"
-        @keyup="adjustHeight"
-        rows="1"
-      />
+      <textarea ref="textareaRef" v-bind="$attrs" :id="id" :value="modelValue" @input="onInput"
+        :placeholder="placeholder" :class="computedInputClasses" :disabled="disabled" @keyup="adjustHeight" rows="1" />
     </div>
     <p v-if="error" class="text-danger mt-2 text-sm font-normal">{{ errorMessage }}</p>
   </div>
@@ -110,7 +100,7 @@ const inputClasses = cva(
   {
     variants: {
       disabled: {
-        true: 'cursor-not-allowed !text-[#A0A0A0] !bg-surface-disable',
+        true: 'cursor-not-allowed !text-gray-800 !bg-surface-disable',
       },
       error: {
         true: '!ring-1 !ring-danger focus:!ring-danger',

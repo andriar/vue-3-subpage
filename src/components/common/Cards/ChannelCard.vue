@@ -1,11 +1,10 @@
 <template>
   <div
     class="card bg-white-100 flex min-h-40 max-w-md cursor-pointer flex-col gap-3 rounded-2xl border border-gray-300 p-6 transition-colors duration-200 ease-in"
-    :class="channel.type"
-  >
+    :class="channel.type">
     <div class="z-10 flex items-center justify-between text-sm font-semibold">
       <div class="flex items-center gap-3">
-        <img class="h-10 w-10" :src="channel.icon" loading="lazy" />
+        <Image :src="channel.icon" alt="channel badge" :width="40" :height="40" />
         {{ channel.name }}
       </div>
       <Badge v-if="channel.status === 'new'" intent="positive">New</Badge>
@@ -18,6 +17,7 @@
 </template>
 <script setup lang="ts">
 import Badge from '@/components/common/Badge.vue';
+import Image from '../Image.vue';
 
 defineProps<{
   channel: {

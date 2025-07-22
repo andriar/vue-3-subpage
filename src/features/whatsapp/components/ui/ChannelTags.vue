@@ -29,10 +29,10 @@ const labels = computed(() => {
 
 const labelClass = (label: string) => {
     if (label === 'Marketing Optimization') {
-        return 'bg-[#F1F9EF] text-[#288C7A]';
+        return 'bg-positive-100 text-positive-400';
     }
     if (label === 'Coexistence') {
-        return 'bg-[#EEFAFE] text-[#56CCF2]';
+        return 'bg-progressive-100 text-progressive-400';
     }
     return '';
 }

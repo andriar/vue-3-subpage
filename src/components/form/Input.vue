@@ -2,16 +2,8 @@
   <div :class="containerClasses()">
     <label v-if="props.label" :for="id" :class="computedLabelClasses">{{ label }}</label>
     <div :class="computedInputWrapperClasses">
-      <input
-        v-bind="$attrs"
-        :id="id"
-        type="text"
-        :value="modelValue"
-        @input="onInput"
-        :placeholder="placeholder"
-        :class="computedInputClasses"
-        :disabled="disabled"
-      />
+      <input v-bind="$attrs" :id="id" type="text" :value="modelValue" @input="onInput" :placeholder="placeholder"
+        :class="computedInputClasses" :disabled="disabled" />
     </div>
     <p v-if="error" class="text-danger mt-2 text-sm font-normal">{{ errorMessage }}</p>
   </div>
@@ -25,7 +17,7 @@ interface Props {
   modelValue: string | number;
   label?: string;
   placeholder?: string;
-  id?: string;
+  id: string;
   disabled?: boolean;
   error?: boolean; // New prop for error state
   errorMessage?: string; // New prop for error message
@@ -85,7 +77,7 @@ const inputClasses = cva(
   {
     variants: {
       disabled: {
-        true: 'cursor-not-allowed !text-[#A0A0A0] !bg-surface-disable',
+        true: 'cursor-not-allowed !text-gray-800 !bg-surface-disable',
       },
       error: {
         true: '!ring-1 !ring-danger focus:!ring-danger', // Ensure input itself shows error if needed
