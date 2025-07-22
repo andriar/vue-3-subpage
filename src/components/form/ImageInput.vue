@@ -38,6 +38,9 @@
       <slot name="tips" />
     </div>
 
+    <!-- alert banner -->
+    <slot name="alert" />
+
     <!-- Hidden file input -->
     <input ref="fileInput" type="file" :id="id" :accept="acceptedFormats" @change="handleFileChange" class="hidden"
       :disabled="props.isUploading" />
@@ -65,7 +68,7 @@ interface Emits {
   (e: 'error', error: string): void;
 }
 
-const containerClasses = cva('space-y-1');
+const containerClasses = cva('space-y-3');
 
 const props = withDefaults(defineProps<Props>(), {
   label: '',

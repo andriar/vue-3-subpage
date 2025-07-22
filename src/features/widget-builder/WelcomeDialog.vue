@@ -134,12 +134,20 @@ watch(
       <WidgetFormLayout id="welcome-dialog" label="Welcome Dialogue" v-model="welcomeDialog" isSwitch>
         <template #inputs>
           <ImageInput label="Brand Icon" id="welcome-dialog-image" v-model="welcomeDialogState.brandIconWelcomeDialog"
-            :isUploading="brandIconUpload.loading.value" @upload="(file) => handleImageUpload(file, 'brandIcon')">
+            :isUploading="brandIconUpload.loading.value" @upload="(file) => handleImageUpload(file, 'brandIcon')"
+            @error="(e) => (brandIconUpload.error.value = new Error(e))">
             <template #tips>
               <div class="text-sm font-normal text-gray-800">
                 We recommend an image of at least 360x360 pixels. You can upload images in JPG,
                 JPEG, or PNG format with a maximum size of 2MB.
               </div>
+            </template>
+            <template #alert>
+              <Banner v-if="brandIconUpload.error.value" intent="negative" size="small">
+                <p>
+                  {{ brandIconUpload.error.value }}
+                </p>
+              </Banner>
             </template>
           </ImageInput>
           <TextArea id="first-desc-welcome" v-model="welcomeDialogState.firstDescriptionWelcomeDialog"
@@ -147,12 +155,20 @@ watch(
           <TextArea id="second-desc-welcome" v-model="welcomeDialogState.secondDescriptionWelcomeDialog"
             label="Welcome Message" :maxlength="50" />
           <ImageInput v-model="welcomeDialogState.actionIconWelcomeDialog" label="Icon" id="action-icon"
-            :isUploading="actionIconUpload.loading.value" @upload="(file) => handleImageUpload(file, 'actionIcon')">
+            :isUploading="actionIconUpload.loading.value" @upload="(file) => handleImageUpload(file, 'actionIcon')"
+            @error="(e) => (actionIconUpload.error.value = new Error(e))">
             <template #tips>
               <div class="text-sm font-normal text-gray-800">
                 We recommend an image of at least 360x360 pixels. You can upload images in JPG,
                 JPEG, or PNG format with a maximum size of 2MB.
               </div>
+            </template>
+            <template #alert>
+              <Banner v-if="actionIconUpload.error.value" intent="negative" size="small">
+                <p>
+                  {{ actionIconUpload.error.value }}
+                </p>
+              </Banner>
             </template>
           </ImageInput>
           <Input id="action-welcome" v-model="welcomeDialogState.actionDescriptionWelcomeDialog" label="Description"

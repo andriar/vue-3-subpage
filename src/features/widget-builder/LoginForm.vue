@@ -181,12 +181,19 @@ watch(
         </template>
         <template #inputs>
           <ImageInput v-if="!channelState.isChannelsEnabled" label="Brand Icon" id="login-form-icon"
-            :isUploading="loading" @upload="uploadImage">
+            :isUploading="loading" @upload="uploadImage" @error="(e) => (error = new Error(e))">
             <template #tips>
               <div class="text-sm font-normal text-gray-800">
                 We recommend an image of at least 360x360 pixels. You can upload images in JPG,
                 JPEG, or PNG format with a maximum size of 2MB.
               </div>
+            </template>
+            <template #alert>
+              <Banner v-if="error" intent="negative" size="small">
+                <p>
+                  {{ error }}
+                </p>
+              </Banner>
             </template>
           </ImageInput>
           <TextArea v-if="!channelState.isChannelsEnabled" id="first-desc-login"
