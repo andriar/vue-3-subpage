@@ -62,11 +62,11 @@ const handleAddChannel = (): void => {
 
   if (modelValue.value) {
     const updatedChannel: NormalizedOtherChannel = {
-      id: modelValue.value.id,
+      index: modelValue.value.index,
       ...formData,
       is_active: modelValue.value.is_active,
     };
-    qiscusLiveChatStore.updateChannel(modelValue.value.id, updatedChannel);
+    qiscusLiveChatStore.updateChannel(modelValue.value.index, updatedChannel);
   } else {
     qiscusLiveChatStore.addChannel({
       ...formData,

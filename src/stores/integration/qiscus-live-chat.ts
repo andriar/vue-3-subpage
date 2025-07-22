@@ -24,9 +24,9 @@ const { fetchConfigWidget, data: widgetConfigData } = useFetchConfigWidgetQiscus
 const normalizeChannelData = (channels: OtherChannel[]): NormalizedOtherChannel[] => {
   return channels.map((channel, index) => {
     // If channel doesn't have a valid ID, generate one
-    if (!channel.id || typeof channel.id !== 'number' || isNaN(channel.id)) {
+    if (!channel.index || typeof channel.index !== 'number' || isNaN(channel.index)) {
       return {
-        id: index + 1, // Use index + 1 as fallback ID
+        index: index + 1, // Use index + 1 as fallback ID
         badge_url: channel.badge_url,
         name: channel.name || '',
         url: channel.url || '',
@@ -38,7 +38,7 @@ const normalizeChannelData = (channels: OtherChannel[]): NormalizedOtherChannel[
     // If channel has valid ID, return as-is (it's already properly structured)
     return {
       ...channel,
-      id: channel.id,
+      index: channel.index,
     };
   });
 };
@@ -156,31 +156,31 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
   const addChannel = (channel: OtherChannel): void => {
     // Filter out invalid IDs and get valid numeric IDs
     const validIds = channelList.value
-      .map((item) => item.id)
+      .map((item) => item.index)
       .filter(
-        (id): id is number =>
-          typeof id === 'number' && !isNaN(id) && id !== null && id !== undefined
+        (index) =>
+          typeof index === 'number' && !isNaN(index) && index !== null && index !== undefined
       );
 
     // If no valid IDs exist, start from 1, otherwise get max + 1
     const newId = validIds.length > 0 ? Math.max(...validIds) + 1 : 1;
 
     const newChannel: NormalizedOtherChannel = {
-      id: newId,
+      index: newId,
       ...channel,
     };
     channelList.value.push(newChannel);
   };
 
   const removeChannel = (channelId: number) => {
-    const index = channelList.value.findIndex((channel) => channel.id === channelId);
+    const index = channelList.value.findIndex((channel) => channel.index === channelId);
     if (index !== -1) {
       channelList.value.splice(index, 1);
     }
   };
 
   const updateChannel = (channelId: number, updatedData: NormalizedOtherChannel): void => {
-    const index = channelList.value.findIndex((channel) => channel.id === channelId);
+    const index = channelList.value.findIndex((channel) => channel.index === channelId);
     if (index !== -1 && channelList.value[index]) {
       Object.assign(channelList.value[index], updatedData);
     }

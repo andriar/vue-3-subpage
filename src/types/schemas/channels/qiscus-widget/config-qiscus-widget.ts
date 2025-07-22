@@ -10,7 +10,7 @@ const OtherChannelSchema = z.object({
   url: z.string().optional(),
 
   // widget V5 new data
-  id: z.number().optional(),
+  index: z.number().optional(),
 });
 
 const ChannelWidgetSchema = z.object({
@@ -118,7 +118,7 @@ const QiscusWidgetConfigSchema = z.object({
 export const QiscusWidgetConfigResponseSchema = createApiResponseSchema(QiscusWidgetConfigSchema);
 
 export type OtherChannel = z.infer<typeof OtherChannelSchema>;
-export type NormalizedOtherChannel = Omit<OtherChannel, 'id'> & { id: number };
+export type NormalizedOtherChannel = Omit<OtherChannel, 'index'> & { index: number };
 
 export type QiscusWidgetConfigData = z.infer<typeof QiscusWidgetConfigDataSchema>;
 export type QiscusWidgetConfigResponse = z.infer<typeof QiscusWidgetConfigResponseSchema>;

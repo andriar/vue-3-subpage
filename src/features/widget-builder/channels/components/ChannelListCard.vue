@@ -23,20 +23,20 @@ const editingChannelData = ref<NormalizedOtherChannel | null>(null);
 
 // --- Method & function ---
 const getFieldOptions = (channelId: number) => {
-  const channel = qiscusLiveChatStore.channelList.find((ch) => ch.id === channelId);
+  const channel = qiscusLiveChatStore.channelList.find((channel) => channel.index === channelId);
   if (!channel) return [];
 
   return [
     {
       label: 'Edit Channel',
       value: 'edit',
-      action: () => editChannel(channel.id),
+      action: () => editChannel(channel.index),
     },
     {
       label: 'Delete Channel',
       value: 'delete',
       class: 'text-red-600',
-      action: () => deleteChannel(channel.id),
+      action: () => deleteChannel(channel.index),
     },
   ];
 };
@@ -59,8 +59,8 @@ const handleDropdownToggle = (channelId: number, isOpen: boolean) => {
 };
 
 const editChannel = (channelId: number) => {
-  const channel = qiscusLiveChatStore.channelList.find((ch) => ch.id === channelId);
-  if (channel && channel.id) {
+  const channel = qiscusLiveChatStore.channelList.find((channel) => channel.index === channelId);
+  if (channel && channel.index) {
     editingChannelData.value = { ...channel };
     isModalOpen.value = true;
   }
@@ -119,7 +119,7 @@ onUnmounted(() => {
       >
         <div
           v-for="channel in qiscusLiveChatStore.channelList"
-          :key="channel.id"
+          :key="channel.index"
           class="flex w-full items-center gap-4"
         >
           <div class="flex w-full items-center gap-4">
@@ -142,10 +142,10 @@ onUnmounted(() => {
 
             <!-- More Button with Dropdown -->
             <DropdownMenu
-              :options="getFieldOptions(channel.id)"
-              :isOpen="activeDropdown === channel.id"
-              @open="handleDropdownOpen(channel.id)"
-              @toggle="(isOpen) => handleDropdownToggle(channel.id, isOpen)"
+              :options="getFieldOptions(channel.index)"
+              :isOpen="activeDropdown === channel.index"
+              @open="handleDropdownOpen(channel.index)"
+              @toggle="(isOpen) => handleDropdownToggle(channel.index, isOpen)"
             />
           </div>
         </div>
