@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { computed, reactive, ref, watch } from 'vue';
+import { computed, reactive, ref } from 'vue';
 
 import Banner from '@/components/common/Banner.vue';
 import Button from '@/components/common/Button.vue';
@@ -39,9 +39,9 @@ const additionalField = reactive<IAdditionalField>({
 });
 
 const isOpenModal = ref(false);
-// Add these new reactive variables
 const isEditMode = ref(false);
 const editingIndex = ref<number | null>(null);
+const activeDropdown = ref<number | null>(null);
 
 // Form validation for additional field
 const isAdditionalFieldValid = computed(() => {
@@ -81,13 +81,10 @@ const closeModal = () => {
   isOpenModal.value = false;
 };
 
-// Update this function to handle both add and edit
 const addAdditionalFieldConfirm = () => {
   if (isEditMode.value && editingIndex.value !== null) {
-    // Edit mode: replace the existing field
     loginFormState.value.extraFields[editingIndex.value] = { ...additionalField };
   } else {
-    // Add mode: push new field
     loginFormState.value.extraFields.push({ ...additionalField });
   }
   closeModal();
@@ -112,7 +109,23 @@ const getFieldOptions = (index: number) => {
   ];
 };
 
-// Update editField to set edit mode
+const closeAllDropdowns = () => {
+  activeDropdown.value = null;
+};
+
+const handleDropdownOpen = (index: number) => {
+  activeDropdown.value = index;
+};
+
+const handleDropdownToggle = (index: number, isOpen: boolean) => {
+  if (isOpen) {
+    activeDropdown.value = index;
+  } else if (activeDropdown.value === index) {
+    activeDropdown.value = null;
+  }
+};
+
+// Update editField to close dropdowns
 const editField = (field: IAdditionalField) => {
   // Find the index of the field being edited
   const index = loginFormState.value.extraFields.findIndex(
@@ -130,15 +143,12 @@ const editField = (field: IAdditionalField) => {
     additionalField.iconField = field.iconField || '';
     additionalField.options = field.options ? [...field.options] : [];
   }
+  closeAllDropdowns();
 };
 
 const deleteField = (index: number) => {
   loginFormState.value.extraFields.splice(index, 1);
-};
-
-const handleFieldMenuSelect = (option: any) => {
-  // Actions are handled in the option.action function
-  console.log('Selected:', option);
+  closeAllDropdowns();
 };
 
 const uploadImage = async (file: File) => {
@@ -149,20 +159,10 @@ const uploadImage = async (file: File) => {
     console.error(error.value);
   }
 };
-
-watch(
-  () => additionalField.iconField,
-  (newIcon, oldIcon) => {
-    if (newIcon !== oldIcon) {
-      console.log('User selected icon:', newIcon);
-      // console.log('Previous icon:', oldIcon);
-    }
-  }
-);
 </script>
 
 <template>
-  <div class="flex w-full flex-col lg:flex-row items-start justify-between gap-8 self-stretch">
+  <div class="flex w-full flex-col items-start justify-between gap-8 self-stretch lg:flex-row">
     <div class="flex flex-1 flex-col gap-8">
       <WidgetFormLayout id="widget-form-layout" label="Login Form">
         <template #additional-info>
@@ -172,8 +172,14 @@ watch(
           </Banner>
         </template>
         <template #inputs>
-          <ImageInput v-if="!channelState.isChannelsEnabled" label="Brand Icon" id="login-form-icon"
-            :isUploading="loading" @upload="uploadImage" @error="(e) => (error = new Error(e))">
+          <ImageInput
+            v-if="!channelState.isChannelsEnabled"
+            label="Brand Icon"
+            id="login-form-icon"
+            :isUploading="loading"
+            @upload="uploadImage"
+            @error="(e) => (error = new Error(e))"
+          >
             <template #tips>
               <div class="text-sm font-normal text-gray-800">
                 We recommend an image of at least 360x360 pixels. You can upload images in JPG,
@@ -188,15 +194,43 @@ watch(
               </Banner>
             </template>
           </ImageInput>
-          <TextArea v-if="!channelState.isChannelsEnabled" id="first-desc-login"
-            v-model="loginFormState.firstDescription" label="First Descriptions" :maxlength="50" />
-          <TextArea v-if="!channelState.isChannelsEnabled" id="second-desc-login"
-            v-model="loginFormState.secondDescription" label="Second Descriptions" :maxlength="50" />
-          <TextArea id="subtitle-login" v-model="loginFormState.formSubtitle" label="Subtitle" :maxlength="50" />
-          <Input id="button-form-login" label="Button Form" v-model="loginFormState.buttonText" :maxlength="50" />
-          <RadioInput id="phone-number-login" v-model="loginFormState.customerIdentifier"
-            label="Choose Customer Identifier" :options="qiscusLiveChatStore.customerIdentifierOptions" />
-          <Banner v-if="loginFormState.customerIdentifier === 'phone'" intent="positive" type="outline">
+          <TextArea
+            v-if="!channelState.isChannelsEnabled"
+            id="first-desc-login"
+            v-model="loginFormState.firstDescription"
+            label="First Descriptions"
+            :maxlength="50"
+          />
+          <TextArea
+            v-if="!channelState.isChannelsEnabled"
+            id="second-desc-login"
+            v-model="loginFormState.secondDescription"
+            label="Second Descriptions"
+            :maxlength="50"
+          />
+          <TextArea
+            id="subtitle-login"
+            v-model="loginFormState.formSubtitle"
+            label="Subtitle"
+            :maxlength="50"
+          />
+          <Input
+            id="button-form-login"
+            label="Button Form"
+            v-model="loginFormState.buttonText"
+            :maxlength="50"
+          />
+          <RadioInput
+            id="phone-number-login"
+            v-model="loginFormState.customerIdentifier"
+            label="Choose Customer Identifier"
+            :options="qiscusLiveChatStore.customerIdentifierOptions"
+          />
+          <Banner
+            v-if="loginFormState.customerIdentifier === 'phone'"
+            intent="positive"
+            type="outline"
+          >
             If you use phone number to login, we won't be able to send chat history and notes to the
             customer's email after the room is resolved.
           </Banner>
@@ -206,8 +240,14 @@ watch(
       <div class="flex flex-col gap-4 rounded-2xl border border-gray-300 bg-gray-200 p-6">
         <div class="flex w-full items-center justify-between">
           <span class="text-text-title text-base font-semibold">Additional Field</span>
-          <Button id="add-more-field" intent="flat" type="button" class="!px-0" disableAnimation
-            @click="addAdditionalField">
+          <Button
+            id="add-more-field"
+            intent="flat"
+            type="button"
+            class="!px-0"
+            disableAnimation
+            @click="addAdditionalField"
+          >
             <template #prefixIcon>
               <PlusIcon class="h-4 w-4" />
             </template>
@@ -215,11 +255,22 @@ watch(
           </Button>
         </div>
         <Divider v-if="loginFormState.extraFields?.length > 0 && loginFormState.extraFields" />
-        <ul class="flex flex-col gap-6" v-if="loginFormState.extraFields?.length > 0 && loginFormState.extraFields">
-          <li v-for="(field, index) in loginFormState.extraFields" :key="field.name"
-            class="flex items-center justify-between">
+        <ul
+          class="flex flex-col gap-6"
+          v-if="loginFormState.extraFields?.length > 0 && loginFormState.extraFields"
+        >
+          <li
+            v-for="(field, index) in loginFormState.extraFields"
+            :key="field.name"
+            class="flex items-center justify-between"
+          >
             <span class="text-text-title text-sm font-medium">{{ field.name }}</span>
-            <DropdownMenu :options="getFieldOptions(index)" @select="handleFieldMenuSelect" />
+            <DropdownMenu
+              :options="getFieldOptions(index)"
+              :isOpen="activeDropdown === index"
+              @open="handleDropdownOpen(index)"
+              @toggle="(isOpen) => handleDropdownToggle(index, isOpen)"
+            />
           </li>
         </ul>
       </div>
@@ -227,16 +278,23 @@ watch(
 
     <!-- PREVIEW -->
     <div class="bg-white-100 sticky top-20 z-40 flex flex-1 flex-col items-end gap-4 p-6">
-      <LoginForm :isChannelEnabled="channelState.isChannelsEnabled" :title="loginFormState.firstDescription"
-        :subtitle="loginFormState.secondDescription" :description="loginFormState.formSubtitle"
-        :buttonText="loginFormState.buttonText" :customerIdentifier="loginFormState.customerIdentifier" :fields="loginFormState.extraFields.map((field) => ({
-          id: field.name,
-          icon: field.iconField || DEFAULT_IMAGE_PREVIEW.LOGIN_BRAND_ICON,
-          type: field.type === 'dropdown' ? 'select' : field.type,
-          label: field.name,
-          placeholder: field.placeholder,
-        }))
-          " />
+      <LoginForm
+        :isChannelEnabled="channelState.isChannelsEnabled"
+        :title="loginFormState.firstDescription"
+        :subtitle="loginFormState.secondDescription"
+        :description="loginFormState.formSubtitle"
+        :buttonText="loginFormState.buttonText"
+        :customerIdentifier="loginFormState.customerIdentifier"
+        :fields="
+          loginFormState.extraFields.map((field) => ({
+            id: field.name,
+            icon: field.iconField || DEFAULT_IMAGE_PREVIEW.LOGIN_BRAND_ICON,
+            type: field.type === 'dropdown' ? 'select' : field.type,
+            label: field.name,
+            placeholder: field.placeholder,
+          }))
+        "
+      />
       <div class="bg-surface-disable h-16 w-16 rounded-full" />
     </div>
   </div>
@@ -248,21 +306,40 @@ watch(
     </template>
     <template #content>
       <div class="mb-9 flex flex-col gap-2">
-        <Select id="field-type" label="Field Type" :options="qiscusLiveChatStore.fieldTypeOptionsAdditionalField"
-          v-model="additionalField.type" />
+        <Select
+          id="field-type"
+          label="Field Type"
+          :options="qiscusLiveChatStore.fieldTypeOptionsAdditionalField"
+          v-model="additionalField.type"
+        />
         <div v-if="additionalField.type !== ''" class="flex flex-col gap-6">
-          <Input id="name-field" label="Title" placeholder="e,g: Address, Number Phone"
-            v-model="additionalField.name" />
-          <Input id="placeholder-field" label="Placeholder" placeholder="e,g: Type your address here"
-            v-model="additionalField.placeholder" />
+          <Input
+            id="name-field"
+            label="Title"
+            placeholder="e,g: Address, Number Phone"
+            v-model="additionalField.name"
+          />
+          <Input
+            id="placeholder-field"
+            label="Placeholder"
+            placeholder="e,g: Type your address here"
+            v-model="additionalField.placeholder"
+          />
           <template v-if="additionalField.type === 'dropdown' && additionalField.options">
             <DropdownItemInput v-model="additionalField.options" />
           </template>
           <div class="my-2 flex items-center">
-            <Checkbox id="required-field" label="Set this field to required" v-model="additionalField.required" />
+            <Checkbox
+              id="required-field"
+              label="Set this field to required"
+              v-model="additionalField.required"
+            />
           </div>
-          <IconSelectInput id="icon-field" v-model="additionalField.iconField"
-            :icons="qiscusLiveChatStore.iconsAdditionalField" />
+          <IconSelectInput
+            id="icon-field"
+            v-model="additionalField.iconField"
+            :icons="qiscusLiveChatStore.iconsAdditionalField"
+          />
         </div>
       </div>
     </template>
@@ -270,8 +347,13 @@ watch(
       <Button id="cancel-field" intent="secondary" size="small" @click="closeModal">
         Cancel
       </Button>
-      <Button :disabled="!isAdditionalFieldValid" id="add-field" intent="primary" size="small"
-        @click="addAdditionalFieldConfirm">
+      <Button
+        :disabled="!isAdditionalFieldValid"
+        id="add-field"
+        intent="primary"
+        size="small"
+        @click="addAdditionalFieldConfirm"
+      >
         {{ isEditMode ? 'Edit Field' : 'Add Field' }}
       </Button>
     </template>
