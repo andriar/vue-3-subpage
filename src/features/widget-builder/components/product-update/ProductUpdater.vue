@@ -12,7 +12,7 @@
       ]">
         <div v-if="animationData.length === 0"
           class="flex items-center justify-center bg-white rounded-2xl overflow-hidden min-w-[850px] min-h-[380px]">
-          <div class="text-gray-500">Loading animations...</div>
+          <div class="text-gray-500 animate-pulse">Loading animations...</div>
         </div>
         <LottieCarousel v-if="animationData.length > 0" :animationData="animationData">
           <template #footer>
@@ -35,6 +35,7 @@
 
 <script setup lang="ts">
 import LottieCarousel from '@/components/common/Carousel/LottieCarousel.vue';
+import { Button, Checkbox } from '@/components/common/common';
 import { computed, onMounted, ref } from 'vue';
 
 

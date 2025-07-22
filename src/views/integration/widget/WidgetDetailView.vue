@@ -37,7 +37,7 @@
     </div>
 
     <!-- product update -->
-    <ProductUpdater :is-open="true" @cancel="handleCancelProductUpdate" @update="handleUpdateProductUpdate"
+    <ProductUpdater :is-open="isProductUpdateOpen" @cancel="handleCancelProductUpdate" @update="handleUpdateProductUpdate"
       :loading="loadingUpdateWidget" />
   </div>
 </template>
@@ -339,7 +339,7 @@ async function handleChangeSecurity(isSecure: boolean, oldValueIsSecure: boolean
 const { update: updateWidget, error: errorUpdateWidget, loading: loadingUpdateWidget } = useUpdateQiscus();
 
 const isProductUpdateOpen = computed(() => {
-  return activeTab.value === 'Live Chat Builder' && parseInt(widget.value?.widget_version || '0') < 5;
+  return activeTab.value === 'Live Chat Builder' && parseInt(widget.value?.widget_version || '5') < 5;
 });
 
 const handleCancelProductUpdate = () => {

@@ -50,7 +50,7 @@ const WelcomeDialogSchema = z.object({
   attentionGrabberStatus: z.boolean(),
   grabberImage: z.boolean(),
   grabberTextStatus: z.boolean(),
-  attentionGrabberText: z.string(),
+  attentionGrabberText: z.string().nullable(),
   grabberTimeout: z.coerce.number(),
   attentionGrabberImage: z.url(),
 
@@ -73,14 +73,14 @@ const CalltoActionSchema = z.object({
 
 const ChannelSchema = z.object({
   isChannelWidgetEnabled: z.boolean(),
-  channel_widget: ChannelWidgetSchema,
+  channel_widget: ChannelWidgetSchema.nullable(),
 });
 
 const LoginFormSchema = z.object({
   formGreet: z.string(),
   formSubtitle: z.string(),
   buttonText: z.string(),
-  extra_fields: ExtraFieldSchema,
+  extra_fields: ExtraFieldSchema.nullable(),
   customerIdentifierInputType: z.string(),
 
   // widget V5 new data
