@@ -5,24 +5,48 @@ import { reactive, ref } from 'vue';
 
 import { qiscusApi } from '@/api/channels';
 import type { IconName } from '@/components/icons/Icon.vue';
-import type {
-  IWidgetChannel,
-  WidgetChannelCreateData,
-  WidgetChannelUpdateData,
-} from '@/features/widget-builder/channels/channels';
+import { useFetchConfigWidgetQiscus } from '@/composables/channels/qiscus/widget/useFetchConfigWidget';
 import type { IWidgetConfigPayload } from '@/types/channels';
 import type {
   ICallToActionState,
   IChatFormState,
   ILoginFormState,
   IWelcomeDialogState,
-  IWidgetVariables,
 } from '@/types/live-chat';
+import type {
+  NormalizedOtherChannel,
+  OtherChannel,
+} from '@/types/schemas/channels/qiscus-widget/config-qiscus-widget';
 import { CHANNEL_BADGE_URL } from '@/utils/constant/channels';
 import { DEFAULT_IMAGE_PREVIEW } from '@/utils/constant/images';
 
+const { fetchConfigWidget, data: widgetConfigData } = useFetchConfigWidgetQiscus();
+
+// Add this helper function before the store definition
+const normalizeChannelData = (channels: OtherChannel[]): NormalizedOtherChannel[] => {
+  return channels.map((channel, index) => {
+    // If channel doesn't have a valid ID, generate one
+    if (!channel.index || typeof channel.index !== 'number' || isNaN(channel.index)) {
+      return {
+        index: index + 1, // Use index + 1 as fallback ID
+        badge_url: channel.badge_url,
+        name: channel.name || '',
+        url: channel.url || '',
+        is_enable: channel.is_enable || false,
+        is_active: channel.is_active,
+      };
+    }
+
+    // If channel has valid ID, return as-is (it's already properly structured)
+    return {
+      ...channel,
+      index: channel.index,
+    };
+  });
+};
+
 export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () => {
-  const channelList = ref<IWidgetChannel[]>([]);
+  const channelList = ref<NormalizedOtherChannel[]>([]);
 
   const colorWidgetState = ref<string>('#01416C');
   const errorPostWidgetConfig = ref<any>();
@@ -131,90 +155,116 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
   // GETTERS
 
   // ACTIONS
-  const addChannel = (channel: WidgetChannelCreateData): void => {
-    const newId = Math.max(...channelList.value.map((item) => item.id), 0) + 1;
-    const newChannel: IWidgetChannel = {
-      id: newId,
+  const addChannel = (channel: OtherChannel): void => {
+    // Filter out invalid IDs and get valid numeric IDs
+    const validIds = channelList.value
+      .map((item) => item.index)
+      .filter(
+        (index) =>
+          typeof index === 'number' && !isNaN(index) && index !== null && index !== undefined
+      );
+
+    // If no valid IDs exist, start from 1, otherwise get max + 1
+    const newId = validIds.length > 0 ? Math.max(...validIds) + 1 : 1;
+
+    const newChannel: NormalizedOtherChannel = {
+      index: newId,
       ...channel,
     };
     channelList.value.push(newChannel);
   };
 
   const removeChannel = (channelId: number) => {
-    const index = channelList.value.findIndex((channel) => channel.id === channelId);
+    const index = channelList.value.findIndex((channel) => channel.index === channelId);
     if (index !== -1) {
       channelList.value.splice(index, 1);
     }
   };
 
-  const updateChannel = (channelId: number, updatedData: WidgetChannelUpdateData): void => {
-    const index = channelList.value.findIndex((channel) => channel.id === channelId);
+  const updateChannel = (channelId: number, updatedData: NormalizedOtherChannel): void => {
+    const index = channelList.value.findIndex((channel) => channel.index === channelId);
     if (index !== -1 && channelList.value[index]) {
       Object.assign(channelList.value[index], updatedData);
     }
   };
 
+  const populateWelcomeDialogData = () => {
+    welcomeDialogState.isWelcomeDialog = widgetConfigData.value?.welcomeMessageStatus ?? false;
+    welcomeDialogState.brandIconWelcomeDialog = widgetConfigData.value?.welcomeBrandIcon ?? ''; //=> New Data Widget V5
+    welcomeDialogState.firstDescriptionWelcomeDialog =
+      widgetConfigData.value?.welcomeGreetingText ?? ''; //=> New Data Widget V5
+    welcomeDialogState.secondDescriptionWelcomeDialog = widgetConfigData.value?.welcomeText ?? '';
+    welcomeDialogState.actionDescriptionWelcomeDialog =
+      widgetConfigData.value?.welcomeActionDescription ?? ''; //=> New Data Widget V5
+    welcomeDialogState.actionIconWelcomeDialog = widgetConfigData.value?.welcomeActionIcon ?? ''; //=> New Data Widget V5
+    welcomeDialogState.welcomeTimeout = widgetConfigData.value?.welcomeTimeout ?? '';
+    welcomeDialogState.openAtStart = widgetConfigData.value?.openAtStart ?? false;
+    welcomeDialogState.isAttentionGrabber = widgetConfigData.value?.attentionGrabberStatus ?? false;
+    welcomeDialogState.isAttentionGrabberImage = widgetConfigData.value?.grabberImage ?? false;
+    welcomeDialogState.isAttentionGrabberText = widgetConfigData.value?.grabberTextStatus ?? false;
+    welcomeDialogState.attentionGrabberText = widgetConfigData.value?.attentionGrabberText ?? '';
+    welcomeDialogState.grabberTimeout = widgetConfigData.value?.grabberTimeout ?? null;
+    welcomeDialogState.attentionGrabberImage = widgetConfigData.value?.attentionGrabberImage ?? '';
+  };
+
+  const populateCallToActionData = () => {
+    callToActionState.isWithText = widgetConfigData.value?.buttonHasText ?? false;
+    callToActionState.liveChatButtonText = widgetConfigData.value?.loginFormButtonLabel ?? '';
+    //
+    callToActionState.isWithIcon = widgetConfigData.value?.buttonHasIcon ?? false;
+    callToActionState.iconImage = widgetConfigData.value?.buttonIcon ?? '';
+    //
+    callToActionState.borderRadius = widgetConfigData.value?.borderRadius ?? ''; //=> New Data Widget V5
+  };
+
+  const populateChannelWidgetData = () => {
+    channelState.isChannelsEnabled = widgetConfigData.value?.isChannelWidgetEnabled ?? false;
+    channelState.previewTitle = widgetConfigData.value?.channel_widget.title ?? '';
+    channelState.previewSubtitle = widgetConfigData.value?.channel_widget.subtitle ?? '';
+    //
+    channelState.isQiscusLiveChat =
+      widgetConfigData.value?.channel_widget.live_channel.is_enable ?? false;
+    channelState.previewLiveChatName =
+      widgetConfigData.value?.channel_widget.live_channel.name ?? '';
+    channelState.channelBadgeIcon =
+      widgetConfigData.value?.channel_widget.live_channel.badge_url ?? '';
+    //
+    channelList.value = normalizeChannelData(
+      widgetConfigData.value?.channel_widget.other_channel ?? []
+    );
+    //
+    channelState.previewIntroduction = widgetConfigData.value?.channel_widget.introduction ?? ''; //=> New Data Widget V5
+  };
+
+  const populateLoginFormData = () => {
+    loginFormState.firstDescription = widgetConfigData.value?.formGreet ?? '';
+    loginFormState.formSubtitle = widgetConfigData.value?.formSubtitle ?? '';
+    loginFormState.buttonText = widgetConfigData.value?.buttonText ?? '';
+    loginFormState.extraFields = widgetConfigData.value?.extra_fields ?? [];
+    loginFormState.customerIdentifier = widgetConfigData.value?.customerIdentifierInputType ?? '';
+
+    loginFormState.secondDescription = widgetConfigData.value?.formSecondGreet ?? ''; //=> New Data Widget V5
+    loginFormState.brandLogo = widgetConfigData.value?.loginBrandLogo ?? ''; //=> New Data Widget V5
+  };
+
+  const populateChatFormData = () => {
+    chatFormState.customerServiceName = widgetConfigData.value?.customerServiceName ?? '';
+    chatFormState.customerServiceAvatar = widgetConfigData.value?.customerServiceAvatar ?? '';
+  };
+  const populateColorWidgetData = () => {
+    colorWidgetState.value = widgetConfigData.value?.colorWidget ?? ''; //=> New Data Widget V5
+  };
+
   const getWidgetConfig = async (appId: string, channelId: string) => {
     try {
-      const { data } = await qiscusApi.getWidgetConfig(appId, channelId);
-      if (data) {
-        const widget: IWidgetVariables = data.data.widget.variables;
-        // set state welcome dialog
-        welcomeDialogState.isWelcomeDialog = widget.welcomeMessageStatus;
-        welcomeDialogState.brandIconWelcomeDialog =
-          widget.welcomeBrandIcon ?? welcomeDialogState.brandIconWelcomeDialog;
-        welcomeDialogState.firstDescriptionWelcomeDialog =
-          widget.welcomeGreetingText ?? welcomeDialogState.firstDescriptionWelcomeDialog;
-        welcomeDialogState.secondDescriptionWelcomeDialog = widget.welcomeText;
-        welcomeDialogState.actionDescriptionWelcomeDialog =
-          widget.welcomeActionDescription ?? welcomeDialogState.actionDescriptionWelcomeDialog;
-        welcomeDialogState.actionIconWelcomeDialog =
-          widget.welcomeActionIcon ?? welcomeDialogState.actionIconWelcomeDialog;
-        welcomeDialogState.welcomeTimeout = widget.welcomeTimeout;
-        welcomeDialogState.openAtStart = widget.openAtStart;
-        welcomeDialogState.isAttentionGrabber = widget.attentionGrabberStatus;
-        welcomeDialogState.isAttentionGrabberImage = widget.grabberImage;
-        welcomeDialogState.isAttentionGrabberText = widget.grabberTextStatus;
-        welcomeDialogState.attentionGrabberText = widget.attentionGrabberText;
-        welcomeDialogState.grabberTimeout = widget.grabberTimeout;
-        welcomeDialogState.attentionGrabberImage = widget.attentionGrabberImage;
-
-        // set state call to action
-        callToActionState.isWithText = widget.buttonHasText;
-        callToActionState.liveChatButtonText = widget.loginFormButtonLabel;
-        //
-        callToActionState.isWithIcon = widget.buttonHasIcon;
-        callToActionState.iconImage = widget.buttonIcon;
-        //
-        callToActionState.borderRadius = widget.borderRadius;
-
-        // set state channel widget
-        channelState.isChannelsEnabled = widget.isChannelWidgetEnabled;
-        channelState.previewTitle = widget.channel_widget.title;
-        channelState.previewSubtitle = widget.channel_widget.subtitle;
-        channelState.previewIntroduction = widget.channel_widget.introduction;
-        //
-        channelState.isQiscusLiveChat = widget.channel_widget.live_channel.is_enable;
-        channelState.previewLiveChatName = widget.channel_widget.live_channel.name;
-        channelState.channelBadgeIcon = widget.channel_widget.live_channel.badge_url || '';
-        //
-        channelList.value = widget.channel_widget.other_channel;
-
-        // set state login form
-        loginFormState.brandLogo = widget.loginBrandLogo ?? loginFormState.brandLogo;
-        loginFormState.firstDescription = widget.formGreet;
-        loginFormState.secondDescription = widget.formSecondGreet;
-        loginFormState.formSubtitle = widget.formSubtitle;
-        loginFormState.buttonText = widget.buttonText;
-        loginFormState.customerIdentifier = widget.customerIdentifierInputType;
-        loginFormState.extraFields = widget.extra_fields ?? [];
-
-        // set state chat form
-        chatFormState.customerServiceName = widget.customerServiceName;
-        chatFormState.customerServiceAvatar = widget.customerServiceAvatar;
-
-        // set state color
-        colorWidgetState.value = widget.colorWidget;
+      await fetchConfigWidget(appId, channelId);
+      if (widgetConfigData) {
+        populateWelcomeDialogData();
+        populateCallToActionData();
+        populateChannelWidgetData();
+        populateLoginFormData();
+        populateChatFormData();
+        populateColorWidgetData();
       }
     } catch (error) {
       console.error(error);

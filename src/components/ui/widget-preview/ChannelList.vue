@@ -4,6 +4,7 @@ import { computed } from 'vue';
 import ButtonIcon from '@/components/common/ButtonIcon.vue';
 import { Image } from '@/components/common/common';
 import { ChatIcon, ChevronLeftIcon, ChevronRightIcon } from '@/components/icons';
+import type { NormalizedOtherChannel } from '@/types/schemas/channels/qiscus-widget/config-qiscus-widget';
 import { CHANNEL_BADGE_URL } from '@/utils/constant/channels';
 
 interface Props {
@@ -13,10 +14,7 @@ interface Props {
   introduction: string;
   previewLiveChatName?: string;
   enableQiscusLiveChat?: boolean;
-  channels: {
-    label: string;
-    iconUrl: string;
-  }[];
+  channels: NormalizedOtherChannel[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -26,12 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
   introduction: 'Welcome to Qiscus!',
   previewLiveChatName: 'Qiscus Live Chat',
   enableQiscusLiveChat: false,
-  channels: () => [
-    {
-      label: 'Live Chat',
-      iconUrl: CHANNEL_BADGE_URL.qiscus,
-    },
-  ],
+  channels: () => [],
 });
 
 const finalImageUrl = computed(() => {
@@ -80,13 +73,13 @@ const finalImageUrl = computed(() => {
       <!-- Channel List Item -->
       <button
         v-for="action in props.channels"
-        :key="action.label"
+        :key="action.name"
         class="hover:bg-surface-primary-blue/5 shadow-card flex cursor-pointer justify-between rounded-xl p-4 px-4"
       >
         <div class="flex min-w-0 flex-1 items-center gap-2">
           <Image
-            v-if="action.iconUrl"
-            :src="action.iconUrl"
+            v-if="action.badge_url"
+            :src="action.badge_url"
             :width="24"
             :height="24"
             alt="icon channel"
@@ -94,7 +87,7 @@ const finalImageUrl = computed(() => {
           />
           <ChatIcon :size="24" v-else />
           <div class="min-w-0 flex-1 text-start text-sm font-medium break-words">
-            {{ action.label }}
+            {{ action.name }}
           </div>
         </div>
 
