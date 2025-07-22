@@ -57,6 +57,8 @@
 <script setup lang="ts">
 import animationData_1 from '@/assets/lottie/product-update-hero_1.json';
 import animationData_2 from '@/assets/lottie/product-update-hero_2.json';
+import animationData_3 from '@/assets/lottie/product-update-hero_3.json';
+import animationData_4 from '@/assets/lottie/product-update-hero_4.json';
 import { Button, Checkbox } from '@/components/common/common';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { Vue3Lottie } from 'vue3-lottie';
@@ -67,7 +69,9 @@ const animationRefs = ref<any[]>([]);
 
 const ANIMATION_DATA = [
     {data: animationData_1}, 
-    {data: animationData_2}
+    {data: animationData_2},
+    {data: animationData_3},
+    {data: animationData_4}
 ];
 
 // Function to set animation refs dynamically

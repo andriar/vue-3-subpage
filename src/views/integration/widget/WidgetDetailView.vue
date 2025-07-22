@@ -273,7 +273,7 @@ async function handleChangeAutoResponder(isEnabled: boolean) {
 const {update: updateWidget, error: errorUpdateWidget, loading: loadingUpdateWidget} = useUpdateQiscus();
 
 const isProductUpdateOpen = computed(() => {
-  return activeTab.value === 'Live Chat Builder' && widget.value?.widget_version != '5';
+  return activeTab.value === 'Live Chat Builder' && parseInt(widget.value?.widget_version || '0') < 5;
 });
 
 const handleCancelProductUpdate = () => {
