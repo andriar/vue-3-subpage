@@ -1,7 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router';
 
-
-
 import { ROLES } from '@/utils/enum/roles';
 import ChannelView from '@/views/integration/ChannelView.vue';
 
@@ -58,7 +56,7 @@ export const integrationRoutes: RouteRecordRaw[] = [
       {
         path: '',
         name: 'instagram-list',
-        component: import('@/views/integration/instagram/InstagramChannelView.vue'),
+        component: () => import('@/views/integration/instagram/InstagramChannelView.vue'),
         meta: {
           requiresAuth: true,
           roles: [ROLES.ADMIN],
