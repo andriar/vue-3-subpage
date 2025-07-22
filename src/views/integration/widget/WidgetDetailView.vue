@@ -22,8 +22,15 @@
       <div v-if="!isAutoresponderFormOpen" class="flex flex-col gap-8">
         <MainTab :tabs="tabLabels" v-model="activeTab" />
         <!-- Dynamic component rendering -->
-        <component :channel-id="props.id" :is="currentTabComponent" v-if="currentTabComponent" v-model="settingData"
-          @open-auto-responder-form="handleOpenAutoResponderForm" />
+        <component 
+          :channel-id="props.id" 
+          :is="currentTabComponent" 
+          v-if="currentTabComponent" 
+          v-model="settingData"
+          @open-auto-responder-form="handleOpenAutoResponderForm"
+          @product-version-check="productVersionCheck"
+          v-bind="activeTab.toLowerCase() === 'live chat builder' ? { 'is-latest-version': isLatestVersion } : {}"
+        />
       </div>
 
       <form @submit.prevent="handleSubmitAutoResponder" v-if="isAutoresponderFormOpen">
@@ -64,6 +71,7 @@ import QiscusTermConditionDescription from '@/features/widget/components/ui/Qisc
 import WidgetCode from '@/features/widget/pages/WidgetCode.vue';
 import WidgetOverview from '@/features/widget/pages/WidgetOverview.vue';
 import WidgetSettings from '@/features/widget/pages/WidgetSetting.vue';
+import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
 import type { IWidgetChannel } from '@/types/channels';
 import { CHANNEL_BADGE_URL } from '@/utils/constant/channels';
 
@@ -158,6 +166,9 @@ const { updateSecurity, error: errorUpdateSecurity } = useUpdateSecurityQiscus()
 // --- URL sync watchers ---
 watch(activeTab, (newTab) => {
   const selectedTab = tabs.find((tab) => tab.label === newTab);
+  if (newTab.toLowerCase() === 'overview') {
+    productVersionCheck();
+  }
   router.push({
     path: route.path,
     query: {
@@ -337,23 +348,32 @@ async function handleChangeSecurity(isSecure: boolean, oldValueIsSecure: boolean
 
 // product update
 const { update: updateWidget, error: errorUpdateWidget, loading: loadingUpdateWidget } = useUpdateQiscus();
+const { postWidgetConfig } = useQiscusLiveChatStore();
+const isProductUpdateOpen = ref(false);
 
-const isProductUpdateOpen = computed(() => {
-  return activeTab.value === 'Live Chat Builder' && parseInt(widget.value?.widget_version || '5') < 5;
-});
+const isLatestVersion = () => {
+    const version = parseInt(widget.value?.widget_version || '0');
+    if (version < 5) {
+      return false;
+    }
+    return true;
+};
+
+const productVersionCheck = (val?: boolean) => {
+  const isValid = val || isLatestVersion();
+  if (!isValid) {
+    isProductUpdateOpen.value = true;
+    return
+  } 
+  isProductUpdateOpen.value = false;
+};
 
 const handleCancelProductUpdate = () => {
-  router.push({
-    path: route.path,
-    query: {
-      ...route.query,
-      sub: 'overview',
-    },
-  });
+  isProductUpdateOpen.value = false;
 };
 
 const handleUpdateProductUpdate = async () => {
-  if (!channel.id) return;
+  if (!channel.id || !channel.app_code) return;
 
   await updateWidget(channel.id, {
     widget_version: '5',
@@ -370,13 +390,16 @@ const handleUpdateProductUpdate = async () => {
     });
   };
 
-  fetchChannelById(channel.id);
+  productVersionCheck(true);
+  await postWidgetConfig(channel.app_code, channel.id);
 
   showAlert.success({
     title: 'Success',
     text: 'Success updating Live Chat Version.',
     confirmButtonText: 'Okay',
     showCancelButton: false,
+  }).then(() => {
+    fetchChannelById(channel.id as string);
   })
 }
 
@@ -390,7 +413,12 @@ onMounted(async () => {
 
   // need to set data autoresponder
   // iConfig.data.value.is_enabled
-
+  
   setData();
+  
+  // check after set data widget
+  if(activeTab.value.toLowerCase() === 'overview') {
+    productVersionCheck();
+  }
 });
 </script>

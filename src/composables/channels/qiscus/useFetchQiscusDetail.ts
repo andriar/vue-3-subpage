@@ -27,10 +27,19 @@ export const useFetchQiscusDetail = () => {
     }
   };
 
+  const isLatestVersion = () => {
+    const version = parseInt(data.value?.widget_version || '0');
+    if (version < 5) {
+      return false;
+    }
+    return true;
+  };
+
   return {
     loading,
     data,
     error,
     fetchChannelById,
+    isLatestVersion,
   };
 };

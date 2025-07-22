@@ -5,16 +5,12 @@
         @click="closeDrawer"></div>
     </transition>
 
-    <transition name="modal-slide-fade">
+    <transition name="modal-scale-fade">
       <div @click.stop v-if="isOpen" id="modal-container" :class="[
         'z-[999] flex h-auto max-h-[90vh] max-w-full flex-col rounded-2xl bg-white shadow-xl',
         'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
       ]">
-        <div v-if="animationData.length === 0"
-          class="flex items-center justify-center bg-white rounded-2xl overflow-hidden min-w-[850px] min-h-[380px]">
-          <div class="text-gray-500 animate-pulse">Loading animations...</div>
-        </div>
-        <LottieCarousel v-if="animationData.length > 0" :animationData="animationData">
+        <LottieCarousel :animationData="animationData">
           <template #footer>
             <div class="flex w-full items-center justify-between p-4">
               <Checkbox v-model="isChecked" label="Yes, I’m ready to switch to the new Live Chat version."
@@ -86,3 +82,45 @@ onMounted(() => {
   loadAnimationData();
 });
 </script>
+
+<style scoped>
+/* Backdrop fade transitions */
+.drawer-backdrop-fade-enter-active,
+.drawer-backdrop-fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.drawer-backdrop-fade-enter-from,
+.drawer-backdrop-fade-leave-to {
+  opacity: 0;
+}
+
+/* Modal scale and fade transitions */
+.modal-scale-fade-enter-active {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-scale-fade-leave-active {
+  transition: all 0.2s ease-in;
+}
+
+.modal-scale-fade-enter-from {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.modal-scale-fade-enter-to {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.modal-scale-fade-leave-from {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.modal-scale-fade-leave-to {
+  opacity: 0;
+  transform: scale(0.9);
+}
+</style>
