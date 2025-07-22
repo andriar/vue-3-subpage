@@ -109,6 +109,23 @@ const grabberTimeoutString = computed({
 });
 
 /**
+ * Watcher to automatically enable both text and image options when attention grabber is turned on
+ * This ensures that when user turns on isAttentionGrabber, both isAttentionGrabberText and
+ * isAttentionGrabberImage will automatically be enabled
+ */
+watch(
+  () => welcomeDialogState.value.isAttentionGrabber,
+  (isAttentionGrabberEnabled) => {
+    // If attention grabber is turned on, enable both text and image options
+    if (isAttentionGrabberEnabled) {
+      welcomeDialogState.value.isAttentionGrabberText = true;
+      welcomeDialogState.value.isAttentionGrabberImage = true;
+    }
+  },
+  { immediate: false }
+);
+
+/**
  * Watcher to automatically turn off attention grabber when both text and image options are disabled
  * This ensures that if user turns off both isAttentionGrabberText and isAttentionGrabberImage,
  * the main attention grabber toggle will automatically be turned off as well
