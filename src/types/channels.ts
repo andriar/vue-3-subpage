@@ -1,5 +1,9 @@
 import type { IAdditionalField } from './live-chat';
 
+
+
+
+
 export interface IWhatsappChannel {
   allocate_wa_call_webhook_url: string | null;
   badge_url: string;

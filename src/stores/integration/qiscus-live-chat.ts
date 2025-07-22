@@ -1,22 +1,20 @@
 import { defineStore } from 'pinia';
 import { reactive, ref } from 'vue';
 
+
+
 import { qiscusApi } from '@/api/channels';
 import type { IconName } from '@/components/icons/Icon.vue';
 import { useFetchConfigWidgetQiscus } from '@/composables/channels/qiscus/widget/useFetchConfigWidget';
 import type { IWidgetConfigPayload } from '@/types/channels';
-import type {
-  ICallToActionState,
-  IChatFormState,
-  ILoginFormState,
-  IWelcomeDialogState,
-} from '@/types/live-chat';
-import type {
-  NormalizedOtherChannel,
-  OtherChannel,
-} from '@/types/schemas/channels/qiscus-widget/config-qiscus-widget';
+import type { ICallToActionState, IChatFormState, ILoginFormState, IWelcomeDialogState } from '@/types/live-chat';
+import type { NormalizedOtherChannel, OtherChannel } from '@/types/schemas/channels/qiscus-widget/config-qiscus-widget';
 import { CHANNEL_BADGE_URL } from '@/utils/constant/channels';
 import { DEFAULT_IMAGE_PREVIEW } from '@/utils/constant/images';
+
+
+
+
 
 const { fetchConfigWidget, data: widgetConfigData } = useFetchConfigWidgetQiscus();
 
@@ -217,21 +215,21 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
 
   const populateChannelWidgetData = () => {
     channelState.isChannelsEnabled = widgetConfigData.value?.isChannelWidgetEnabled ?? false;
-    channelState.previewTitle = widgetConfigData.value?.channel_widget.title ?? '';
-    channelState.previewSubtitle = widgetConfigData.value?.channel_widget.subtitle ?? '';
+    channelState.previewTitle = widgetConfigData.value?.channel_widget?.title ?? '';
+    channelState.previewSubtitle = widgetConfigData.value?.channel_widget?.subtitle ?? '';
     //
     channelState.isQiscusLiveChat =
-      widgetConfigData.value?.channel_widget.live_channel.is_enable ?? false;
+      widgetConfigData.value?.channel_widget?.live_channel?.is_enable ?? false;
     channelState.previewLiveChatName =
-      widgetConfigData.value?.channel_widget.live_channel.name ?? '';
+      widgetConfigData.value?.channel_widget?.live_channel?.name ?? '';
     channelState.channelBadgeIcon =
-      widgetConfigData.value?.channel_widget.live_channel.badge_url ?? '';
+      widgetConfigData.value?.channel_widget?.live_channel?.badge_url ?? '';
     //
     channelList.value = normalizeChannelData(
-      widgetConfigData.value?.channel_widget.other_channel ?? []
+      widgetConfigData.value?.channel_widget?.other_channel ?? []
     );
     //
-    channelState.previewIntroduction = widgetConfigData.value?.channel_widget.introduction ?? ''; //=> New Data Widget V5
+    channelState.previewIntroduction = widgetConfigData.value?.channel_widget?.introduction ?? ''; //=> New Data Widget V5
   };
 
   const populateLoginFormData = () => {
