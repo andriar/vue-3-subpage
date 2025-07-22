@@ -52,7 +52,7 @@ const removeItem = (itemToRemove: { id: number; label: string }) => {
 
 <template>
   <div class="flex flex-col gap-4 rounded-lg border border-gray-300 bg-gray-200 p-4">
-    <InputCustom label="Item Dropdown" v-model="itemDropdown">
+    <InputCustom id="dropdown-input" label="Item Dropdown" v-model="itemDropdown">
       <template #append-button-icon>
         <PlusIcon :size="24" @click="addItem" />
       </template>

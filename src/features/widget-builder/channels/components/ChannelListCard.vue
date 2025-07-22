@@ -98,6 +98,7 @@ onUnmounted(() => {
       <div class="flex w-full items-center justify-between">
         <h4 class="text-text-title text-base font-semibold">Another Channel</h4>
         <Button
+          id="add-more-channel-btn"
           intent="flat"
           size="small"
           class="text-text-primary gap-2 !px-0"
@@ -137,7 +138,7 @@ onUnmounted(() => {
             </div>
 
             <!-- Status -->
-            <Switch v-model="channel.is_enable" variant="success" />
+            <Switch id="enable-channel-switch" v-model="channel.is_enable" variant="success" />
 
             <!-- More Button with Dropdown -->
             <DropdownMenu

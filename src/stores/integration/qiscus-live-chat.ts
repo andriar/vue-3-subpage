@@ -182,7 +182,6 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
   const updateChannel = (channelId: number, updatedData: NormalizedOtherChannel): void => {
     const index = channelList.value.findIndex((channel) => channel.id === channelId);
     if (index !== -1 && channelList.value[index]) {
-      // TypeScript akan memastikan kita hanya update field yang valid
       Object.assign(channelList.value[index], updatedData);
     }
   };

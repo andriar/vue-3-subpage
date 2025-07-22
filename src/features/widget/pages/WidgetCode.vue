@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import Banner from '@/components/common/Banner.vue';
 import { useAppConfigStore } from '@/stores/app-config';
+
 import CodeSnippet from '../components/forms/CodeSnippet.vue';
 
 // params.channelId as a props on router
 const props = defineProps<{
   channelId: string | number;
 }>();
-const isStaging = import.meta.env.VITE_WIDGET_ENV === 'staging';
-const isLatest = import.meta.env.VITE_WIDGET_ENV === 'latest';
-const baseUrl = import.meta.env.VITE_BASE_URL || '';
-const iframeUrl = import.meta.env.VITE_IFRAME_URL || '';
 
-const { appId } = useAppConfigStore();
+const { appId, widget, baseUrl } = useAppConfigStore();
+const isStaging = widget?.env === 'staging';
+const isLatest = widget?.env === 'latest';
+const iframeUrl = widget?.iframeUrl || '';
 
 const jsCode = `
       document.addEventListener('DOMContentLoaded', function () {

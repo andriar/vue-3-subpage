@@ -17,7 +17,7 @@ interface Props {
   modelValue: string | number;
   label?: string;
   placeholder?: string;
-  id?: string;
+  id: string;
   disabled?: boolean;
   error?: boolean; // New prop for error state
   errorMessage?: string; // New prop for error message

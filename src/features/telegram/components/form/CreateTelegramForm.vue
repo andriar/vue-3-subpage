@@ -41,7 +41,7 @@ const formData = computed({
     <h3 class="font-semibold text-black-700">Bot Information</h3>
     <p class="mb-4 text-xs text-gray-800">Your bot profile will shown here</p>
 
-    <div class="flex gap-8">
+    <div class="flex gap-x-8 gap-y-4 flex-col md:flex-row">
       <Input id="input-bot-token" label="Bot Username" class="max-w-[472px] flex-1"
         placeholder="This field fills in automatically when you're linked to Telegram." disabled
         v-model="formData.username" />

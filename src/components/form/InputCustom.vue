@@ -12,12 +12,12 @@
           class="invisible cursor-pointer transition-colors duration-300 ease-in-out" :class="{
             visible: modelValue,
           }" @click="onClear" :disabled="disabled">
-          <CloseIcon :size="20" class="h-5 w-5 text-gray-800 hover:text-black-700" />
+          <CloseIcon :size="20" class="h-5 w-5 text-gray-800 hover:text-black-700  active:text-black-700/60" />
         </button>
 
         <button v-if="type === 'password'" type="button" id="show-password-btn" class="cursor-pointer"
           @click="togglePasswordVisibility">
-          <EyeIcon class="h-5 w-5 text-gray-800 hover:text-black-700" />
+          <EyeIcon class="h-5 w-5 text-gray-800 hover:text-black-700 active:text-black-700/60" />
         </button>
       </div>
 
@@ -44,7 +44,7 @@ interface Props {
   modelValue: string;
   label?: string;
   placeholder?: string;
-  id?: string;
+  id: string;
   disabled?: boolean;
   error?: boolean;
   errorMessage?: string;

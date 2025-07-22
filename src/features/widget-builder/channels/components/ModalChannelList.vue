@@ -147,6 +147,7 @@ watch(
               v-model="channelBadgeIcon"
               :isUploading="loading"
               @upload="uploadImage"
+              @error="(e) => (error = new Error(e))"
             >
               <template #tips>
                 <div class="text-sm font-normal text-gray-800">
@@ -154,14 +155,29 @@ watch(
                   JPEG, or PNG format with a maximum size of 2MB.
                 </div>
               </template>
+              <template #alert>
+                <Banner v-if="error" intent="negative" size="small">
+                  <p>
+                    {{ error }}
+                  </p>
+                </Banner>
+              </template>
             </ImageInput>
           </div>
         </div>
       </div>
     </template>
     <template #footer>
-      <Button intent="secondary" size="small" @click="closeModal">Cancel</Button>
-      <Button :disabled="!isFormValid" intent="primary" size="small" @click="handleAddChannel">
+      <Button id="modal-close-btn" intent="secondary" size="small" @click="closeModal"
+        >Cancel</Button
+      >
+      <Button
+        id="modal-submit-btn"
+        :disabled="!isFormValid"
+        intent="primary"
+        size="small"
+        @click="handleAddChannel"
+      >
         {{ modelValue ? 'Edit Channel' : 'Add Channel' }}
       </Button>
     </template>

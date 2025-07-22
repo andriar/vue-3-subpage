@@ -10,6 +10,7 @@ import { useSweetAlert } from '@/composables/useSweetAlert';
 import WidgetFormLayout from '@/features/widget-builder/components/layout/WidgetFormLayout.vue';
 import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
 
+import { Banner } from '@/components/common/common';
 import ChannelListCard from './components/ChannelListCard.vue';
 import PreviewChannels from './components/PreviewChannels.vue';
 
@@ -50,73 +51,42 @@ const uploadImage = async (file: File) => {
 </script>
 
 <template>
-  <div class="flex w-full items-start gap-8 self-stretch">
+  <div class="flex w-full flex-col lg:flex-row items-start gap-8 self-stretch">
     <!-- Form Section -->
     <div class="flex w-full flex-1 flex-col gap-8">
-      <WidgetFormLayout
-        id="channels-switch"
-        label="Channels"
-        isSwitch
-        v-model="channelState.isChannelsEnabled"
-      >
+      <WidgetFormLayout id="channels-switch" label="Channels" isSwitch v-model="channelState.isChannelsEnabled">
         <template #inputs>
-          <Input
-            id="welcome-channel-title"
-            v-model="channelState.previewTitle"
-            class="w-full"
-            label="Welcome Channel Title"
-            placeholder="Ask for Question"
-            :maxlength="50"
-          />
+          <Input id="welcome-channel-title" v-model="channelState.previewTitle" class="w-full"
+            label="Welcome Channel Title" placeholder="Ask for Question" :maxlength="50" />
 
-          <Input
-            id="welcome-channel-subtitle"
-            v-model="channelState.previewSubtitle"
-            class="w-full"
-            label="Welcome Channel Subtitle"
-            placeholder="In Everythings!"
-            :maxlength="50"
-          />
-          <TextArea
-            id="channel-introduction"
-            v-model="channelState.previewIntroduction"
-            label="Channel Introduction"
-            placeholder="More personalized chat with us on:"
-            :maxlength="50"
-          />
+          <Input id="welcome-channel-subtitle" v-model="channelState.previewSubtitle" class="w-full"
+            label="Welcome Channel Subtitle" placeholder="In Everythings!" :maxlength="50" />
+          <TextArea id="channel-introduction" v-model="channelState.previewIntroduction" label="Channel Introduction"
+            placeholder="More personalized chat with us on:" :maxlength="50" />
         </template>
       </WidgetFormLayout>
 
-      <WidgetFormLayout
-        v-if="channelState.isChannelsEnabled"
-        label="Enable Qiscus Live Chat"
-        isSwitch
-        :model-value="channelState.isQiscusLiveChat"
-        @update:model-value="handleQiscusLiveChatToggle"
-        id="qiscus-live-chat-switch"
-      >
+      <WidgetFormLayout v-if="channelState.isChannelsEnabled" label="Enable Qiscus Live Chat" isSwitch
+        :model-value="channelState.isQiscusLiveChat" @update:model-value="handleQiscusLiveChatToggle"
+        id="qiscus-live-chat-switch">
         <template #inputs>
-          <Input
-            v-model="channelState.previewLiveChatName"
-            class="w-full"
-            label="Live Chat Name"
-            placeholder="Live Chat"
-            :maxlength="50"
-            id="live-chat-name"
-          />
+          <Input v-model="channelState.previewLiveChatName" class="w-full" label="Live Chat Name"
+            placeholder="Live Chat" :maxlength="50" id="live-chat-name" />
 
-          <ImageInput
-            label="Live Chat Badge"
-            id="live-chat-badge"
-            v-model="channelState.channelBadgeIcon"
-            :isUploading="loading"
-            @upload="uploadImage"
-          >
+          <ImageInput label="Live Chat Badge" id="live-chat-badge" v-model="channelState.channelBadgeIcon"
+            :isUploading="loading" @upload="uploadImage" @error="(e) => (error = new Error(e))">
             <template #tips>
               <div class="text-sm font-normal text-gray-800">
                 We recommend an image of at least 360x360 pixels. You can upload images in JPG,
                 JPEG, or PNG format with a maximum size of 2MB.
               </div>
+            </template>
+            <template #alert>
+              <Banner v-if="error" intent="negative" size="small">
+                <p>
+                  {{ error }}
+                </p>
+              </Banner>
             </template>
           </ImageInput>
         </template>

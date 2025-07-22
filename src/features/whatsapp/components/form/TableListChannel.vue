@@ -2,13 +2,14 @@
   <div class="w-full">
     <div class="flex items-center justify-between p-4">
       <!-- Search Input -->
-      <InputCustom v-model="searchQuery" placeholder="Search channel name" clearable>
+      <InputCustom id="search-input" v-model="searchQuery" placeholder="Search channel name" clearable>
         <template #suffix-icon>
           <Icon name="search" />
         </template>
       </InputCustom>
 
-      <Button to="/whatsapp/create" variant="primary" class="flex items-center gap-2" size="small" no-animation>
+      <Button id="new-integration-btn" to="/whatsapp/create" variant="primary" class="flex items-center gap-2"
+        size="small" no-animation>
         <Icon name="plus" :size="16" />
         New Integration
       </Button>
@@ -40,8 +41,8 @@
 
             <!-- Action (Switch) -->
             <td class="border-stroke-regular border-b px-6 py-4 text-right">
-              <Switch v-model="channel.isActive" size="small" variant="success" @click.stop="() => ''"
-                @update:model-value="updateChannelStatus(channel.id, $event)" />
+              <Switch id="enable-channel-switch" v-model="channel.isActive" size="small" variant="success"
+                @click.stop="() => ''" @update:model-value="updateChannelStatus(channel.id, $event)" />
             </td>
           </tr>
         </tbody>

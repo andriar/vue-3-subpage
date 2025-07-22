@@ -6,7 +6,11 @@
         Qiscus Live Chat List
       </router-link>
 
-      <router-link to="/" class="text-primary flex items-center gap-2 font-semibold">
+      <router-link
+        to="/"
+        id="route-integration"
+        class="text-primary flex items-center gap-2 font-semibold"
+      >
         <HomeIcon :size="20" />
         Integration
       </router-link>
@@ -41,8 +45,10 @@
         <AutoResponderForm v-model="channel.configs" :is-bot="isBot" />
 
         <div class="mt-8 flex justify-end gap-4">
-          <Button intent="secondary" @click="handleCancelAutoResponder">Cancel</Button>
-          <Button type="submit">Save Changes</Button>
+          <Button id="cancel-btn" intent="secondary" @click="handleCancelAutoResponder"
+            >Cancel</Button
+          >
+          <Button id="submit-btn" type="submit">Save Changes</Button>
         </div>
       </form>
     </div>

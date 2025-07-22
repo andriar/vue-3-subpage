@@ -115,7 +115,7 @@ function handleCancelAutoResponder() {
         Qiscus Live Chat List
       </router-link>
 
-      <router-link to="/" replace class="text-primary flex items-center gap-2 font-semibold">
+      <router-link to="/" id="route-integration" replace class="text-primary flex items-center gap-2 font-semibold">
         <HomeIcon :size="20" />
         Integration
       </router-link>
@@ -139,8 +139,8 @@ function handleCancelAutoResponder() {
         <CreateWidgetForm v-model="channel" />
 
         <div class="mt-8 flex justify-end gap-4">
-          <Button intent="secondary" to="/qiscus" replace>Back</Button>
-          <Button type="submit" :disabled="!isFormValid">Next</Button>
+          <Button id="back-btn" intent="secondary" to="/qiscus" replace>Back</Button>
+          <Button id="next-btn" type="submit" :disabled="!isFormValid">Next</Button>
         </div>
       </form>
 
@@ -148,8 +148,8 @@ function handleCancelAutoResponder() {
         <AutoResponderForm v-model="channel.configs" :is-bot="isBot" />
 
         <div class="mt-8 flex justify-end gap-4">
-          <Button intent="secondary" @click="handleCancelAutoResponder">Back</Button>
-          <Button type="submit">Save Changes</Button>
+          <Button id="close-autoresponder-btn" intent="secondary" @click="handleCancelAutoResponder">Back</Button>
+          <Button id="submit-autoresponder-btn" type="submit">Save Changes</Button>
         </div>
       </form>
     </div>

@@ -164,12 +164,13 @@ onMounted(async () => {
 <template>
   <div class="flex flex-col gap-8 px-12 py-8">
     <div class="flex items-center justify-between">
-      <router-link to="/" replace class="text-primary flex items-center gap-2 font-semibold">
+      <router-link to="/" id="route-integration" replace class="text-primary flex items-center gap-2 font-semibold">
         <BackIcon :size="20" />
         Integration
       </router-link>
 
-      <router-link to="/" replace class="text-primary flex items-center gap-2 font-semibold">
+      <router-link to="/" id="route-back-integration" replace
+        class="text-primary flex items-center gap-2 font-semibold">
         <HomeIcon :size="20" />
         Integration
       </router-link>
@@ -220,26 +221,30 @@ onMounted(async () => {
               </p>
             </div>
 
-            <div class="mt-4 grid grid-cols-2 gap-x-8 gap-y-4">
-              <InputCustom v-model="data.agent_id" label="Agent ID" disabled>
+            <div class="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-4">
+              <InputCustom id="agent-id-input" v-model="data.agent_id" label="Agent ID" disabled>
                 <template #append-button>
-                  <button type="button" class="text-primary flex cursor-pointer gap-2"
+                  <button type="button"
+                    class="text-primary flex cursor-pointer gap-2 hover:bg-gray-400 active:text-primary-hover p-1 rounded-sm"
                     @click="copyToClipboard(data.agent_id)">
                     Copy
                     <CopyIcon :size="18" />
                   </button>
                 </template>
               </InputCustom>
-              <InputCustom v-model="data.app_id" label="App ID" disabled>
+              <InputCustom id="app-id-input" v-model="data.app_id" label="App ID" disabled>
                 <template #append-button>
-                  <button type="button" class="text-primary flex cursor-pointer gap-2"
+                  <button type="button"
+                    class="text-primary flex cursor-pointer gap-2 hover:bg-gray-400 active:text-primary-hover p-1 rounded-sm"
                     @click="copyToClipboard(data.app_id)">
                     Copy
                     <CopyIcon :size="18" />
                   </button>
                 </template>
               </InputCustom>
-              <InputCustom v-model="data.secret_key" label="Qiscus Secret Key" type="password" disabled></InputCustom>
+              <InputCustom id="secret-key-input" v-model="data.secret_key" label="Qiscus Secret Key" type="password"
+                disabled>
+              </InputCustom>
             </div>
           </div>
 
@@ -254,9 +259,10 @@ onMounted(async () => {
               </p>
             </div>
             <div class="mt-4">
-              <InputCustom v-model="data.bot_url" disabled>
+              <InputCustom id="bot-url-input" v-model="data.bot_url" disabled>
                 <template #append-button>
-                  <button type="button" class="text-primary flex cursor-pointer gap-2"
+                  <button type="button"
+                    class="text-primary flex cursor-pointer gap-2 hover:bg-gray-400 active:text-primary-hover p-1 rounded-sm"
                     @click="copyToClipboard(data.bot_url)">
                     Copy
                     <CopyIcon :size="18" />
@@ -280,12 +286,12 @@ onMounted(async () => {
             </div>
 
             <div class="mt-4">
-              <InputCustom v-model="data.webhook_url"> </InputCustom>
+              <InputCustom id="webhook-url-input" v-model="data.webhook_url"> </InputCustom>
             </div>
           </div>
 
           <div class="flex justify-end gap-4">
-            <Button type="submit" :disabled="integrateLoading">Connect</Button>
+            <Button id="connect-btn" type="submit" :disabled="integrateLoading">Connect</Button>
           </div>
         </form>
       </transition>
@@ -296,8 +302,8 @@ onMounted(async () => {
             <div class="flex justify-between gap-8 text-sm text-text-subtitle">
               <div v-html="item.content"></div>
               <div>
-                <Switch variant="success" :model-value="data.is_enable" @update:model-value="handleActivateBot"
-                  size="medium" />
+                <Switch id="enable-bot-switch" variant="success" :model-value="data.is_enable"
+                  @update:model-value="handleActivateBot" size="medium" />
               </div>
             </div>
           </template>
@@ -305,7 +311,7 @@ onMounted(async () => {
             <div class="flex justify-between gap-8 text-sm text-text-subtitle">
               {{ item.content }}
               <div>
-                <Switch variant="success" size="medium" :model-value="data.is_enable_chat"
+                <Switch id="enable-force-bot-switch" variant="success" size="medium" :model-value="data.is_enable_chat"
                   @update:model-value="handleForceSendBot" />
               </div>
             </div>

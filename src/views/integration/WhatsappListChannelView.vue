@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col gap-8 px-12 py-8">
-    <router-link to="/" class="text-primary flex items-center gap-2 font-semibold">
+    <router-link to="/" id="route-integration" class="text-primary flex items-center gap-2 font-semibold">
       <Icon name="chevron-left" :size="20" />
       Integration
     </router-link>
@@ -17,12 +17,8 @@
     <!-- Table section -->
     <div class="shadow-large flex items-center justify-between rounded-2xl bg-white">
       <!-- Search Input with Icon -->
-      <TableListChannel
-        :channels="whatsapp_channels"
-        @updateChannelStatus="updateChannelStatus"
-        @search="search"
-        @pagination="pagination"
-      />
+      <TableListChannel :channels="whatsapp_channels" @updateChannelStatus="updateChannelStatus" @search="search"
+        @pagination="pagination" />
     </div>
   </div>
 </template>

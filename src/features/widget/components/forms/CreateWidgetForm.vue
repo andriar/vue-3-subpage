@@ -7,7 +7,7 @@
         Build your Qiscus Live Chat based on your need using our builder.
       </p>
 
-      <div class="flex w-140 flex-col gap-2">
+      <div class="flex w-full lg:w-140 flex-col gap-2">
         <div class="flex items-center gap-5">
           <ImageInput id="widget-image" v-model="formData.badge_url" @error="(e) => (errorImageMessages = e)"
             :isUploading="uSdkImage.loading.value" @upload="uploadImage" autocomplete="off" />
@@ -26,7 +26,7 @@
         </Banner>
       </div>
 
-      <div class="w-[552px]">
+      <div class="w-full lg:w-[552px]">
         <Input v-model="formData.name" :disabled="false" :error="false" errorMessage="This field has an error"
           id="default-input" label="Channel Name" placeholder="Enter your channel name here" />
       </div>

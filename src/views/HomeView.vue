@@ -186,36 +186,36 @@ onMounted(() => {
       Welcome to the home page of your Vue 3 + TypeScript + Vue Router application!
     </p>
     <div class="mt-4 flex justify-center gap-4">
-      <Button @click="handleClick" intent="primary">Click me</Button>
-      <Button intent="primary" disabled>Click me</Button>
-      <Button intent="secondary">Click me</Button>
-      <Button intent="secondary" disabled>Click me</Button>
-      <Button intent="danger">Click me</Button>
-      <Button intent="danger" disabled>Click me</Button>
+      <Button id="btn" @click="handleClick" intent="primary">Click me</Button>
+      <Button id="btn" intent="primary" disabled>Click me</Button>
+      <Button id="btn" intent="secondary">Click me</Button>
+      <Button id="btn" intent="secondary" disabled>Click me</Button>
+      <Button id="btn" intent="danger">Click me</Button>
+      <Button id="btn" intent="danger" disabled>Click me</Button>
     </div>
 
     <div class="mt-4 flex justify-center gap-4">
-      <Button intent="primary" shape="rectangular">Click me</Button>
-      <Button intent="primary" shape="rectangular" disabled>Click me</Button>
-      <Button intent="secondary" shape="rectangular">Click me</Button>
-      <Button intent="secondary" shape="rectangular" disabled>Click me</Button>
-      <Button intent="danger" shape="rectangular">Click me</Button>
-      <Button intent="danger" shape="rectangular" disabled>Click me</Button>
+      <Button id="btn" intent="primary" shape="rectangular">Click me</Button>
+      <Button id="btn" intent="primary" shape="rectangular" disabled>Click me</Button>
+      <Button id="btn" intent="secondary" shape="rectangular">Click me</Button>
+      <Button id="btn" intent="secondary" shape="rectangular" disabled>Click me</Button>
+      <Button id="btn" intent="danger" shape="rectangular">Click me</Button>
+      <Button id="btn" intent="danger" shape="rectangular" disabled>Click me</Button>
     </div>
 
     <div class="mt-4 flex justify-center gap-4">
-      <Button intent="flat" shape="rounded" to="/about">Click me</Button>
-      <Button intent="flat" shape="rounded" to="/about" disabled>Click me</Button>
-      <Button intent="flat" shape="rounded" to="/about">Click me</Button>
-      <Button intent="flat" shape="rounded" to="/about" disabled>Click me</Button>
-      <Button intent="flat" shape="rounded" to="/about">Click me</Button>
+      <Button id="btn" intent="flat" shape="rounded" to="/about">Click me</Button>
+      <Button id="btn" intent="flat" shape="rounded" to="/about" disabled>Click me</Button>
+      <Button id="btn" intent="flat" shape="rounded" to="/about">Click me</Button>
+      <Button id="btn" intent="flat" shape="rounded" to="/about" disabled>Click me</Button>
+      <Button id="btn" intent="flat" shape="rounded" to="/about">Click me</Button>
     </div>
 
     <div class="mt-4 flex justify-center gap-4">
-      <Switch v-model="isChecked" variant="success" aria-label="Success switch" />
-      <Switch v-model="isChecked" variant="warning" aria-label="Warning switch" />
-      <Switch v-model="isChecked" variant="danger" aria-label="Danger switch" />
-      <Switch v-model="isChecked" variant="default" aria-label="Default switch" />
+      <Switch id="switch" v-model="isChecked" variant="success" aria-label="Success switch" />
+      <Switch id="switch" v-model="isChecked" variant="warning" aria-label="Warning switch" />
+      <Switch id="switch" v-model="isChecked" variant="danger" aria-label="Danger switch" />
+      <Switch id="switch" v-model="isChecked" variant="default" aria-label="Default switch" />
     </div>
 
     <div>
@@ -265,23 +265,19 @@ onMounted(() => {
     </div>
 
     <div class="mt-4 text-left">
-      <Input v-model="inputValue" placeholder="Enter your name" />
-      <Input v-model="inputValue" placeholder="Enter your name" disabled />
-      <Input
-        v-model="inputValue"
-        placeholder="Enter your name"
-        error
-        errorMessage="This is an error message"
-      />
+      <Input id="input-id" v-model="inputValue" placeholder="Enter your name" />
+      <Input id="input-id" v-model="inputValue" placeholder="Enter your name" disabled />
+      <Input id="input-id" v-model="inputValue" placeholder="Enter your name" error
+        errorMessage="This is an error message" />
     </div>
 
     <div class="mt-4 flex w-full flex-col gap-4 text-left">
-      <InputCustom v-model="inputValue" placeholder="Enter your name" clearable disabled>
+      <InputCustom id="input-custom" v-model="inputValue" placeholder="Enter your name" clearable disabled>
         <template #suffix-icon>
           <Icon name="search" />
         </template>
       </InputCustom>
-      <InputCustom v-model="inputValue" placeholder="Enter your name" type="text" clearable>
+      <InputCustom id="input-custom" v-model="inputValue" placeholder="Enter your name" type="text" clearable>
         <template #suffix-icon>
           <Icon name="eye" />
         </template>
@@ -290,15 +286,9 @@ onMounted(() => {
           <Icon name="copy" class="text-primary h-4 w-4" />
         </template>
       </InputCustom>
-      <InputCustom v-model="inputValue" placeholder="Enter your name" type="text" clearable />
-      <InputCustom
-        v-model="inputValue"
-        placeholder="Enter your name"
-        type="text"
-        clearable
-        errorMessage="This is an error message"
-        error
-      />
+      <InputCustom id="input-custom" v-model="inputValue" placeholder="Enter your name" type="text" clearable />
+      <InputCustom id="input-custom" v-model="inputValue" placeholder="Enter your name" type="text" clearable
+        errorMessage="This is an error message" error />
     </div>
 
     <div class="mt-4 flex flex-col gap-2 text-left">
@@ -329,28 +319,17 @@ onMounted(() => {
           </Badge>
         </li>
       </ul>
-      <div
-        v-if="pokemonDetail && Object.keys(pokemonDetail).length > 0"
-        class="mt-4 rounded-lg bg-white p-4 shadow-md"
-      >
+      <div v-if="pokemonDetail && Object.keys(pokemonDetail).length > 0" class="mt-4 rounded-lg bg-white p-4 shadow-md">
         <h1 class="mb-4 text-2xl font-bold capitalize">{{ pokemonDetail.name }}</h1>
 
-        <img
-          :src="pokemonDetail?.sprites?.back_default"
-          :alt="pokemonDetail.name"
-          class="mx-auto rounded-lg shadow-sm"
-          width="150"
-          height="150"
-        />
+        <img :src="pokemonDetail?.sprites?.back_default" :alt="pokemonDetail.name" class="mx-auto rounded-lg shadow-sm"
+          width="150" height="150" />
 
         <div v-if="pokemonDetail?.abilities" class="mt-6">
           <h3 class="mb-2 text-xl font-semibold">Abilities</h3>
           <ul class="flex flex-wrap justify-center gap-2">
-            <li
-              v-for="a in pokemonDetail?.abilities"
-              :key="a?.ability?.name"
-              class="rounded-full bg-gray-100 px-3 py-1 text-gray-700 capitalize"
-            >
+            <li v-for="a in pokemonDetail?.abilities" :key="a?.ability?.name"
+              class="rounded-full bg-gray-100 px-3 py-1 text-gray-700 capitalize">
               {{ a?.ability?.name }}
             </li>
           </ul>
@@ -359,19 +338,19 @@ onMounted(() => {
     </div>
 
     <div class="mt-4">
-      <Button intent="primary" @click="toggleDrawer">Open Drawer</Button>
+      <Button id="btn" intent="primary" @click="toggleDrawer">Open Drawer</Button>
     </div>
 
     <Drawer :isOpen="isDrawerOpen" @close="toggleDrawer" />
 
     <div class="mt-4">
-      <Button intent="primary" @click="showAlertWarning">Show Alert Warning</Button>
-      <Button intent="primary" @click="showAlertError">Show Alert Error</Button>
-      <Button intent="primary" @click="showAlertSuccess">Show Alert Success</Button>
+      <Button id="btn" intent="primary" @click="showAlertWarning">Show Alert Warning</Button>
+      <Button id="btn" intent="primary" @click="showAlertError">Show Alert Error</Button>
+      <Button id="btn" intent="primary" @click="showAlertSuccess">Show Alert Success</Button>
     </div>
 
     <div class="mt-4">
-      <Button intent="primary" @click="toggleModal">Open Modal</Button>
+      <Button id="btn" intent="primary" @click="toggleModal">Open Modal</Button>
       <Modal :isOpen="isModalOpen" @close="toggleModal" width="w-[900px]">
         <template #title> Preview Your Qiscus Live Chat </template>
         <template #content>
@@ -381,59 +360,38 @@ onMounted(() => {
     </div>
 
     <div class="mt-4 text-left">
-      <Select
-        label="Select an option"
-        :options="[
-          { value: '1', text: 'Option 1' },
-          { value: '2', text: 'Option 2' },
-          { value: '3', text: 'Option 3' },
-        ]"
-        v-model="selectedValue"
-      />
-      <Select
-        :options="[
-          { value: '1', text: 'Option 1' },
-          { value: '2', text: 'Option 2' },
-          { value: '3', text: 'Option 3' },
-        ]"
-        v-model="selectedValue"
-        error
-        errorMessage="This is an error message"
-      />
-      <Select
-        :options="[
-          { value: '1', text: 'Option 1' },
-          { value: '2', text: 'Option 2' },
-          { value: '3', text: 'Option 3' },
-        ]"
-        v-model="selectedValue"
-        disabled
-      />
+      <Select label="Select an option" :options="[
+        { value: '1', text: 'Option 1' },
+        { value: '2', text: 'Option 2' },
+        { value: '3', text: 'Option 3' },
+      ]" v-model="selectedValue" />
+      <Select :options="[
+        { value: '1', text: 'Option 1' },
+        { value: '2', text: 'Option 2' },
+        { value: '3', text: 'Option 3' },
+      ]" v-model="selectedValue" error errorMessage="This is an error message" />
+      <Select :options="[
+        { value: '1', text: 'Option 1' },
+        { value: '2', text: 'Option 2' },
+        { value: '3', text: 'Option 3' },
+      ]" v-model="selectedValue" disabled />
     </div>
 
     <div class="mt-4 flex flex-shrink-0 flex-wrap gap-4 text-left">
-      <WelcomingPage
-        :imageUrl="pokemonDetail?.sprites?.back_default"
-        :title="pokemonDetail?.name"
-        :subtitle="pokemonDetail?.name"
-        :actions="[
+      <WelcomingPage :imageUrl="pokemonDetail?.sprites?.back_default" :title="pokemonDetail?.name"
+        :subtitle="pokemonDetail?.name" :actions="[
           {
             label: 'Ask for Questions',
             iconUrl: '',
           },
-        ]"
-      />
+        ]" />
       <WelcomingPageLoading />
       <AttentionGrabber
         image-url="https://fastly.picsum.photos/id/1/5000/3333.jpg?hmac=Asv2DU3rA_5D1xSe22xZK47WEAN0wjWeFOhzd13ujW4"
-        title="Hello, there is Promo!"
-      />
+        title="Hello, there is Promo!" />
       <ChannelList
         imageUrl="https://fastly.picsum.photos/id/1/5000/3333.jpg?hmac=Asv2DU3rA_5D1xSe22xZK47WEAN0wjWeFOhzd13ujW4"
-        title="Hello, there is Promo!"
-        subtitle="Welcome to Qiscus!"
-        introduction="Welcome to Qiscus!"
-        :channels="[
+        title="Hello, there is Promo!" subtitle="Welcome to Qiscus!" introduction="Welcome to Qiscus!" :channels="[
           {
             id: 1,
             name: 'WhatsApp',
@@ -450,19 +408,12 @@ onMounted(() => {
             name: 'TikTok',
             badge_url: CHANNEL_BADGE_URL.tiktok,
           },
-        ]"
-      />
+        ]" />
       <ChannelListLoading />
-      <LoginForm
-        title="Hello there,"
-        subtitle="Welcome to Qiscus!"
-        description="Please fill the details below before chatting with us!"
-      />
-      <LoginFormLoading
-        title="Hello there,"
-        subtitle="Welcome to Qiscus!"
-        description="Please fill the details below before chatting with us!"
-      />
+      <LoginForm title="Hello there," subtitle="Welcome to Qiscus!"
+        description="Please fill the details below before chatting with us!" />
+      <LoginFormLoading title="Hello there," subtitle="Welcome to Qiscus!"
+        description="Please fill the details below before chatting with us!" />
 
       <ChatFormLoading />
     </div>
