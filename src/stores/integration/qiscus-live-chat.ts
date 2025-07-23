@@ -264,7 +264,7 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
       widget: {
         variables: {
           appID: appId,
-          // welcome dialog data
+          // welcome dialog data test
           welcomeMessageStatus: welcomeDialogState.isWelcomeDialog,
           welcomeBrandIcon: welcomeDialogState.brandIconWelcomeDialog, //=> new data
           welcomeGreetingText: welcomeDialogState.firstDescriptionWelcomeDialog, //=> new data
