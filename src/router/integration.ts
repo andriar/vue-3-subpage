@@ -175,7 +175,7 @@ export const integrationRoutes: RouteRecordRaw[] = [
         name: 'line-new',
         component: () => null,
         beforeEnter: () => {
-          window.location.href = `/integration?ch=line&act=create`;
+          window.location.href = `/integration?ch=line-channel&act=create`;
           return false;
         },
       },
@@ -184,7 +184,7 @@ export const integrationRoutes: RouteRecordRaw[] = [
         name: 'line-detail',
         component: () => null,
         beforeEnter: (to) => {
-          window.location.href = `/integration?ch=line&id=${to.params.id}`;
+          window.location.href = `/integration?ch=line-channel&id=${to.params.id}`;
           return false;
         },
       },
