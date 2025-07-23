@@ -26,8 +26,8 @@ const TabItemClass = cva(
   {
     variants: {
       isActive: {
-        true: 'relative after:h-1 text-primary-500',
-        false: 'text-black-700',
+        true: 'relative after:h-1',
+        false: 'text-black-700 hover:after:bg-primary/50',
       },
     },
     defaultVariants: {
@@ -61,7 +61,7 @@ function selectTab(tab: TabItem, child: TabItem | null) {
 <template>
   <ul class="flex w-full gap-0.5 border-b border-gray-300 bg-transparent text-sm select-none">
     <li v-for="tab in currentTabs" :key="tab.id" :class="TabItemClass({ isActive: modelValue.id === tab.id })"
-      @click="selectParentTab(tab)">
+      @click="selectParentTab(tab)" class="hover:text-primary-500 hover:after:h-1">
       <component :is="tab.icon" v-if="tab.icon" width="16" height="16" class="text-primary-500" />
       {{ tab.label }}
       <ChevronDownIcon v-if="tab.children && tab.children.length > 0" width="16" height="16" />
@@ -70,7 +70,7 @@ function selectTab(tab: TabItem, child: TabItem | null) {
         class="absolute top-full left-0 z-10 w-auto min-w-full divide-y divide-gray-300 rounded-lg bg-white p-2 text-left shadow-lg"
         v-if="showChildren?.id === tab.id && tab.children && tab.children.length > 0">
         <li v-for="child in tab.children" :key="child.id"
-          class="max-w-[300px] cursor-pointer overflow-hidden p-2 text-sm text-ellipsis whitespace-nowrap hover:font-medium"
+          class="max-w-[300px] cursor-pointer overflow-hidden p-2 text-sm text-ellipsis whitespace-nowrap hover:font-medium hover:bg-gray-100 rounded-md"
           :title="child.label" @click.stop="selectTab(tab, child)">
           {{ child.label }}
         </li>

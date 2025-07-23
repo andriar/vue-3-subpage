@@ -212,7 +212,7 @@ onMounted(async () => {
       <MainTab :tabs="['Overview', 'Settings']" v-model="activeTab" />
 
       <transition name="fade">
-        <form @submit.prevent="handleSubmit" v-show="activeTab == 'Overview'" class="flex flex-col gap-8">
+        <form id="bot-form" @submit.prevent="handleSubmit" v-show="activeTab == 'Overview'" class="flex flex-col gap-8">
           <div class="rounded-lg bg-white p-6 shadow-card">
             <div>
               <h2 class="text-sm font-semibold text-black-700">Step 1</h2>

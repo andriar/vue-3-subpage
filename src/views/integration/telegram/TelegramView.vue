@@ -449,7 +449,8 @@ onMounted(async () => {
         </template>
 
         <template v-if="activeTab == 'Overview'">
-          <form v-if="!isAutoresponderFormOpen" @submit.prevent="" class="flex flex-col gap-8">
+          <form id="create-telegram-form" v-if="!isAutoresponderFormOpen" @submit.prevent=""
+            class="flex flex-col gap-8">
             <CreateTelegramForm v-model="channel" />
 
             <div v-if="isUserCreateChannel" class="flex justify-end gap-4">
