@@ -2,6 +2,15 @@
 import { type Component, computed, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
+// Props definition
+const props = defineProps<{
+  isLatestVersion: () => boolean;
+}>();
+
+const emit = defineEmits<{
+  (e: 'product-version-check', isValidVersion: boolean): void;
+}>();
+
 import RoundedTab from '@/components/common/Tabs/RoundedTab.vue';
 import { Button, Drawer } from '@/components/common/common';
 import {
@@ -109,6 +118,12 @@ const isLoading = ref(false);
 const saveAndPreview = async () => {
   if (!params.id || !appId) {
     console.error('Missing required parameters');
+    return;
+  }
+
+  const isValidVersion = props.isLatestVersion();
+  if (!isValidVersion) {
+    emit('product-version-check', false);
     return;
   }
 

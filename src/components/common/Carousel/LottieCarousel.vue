@@ -12,7 +12,8 @@
                  @mouseleave="handleDragEnd"
                  @dragstart.prevent>
                 <!-- Item -->
-                <div v-for="(animation, index) in props.animationData" 
+                 <div v-if="props.animationData.length === 0" class="bg-white"></div>
+                <div v-if="props.animationData.length > 0" v-for="(animation, index) in props.animationData" 
                      :key="index"
                      class="absolute inset-0 transform"
                      :class="{ 
