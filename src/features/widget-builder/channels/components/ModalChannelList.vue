@@ -44,6 +44,7 @@ const resetForm = (): void => {
   channelName.value = '';
   channelLink.value = '';
   channelBadgeIcon.value = '';
+  error.value = null;
 };
 
 const closeModal = () => {
@@ -124,6 +125,7 @@ watch(
           v-model="channelName"
           :disabled="false"
           :error="false"
+          :maxlength="50"
           errorMessage="This field has an error"
           id="default-input"
           label="Channel Name"
@@ -132,6 +134,7 @@ watch(
 
         <TextArea
           v-model="channelLink"
+          :maxlength="50"
           id="description"
           label="Channel Link"
           placeholder="Enter the channel URL (ex: https://ig.me/m/username)"

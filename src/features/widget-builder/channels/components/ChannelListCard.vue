@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue';
+import { ref } from 'vue';
 
 import Button from '@/components/common/Button.vue';
 import DropdownMenu from '@/components/common/DropdownMenu.vue';
@@ -71,22 +71,6 @@ const deleteChannel = (channelId: number) => {
   qiscusLiveChatStore.removeChannel(channelId);
   closeAllDropdowns();
 };
-
-// --- Event handler ---
-const handleClickOutside = (event: Event) => {
-  if (activeDropdown.value && !(event.target as Element).closest('.relative')) {
-    closeAllDropdowns();
-  }
-};
-
-// --- Lifecycle hooks ---
-onMounted(() => {
-  document.addEventListener('click', handleClickOutside);
-});
-
-onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside);
-});
 </script>
 
 <template>

@@ -2,8 +2,25 @@
   <div :class="containerClasses()">
     <label v-if="label" :for="id" :class="computedLabelClasses">{{ label }}</label>
     <div :class="computedInputWrapperClasses">
-      <textarea ref="textareaRef" v-bind="$attrs" :id="id" :value="modelValue" @input="onInput"
-        :placeholder="placeholder" :class="computedInputClasses" :disabled="disabled" @keyup="adjustHeight" rows="1" />
+      <textarea
+        ref="textareaRef"
+        v-bind="$attrs"
+        :id="id"
+        :value="modelValue"
+        @input="onInput"
+        :placeholder="placeholder"
+        :class="computedInputClasses"
+        :disabled="disabled"
+        @keyup="adjustHeight"
+        rows="1"
+      />
+      <!-- Character Counter - only show if maxlength is present in attrs -->
+      <div
+        v-if="attrs.maxlength"
+        class="text-text-title pointer-events-none absolute right-3 bottom-2 text-xs font-semibold"
+      >
+        {{ currentLength }}/{{ attrs.maxlength }}
+      </div>
     </div>
     <p v-if="error" class="text-danger mt-2 text-sm font-normal">{{ errorMessage }}</p>
   </div>
@@ -11,7 +28,7 @@
 
 <script lang="ts" setup>
 import { cva } from 'class-variance-authority';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, useAttrs } from 'vue';
 
 interface Props {
   modelValue: string;
@@ -36,7 +53,7 @@ const props = withDefaults(defineProps<Props>(), {
   maxHeight: '200px',
   modelValue: '',
 });
-
+const attrs = useAttrs();
 const emit = defineEmits(['update:modelValue']);
 const textareaRef = ref<HTMLTextAreaElement | null>(null);
 
@@ -72,7 +89,7 @@ const labelClasses = cva('text-sm font-normal text-text-subtitle', {
   },
 });
 
-const inputWrapperClasses = cva('mt-2 flex rounded-lg shadow-small', {
+const inputWrapperClasses = cva('mt-2 relative flex rounded-lg shadow-small', {
   variants: {
     disabled: {
       true: 'bg-gray-50 ring-gray-200',
@@ -96,7 +113,7 @@ const inputWrapperClasses = cva('mt-2 flex rounded-lg shadow-small', {
 });
 
 const inputClasses = cva(
-  'block w-full border-0 bg-white py-3 px-4 text-text-title placeholder:text-text-placeholder focus:ring-1 ring-primary sm:text-sm sm:leading-6 outline-none rounded-lg placeholder: resize-none overflow-y-auto',
+  'block w-full border-0 bg-white  text-text-title placeholder:text-text-placeholder focus:ring-1 ring-primary sm:text-sm sm:leading-6 outline-none rounded-lg  resize-none overflow-y-auto',
   {
     variants: {
       disabled: {
@@ -104,6 +121,10 @@ const inputClasses = cva(
       },
       error: {
         true: '!ring-1 !ring-danger focus:!ring-danger',
+      },
+      hasCounter: {
+        true: 'py-3 pb-8 px-4',
+        false: 'py-3 px-4',
       },
     },
   }
@@ -115,6 +136,9 @@ const computedInputWrapperClasses = computed(() =>
   inputWrapperClasses({ disabled: props.disabled, error: props.error })
 );
 const computedInputClasses = computed(() =>
-  inputClasses({ disabled: props.disabled, error: props.error })
+  inputClasses({ disabled: props.disabled, error: props.error, hasCounter: !!attrs.maxlength })
 );
+const currentLength = computed(() => {
+  return String(props.modelValue).length;
+});
 </script>
