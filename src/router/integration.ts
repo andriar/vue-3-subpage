@@ -1,7 +1,13 @@
 import type { RouteRecordRaw } from 'vue-router';
 
+
+
 import { ROLES } from '@/utils/enum/roles';
 import ChannelView from '@/views/integration/ChannelView.vue';
+
+
+
+
 
 export const integrationRoutes: RouteRecordRaw[] = [
   {
@@ -151,7 +157,7 @@ export const integrationRoutes: RouteRecordRaw[] = [
     ],
   },
   {
-    path: '/line',
+    path: '/line-channel',
     name: 'line',
     redirect: { name: 'line-list' },
     children: [
