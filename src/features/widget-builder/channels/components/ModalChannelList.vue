@@ -44,6 +44,7 @@ const resetForm = (): void => {
   channelName.value = '';
   channelLink.value = '';
   channelBadgeIcon.value = '';
+  error.value = null;
 };
 
 const closeModal = () => {
