@@ -33,7 +33,7 @@
         />
       </div>
 
-      <form @submit.prevent="handleSubmitAutoResponder" v-if="isAutoresponderFormOpen">
+      <form id="auto-responder-form" @submit.prevent="handleSubmitAutoResponder" v-if="isAutoresponderFormOpen">
         <AutoResponderForm v-model="channel.configs" :is-bot="isBot" />
 
         <div class="mt-8 flex justify-end gap-4">
@@ -44,8 +44,8 @@
     </div>
 
     <!-- product update -->
-    <ProductUpdater :is-open="isProductUpdateOpen" @cancel="handleCancelProductUpdate" @update="handleUpdateProductUpdate"
-      :loading="loadingUpdateWidget" />
+    <ProductUpdater :is-open="isProductUpdateOpen" @cancel="handleCancelProductUpdate"
+      @update="handleUpdateProductUpdate" :loading="loadingUpdateWidget" />
   </div>
 </template>
 <script setup lang="ts">

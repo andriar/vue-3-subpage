@@ -153,7 +153,8 @@ onMounted(() => {
 
         <template v-if="activeTab == 'Overview'">
           <!-- Form section -->
-          <form v-if="!isAutoresponderFormOpen" @submit.prevent="confirmSubmit" class="flex flex-col gap-8">
+          <form id="create-telegram-form" v-if="!isAutoresponderFormOpen" @submit.prevent="confirmSubmit"
+            class="flex flex-col gap-8">
             <CreateTelegramForm v-model="channel" />
 
             <div class="mt-8 flex justify-end gap-4">
@@ -170,7 +171,7 @@ onMounted(() => {
       </template>
 
 
-      <form @submit.prevent="" v-if="isAutoresponderFormOpen">
+      <form id="auto-responder-form" @submit.prevent="" v-if="isAutoresponderFormOpen">
         <AutoResponderForm v-model="configs" :is-bot="isBot" />
 
         <div class="mt-8 flex justify-end gap-4">
