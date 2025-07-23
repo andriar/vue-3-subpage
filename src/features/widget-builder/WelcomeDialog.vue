@@ -260,13 +260,24 @@ watch(
             v-model="welcomeDialogState.isAttentionGrabberImage"
           >
             <DragDropInput
-              :accept="ACCEPTED_IMAGE_TYPES.PNG_JPG"
               acceptText="PNG or JPG"
+              :accept="ACCEPTED_IMAGE_TYPES.PNG_JPG"
               :maxSize="FILE_SIZE_LIMITS.IMAGE_EXTRA_LARGE"
               :maxFiles="1"
               :isUploading="attentionGrabberImageUpload.loading.value"
               @upload="(files) => files[0] && handleImageUpload(files[0], 'attentionGrabberImage')"
+              @error="(e) => (attentionGrabberImageUpload.error.value = new Error(e))"
             />
+            <Banner
+              v-if="attentionGrabberImageUpload.error.value"
+              intent="negative"
+              size="small"
+              class="mt-2"
+            >
+              <p>
+                {{ attentionGrabberImageUpload.error.value }}
+              </p>
+            </Banner>
           </OptionalInput>
           <OptionalInput
             id="attention-grabber-switch"
