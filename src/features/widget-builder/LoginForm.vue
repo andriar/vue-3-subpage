@@ -166,7 +166,7 @@ const uploadImage = async (file: File) => {
     <div class="flex flex-1 flex-col gap-8">
       <WidgetFormLayout id="widget-form-layout" label="Login Form">
         <template #additional-info>
-          <Banner intent="positive" type="outline">
+          <Banner v-if="!channelState.isChannelsEnabled" intent="positive" type="outline">
             The login form will be displayed first, unless the welcome dialogue or attention grabber
             is enabled.
           </Banner>
