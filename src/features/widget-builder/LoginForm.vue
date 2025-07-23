@@ -234,12 +234,6 @@ const uploadImage = async (file: File) => {
             If you use phone number to login, we won't be able to send chat history and notes to the
             customer's email after the room is resolved.
           </Banner>
-          <Select
-            id="field-type"
-            label="Field Type"
-            :options="qiscusLiveChatStore.fieldTypeOptionsAdditionalField"
-            v-model="additionalField.type"
-          />
         </template>
       </WidgetFormLayout>
 
@@ -322,16 +316,18 @@ const uploadImage = async (file: File) => {
         </div>
         <div v-if="additionalField.type !== ''" class="flex flex-col gap-6">
           <Input
+            v-model="additionalField.name"
+            :maxlength="50"
             id="name-field"
             label="Title"
             placeholder="e,g: Address, Number Phone"
-            v-model="additionalField.name"
           />
           <Input
+            v-model="additionalField.placeholder"
+            :maxlength="50"
             id="placeholder-field"
             label="Placeholder"
             placeholder="e,g: Type your address here"
-            v-model="additionalField.placeholder"
           />
           <template v-if="additionalField.type === 'dropdown' && additionalField.options">
             <DropdownItemInput v-model="additionalField.options" />
