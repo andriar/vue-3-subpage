@@ -9,8 +9,8 @@ const props = withDefaults(
   defineProps<{
     imageUrl: string;
     title: string;
-    isImageEnable: boolean;
-    isTextEnable: boolean;
+    isImageEnable?: boolean;
+    isTextEnable?: boolean;
   }>(),
   {
     imageUrl: DEFAULT_IMAGE_PREVIEW.ATTENTION_GRABBER_IMAGE,
