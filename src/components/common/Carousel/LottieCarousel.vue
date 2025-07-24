@@ -65,7 +65,6 @@ const props = defineProps<{
         data: any;
     }[];
     loading?: boolean;
-    loadedCount?: number;
     totalExpected?: number;
 }>();
 

@@ -13,7 +13,6 @@
         <LottieCarousel 
           :animationData="animationData" 
           :loading="animationsLoading"
-          :loadedCount="loadedAnimations"
           :totalExpected="4"
         >
           <template #footer>
@@ -41,7 +40,6 @@ import { computed, ref, watch } from 'vue';
 
 const animationData = ref<{ data: any }[]>([]);
 const animationsLoading = ref(true);
-const loadedAnimations = ref(0);
 
 const loadAnimationDataBatched = async () => {
   animationsLoading.value = true;
@@ -79,7 +77,6 @@ const loadAnimationDataBatched = async () => {
 // Memory cleanup when component unmounts
 const cleanup = () => {
   animationData.value = [];
-  loadedAnimations.value = 0;
 };
 
 const props = defineProps<{
