@@ -11,9 +11,14 @@
                  @mouseup="handleDragEnd"
                  @mouseleave="handleDragEnd"
                  @dragstart.prevent>
-                <!-- Item -->
-                 <div v-if="props.animationData.length === 0" class="bg-white"></div>
-                <div v-if="props.animationData.length > 0" v-for="(animation, index) in props.animationData" 
+                
+                <!-- Loading State -->
+                <div v-if="loading || props.animationData.length === 0" 
+                     class="absolute inset-0 flex items-center justify-center bg-white">
+                </div>
+
+                <!-- Animation Items -->
+                <div v-else-if="props.animationData.length > 0" v-for="(animation, index) in props.animationData" 
                      :key="index"
                      class="absolute inset-0 transform"
                      :class="{ 
@@ -28,8 +33,10 @@
                     :width="850" height="auto" :loop="false" :speed="2" :pauseOnHover="currentSlide === index ? true : false" @onComplete="nextSlide" :autoPlay="index === 0 ? true : false" :animationData="animation.data" />
                 </div>
             </div>
+            
             <!-- Slider indicators -->
-            <div class="absolute z-[100] flex -translate-x-1/2 bottom-5 left-1/2 space-x-2 rtl:space-x-reverse items-center">
+            <div v-if="!loading && props.animationData.length > 0" 
+                 class="absolute z-[100] flex -translate-x-1/2 bottom-5 left-1/2 space-x-2 rtl:space-x-reverse items-center">
                 <button 
                     v-for="(_, index) in props.animationData"
                     :key="index"
@@ -41,21 +48,24 @@
                     @click="goToSlide(index)"
                 ></button>
             </div>
+            
             <!-- Shadow overlay stretching into animation -->
-            <div class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#0A0A0A0A] to-transparent pointer-events-none z-[110]"></div>
+            <div v-if="!loading" class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#0A0A0A0A] to-transparent pointer-events-none z-[110]"></div>
         </div>
         <slot name="footer" />
     </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { Vue3Lottie } from 'vue3-lottie';
 
 const props = defineProps<{
     animationData: {
         data: any;
     }[];
+    loading?: boolean;
+    totalExpected?: number;
 }>();
 
 // Create array to hold animation refs
@@ -63,7 +73,7 @@ const animationRefs = ref<any[]>([]);
 
 // Carousel control state
 const currentSlide = ref(0);
-const totalSlides = props.animationData.length;
+const totalSlides = computed(() => props.animationData.length);
 
 // Drag state
 const isDragging = ref(false);
@@ -83,14 +93,14 @@ const setAnimationRef = (el: any, index: number) => {
 
 // Carousel control functions
 const goToSlide = (slideIndex: number) => {
-    if (slideIndex >= 0 && slideIndex < totalSlides) {
+    if (slideIndex >= 0 && slideIndex < totalSlides.value) {
         currentSlide.value = slideIndex;
         playAnimation(slideIndex);
     }
 }
 
 const nextSlide = () => {
-    if (currentSlide.value < totalSlides - 1) {
+    if (currentSlide.value < totalSlides.value - 1) {
         currentSlide.value++;
     } else {
         currentSlide.value = 0;
@@ -102,7 +112,7 @@ const previousSlide = () => {
     if (currentSlide.value > 0) {
         currentSlide.value--;
     } else {
-        currentSlide.value = totalSlides - 1;
+        currentSlide.value = totalSlides.value - 1;
     }
     playAnimation();
 }

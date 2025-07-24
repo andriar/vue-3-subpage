@@ -10,7 +10,11 @@
         'z-[999] flex h-auto max-h-[90vh] max-w-full flex-col rounded-2xl bg-white shadow-xl',
         'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
       ]">
-        <LottieCarousel :animationData="animationData">
+        <LottieCarousel 
+          :animationData="animationData" 
+          :loading="animationsLoading"
+          :totalExpected="4"
+        >
           <template #footer>
             <div class="flex w-full items-center justify-between p-4">
               <Checkbox v-model="isChecked" label="Yes, I’m ready to switch to the new Live Chat version."
@@ -32,26 +36,47 @@
 <script setup lang="ts">
 import LottieCarousel from '@/components/common/Carousel/LottieCarousel.vue';
 import { Button, Checkbox } from '@/components/common/common';
-import { computed, onMounted, ref } from 'vue';
-
+import { computed, ref, watch } from 'vue';
 
 const animationData = ref<{ data: any }[]>([]);
+const animationsLoading = ref(true);
 
-// Lazy load animation data
-const loadAnimationData = async () => {
-  const [data1, data2, data3, data4] = await Promise.all([
-    import('@/assets/lottie/widget-update-v5/hero-1.json'),
-    import('@/assets/lottie/widget-update-v5/hero-2.json'),
-    import('@/assets/lottie/widget-update-v5/hero-3.json'),
-    import('@/assets/lottie/widget-update-v5/hero-4.json'),
-  ]);
+const loadAnimationDataBatched = async () => {
+  animationsLoading.value = true;
+  
+  try {
+    // Load first 2 animations quickly
+    const [data1, data2] = await Promise.all([
+      import('@/assets/lottie/widget-update-v5/hero-1.json'),
+      import('@/assets/lottie/widget-update-v5/hero-2.json'),
+    ]);
+    
+    animationData.value = [
+      { data: data1.default },
+      { data: data2.default },
+    ];
+    
+    // Load remaining animations in background
+    const [data3, data4] = await Promise.all([
+      import('@/assets/lottie/widget-update-v5/hero-3.json'),
+      import('@/assets/lottie/widget-update-v5/hero-4.json'),
+    ]);
+    
+    animationData.value.push(
+      { data: data3.default },
+      { data: data4.default }
+    );
+  } catch (error) {
+    console.error('Failed to load animations:', error);
+  } finally {
+    animationsLoading.value = false;
+  }
+};
 
-  animationData.value = [
-    { data: data1.default },
-    { data: data2.default },
-    { data: data3.default },
-    { data: data4.default },
-  ];
+
+// Memory cleanup when component unmounts
+const cleanup = () => {
+  animationData.value = [];
 };
 
 const props = defineProps<{
@@ -61,6 +86,15 @@ const props = defineProps<{
 
 const isChecked = ref(false);
 const emit = defineEmits(['cancel', 'update']);
+
+// Load animations only when modal opens
+watch(() => props.isOpen, (newValue) => {
+  if (newValue && animationData.value.length === 0) {
+    loadAnimationDataBatched(); 
+  } else if (!newValue) {
+    cleanup();
+  }
+});
 
 const handleCancel = () => {
   emit('cancel');
@@ -77,10 +111,6 @@ const isAbleToUpdate = computed(() => {
 function closeDrawer() {
   //
 }
-
-onMounted(() => {
-  loadAnimationData();
-});
 </script>
 
 <style scoped>

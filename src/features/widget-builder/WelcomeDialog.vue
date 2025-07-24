@@ -28,8 +28,8 @@ const FILE_SIZE_LIMITS = {
 } as const;
 
 const ACCEPTED_IMAGE_TYPES = {
-  COMMON: 'image/png,image/jpg,image/jpeg',
-  PNG_JPG: 'image/png,image/jpg',
+  COMMON: '.png,.jpg,.jpeg',
+  PNG_JPG: '.png,.jpg',
 } as const;
 
 const { welcomeDialogState } = storeToRefs(useQiscusLiveChatStore());
