@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { watch } from 'vue';
 
 import { Banner } from '@/components/common/common';
 import ImageInput from '@/components/form/ImageInput.vue';
@@ -11,7 +10,7 @@ import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
 
 import WIdgetFormLayout from './components/layout/WidgetFormLayout.vue';
 
-const { chatFormState, isChatDirty } = storeToRefs(useQiscusLiveChatStore());
+const { chatFormState } = storeToRefs(useQiscusLiveChatStore());
 const { loading, data, error, upload } = useUploadSdkImage();
 
 const uploadImage = async (file: File) => {
@@ -22,10 +21,6 @@ const uploadImage = async (file: File) => {
     console.error(error.value);
   }
 };
-
-watch(isChatDirty, (newVal) => {
-  console.log('isChatDirty', newVal);
-});
 </script>
 
 <template>
