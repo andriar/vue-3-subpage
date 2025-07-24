@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { reactive, ref } from 'vue';
+import { reactive, ref, watchEffect } from 'vue';
 
 import { qiscusApi } from '@/api/channels';
 import type { IconName } from '@/components/icons/Icon.vue';
@@ -61,6 +61,10 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
   const loginFormState = reactive<ILoginFormState>({ ...WIDGET_DEFAULTS.LOGIN_FORM });
   // state for chat form
   const chatFormState = reactive<IChatFormState>({ ...WIDGET_DEFAULTS.CHAT_FORM });
+  const originalChatFormState = ref<IChatFormState>(
+    JSON.parse(JSON.stringify(WIDGET_DEFAULTS.CHAT_FORM))
+  );
+  const isChatDirty = ref(false);
 
   const customerIdentifierOptions = ref<{ label: string; value: string }[]>([
     {
@@ -112,6 +116,13 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
   // GETTERS
 
   // ACTIONS
+
+  watchEffect(() => {
+    const data = JSON.stringify(chatFormState) !== JSON.stringify(originalChatFormState.value);
+    console.log('isChatDirty Data', data);
+    isChatDirty.value = data;
+  });
+
   const addChannel = (channel: OtherChannel): void => {
     // Filter out invalid IDs and get valid numeric IDs
     const validIds = channelList.value
@@ -235,6 +246,9 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
       widgetConfigData.value?.customerServiceName ?? defaults.customerServiceName;
     chatFormState.customerServiceAvatar =
       widgetConfigData.value?.customerServiceAvatar ?? defaults.customerServiceAvatar;
+
+    // Update originalChatFormState to match the populated state
+    originalChatFormState.value = JSON.parse(JSON.stringify(chatFormState));
   };
   const populateColorWidgetData = () => {
     colorWidgetState.value = widgetConfigData.value?.colorWidget ?? WIDGET_DEFAULTS.COLOR_WIDGET; //=> New Data Widget V5
@@ -324,6 +338,7 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
       if (data) {
         console.log(data, 'data');
       }
+      originalChatFormState.value = JSON.parse(JSON.stringify(chatFormState));
       errorPostWidgetConfig.value = null;
     } catch (error) {
       errorPostWidgetConfig.value = error;
@@ -352,6 +367,7 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
     // state for chat form
     chatFormState,
     // Getters
+    isChatDirty,
 
     // Actions
     addChannel,
