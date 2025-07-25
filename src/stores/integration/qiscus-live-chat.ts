@@ -380,7 +380,6 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
         },
       },
     };
-    console.log(payload, 'payload');
     try {
       const { data } = await qiscusApi.postWidgetConfig(channelId, payload);
       if (data) {
