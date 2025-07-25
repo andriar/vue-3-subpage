@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Banner from '@/components/common/Banner.vue';
 import { useAppConfigStore } from '@/stores/app-config';
+import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
 
 import CodeSnippet from '../components/forms/CodeSnippet.vue';
 
@@ -10,6 +11,7 @@ const props = defineProps<{
 }>();
 
 const { appId, widget, baseUrl } = useAppConfigStore();
+const { loginFormState } = useQiscusLiveChatStore();
 const isStaging = widget?.env === 'staging';
 const isLatest = widget?.env === 'latest';
 const iframeUrl = widget?.iframeUrl || '';
@@ -23,7 +25,7 @@ const jsCode = `
             options: {
               channel_id: ${props.channelId},
               mobileBreakPoint: 400,
-              extra_fields: [],
+              extra_fields: ${JSON.stringify(loginFormState.extraFields)},
               ${baseUrl ? `baseUrl: '${baseUrl}',` : ''}
               ${iframeUrl ? `qismoIframeUrl: '${iframeUrl}',` : ''}
               ${isLatest ? `appVersion: 'latest',` : ''}
