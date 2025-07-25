@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import Button from '@/components/common/Button.vue';
 import DropdownMenu from '@/components/common/DropdownMenu.vue';
@@ -71,6 +71,10 @@ const deleteChannel = (channelId: number) => {
   qiscusLiveChatStore.removeChannel(channelId);
   closeAllDropdowns();
 };
+
+const isMaxChannel = computed(() => {
+  return qiscusLiveChatStore.channelList.length === 6;
+});
 </script>
 
 <template>
@@ -88,6 +92,7 @@ const deleteChannel = (channelId: number) => {
           class="text-text-primary gap-2 !px-0"
           @click="isModalOpen = true"
           disableAnimation
+          :disabled="isMaxChannel"
         >
           <Icon name="plus" :size="18" class="" />
           <span class="text-xs font-semibold"> Add More Channel </span>
