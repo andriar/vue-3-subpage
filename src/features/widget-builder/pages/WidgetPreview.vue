@@ -2,8 +2,10 @@
 import { onMounted, onUnmounted } from 'vue';
 
 import { useAppConfigStore } from '@/stores/app-config';
+import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
 
 const { appId, widget, baseUrl } = useAppConfigStore();
+const { loginFormState } = useQiscusLiveChatStore();
 const isStaging = widget?.env === 'staging';
 const isLatest = widget?.env === 'latest';
 const iframeUrl = widget?.iframeUrl || '';
@@ -22,7 +24,7 @@ onMounted(() => {
     options: {
       channel_id: string | number;
       mobileBreakPoint: number;
-      extra_fields: never[];
+      extra_fields: string;
       [key: string]: any;
     };
     staging?: boolean;
@@ -30,7 +32,7 @@ onMounted(() => {
     options: {
       channel_id: channelId,
       mobileBreakPoint: 400,
-      extra_fields: [],
+      extra_fields: JSON.stringify(loginFormState.extraFields),
     },
   };
 
@@ -84,5 +86,4 @@ onUnmounted(() => {
   existingStyleLink?.remove();
 });
 </script>
-<template>
-</template>
+<template></template>
