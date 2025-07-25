@@ -1,10 +1,16 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
+
+
 import type { IAppConfig, IQiscusAppConfig, IWidgetConfig } from '@/types/app';
 import type { ISdkUser, IUser } from '@/types/user';
 import { initAppConfig } from '@/utils/constant/app-config';
 import { initSdkUser, initUser } from '@/utils/constant/user';
+
+
+
+
 
 export const useAppConfigStore = defineStore('app', () => {
   // State
@@ -50,10 +56,10 @@ export const useAppConfigStore = defineStore('app', () => {
 
   // Actions
   const setConfig = (config: IQiscusAppConfig) => {
-    widget.value = config.widget || null;
-    user.value = config.user || { ...initUser };
-    appConfig.value = config.appConfig || { ...initAppConfig };
-    sdkUser.value = config.sdkUser || { ...initSdkUser };
+    widget.value = config.widget ?? null;
+    user.value = { ...initUser, ...config.user };
+    appConfig.value = { ...initAppConfig, ...config.appConfig };
+    sdkUser.value = { ...initSdkUser, ...config.sdkUser };
   };
 
   const clearConfig = () => {

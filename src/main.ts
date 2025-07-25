@@ -6,6 +6,8 @@ import { createApp } from 'vue';
 
 import '@/assets/css/sweet-alert-custom.css';
 
+
+
 import App from './App.vue';
 import './assets/css/style.css';
 import './assets/css/tailwind.css';
@@ -44,14 +46,39 @@ export function createOmnichannelApp(container: string | Element, config: IQiscu
 // Auto-mount if #app exists (for development)
 if (document.querySelector('#app')) {
   createOmnichannelApp('#app', {
-    appConfig: import.meta.env.VITE_QISCUS_APP ? JSON.parse(import.meta.env.VITE_QISCUS_APP) : null,
+    appConfig: import.meta.env.VITE_QISCUS_APP
+      ? (() => {
+          try {
+            return JSON.parse(import.meta.env.VITE_QISCUS_APP);
+          } catch (e) {
+            console.error('Failed to parse VITE_QISCUS_APP:', e);
+            return null;
+          }
+        })()
+      : null,
     widget: {
       iframeUrl: import.meta.env.VITE_IFRAME_URL || import.meta.env.VITE_BASE_URL,
       env: import.meta.env.VITE_WIDGET_ENV || 'production',
     },
-    user: import.meta.env.VITE_QISCUS_USER ? JSON.parse(import.meta.env.VITE_QISCUS_USER) : null,
+    user: import.meta.env.VITE_QISCUS_USER
+      ? (() => {
+          try {
+            return JSON.parse(import.meta.env.VITE_QISCUS_USER);
+          } catch (e) {
+            console.error('Failed to parse VITE_QISCUS_USER', e);
+            return null;
+          }
+        })()
+      : null,
     sdkUser: import.meta.env.VITE_QISCUS_SDK_USER
-      ? JSON.parse(import.meta.env.VITE_QISCUS_SDK_USER)
+      ? (() => {
+          try {
+            return JSON.parse(import.meta.env.VITE_QISCUS_SDK_USER);
+          } catch (e) {
+            console.error('Failed to parse VITE_QISCUS_SDK_USER', e);
+            return null;
+          }
+        })()
       : null,
   });
 }
