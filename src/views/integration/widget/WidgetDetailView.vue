@@ -309,9 +309,9 @@ const handleTabChange = (newTab: string) => {
   ) {
     showAlert
       .warning({
-        title: 'Live Chat Changes',
-        text: 'Saving these settings means you agree to update your Live Chat to the latest version. You can view the installation code right after.',
-        confirmButtonText: 'Update Live Chat',
+        title: 'Change Settings',
+        text: 'Looks like you’ve updated your Live Chat settings. Would you like to save your changes?',
+        confirmButtonText: 'Save Changes',
         cancelButtonText: 'Cancel',
         showCancelButton: true,
       })
@@ -342,9 +342,9 @@ onBeforeRouteLeave(async (_to, _from, next) => {
   // Only show alert when leaving from Live Chat Builder tab with unsaved changes
   if (isChatDirty.value && activeTab.value === 'Live Chat Builder') {
     const result = await showAlert.warning({
-      title: 'Live Chat Changes',
-      text: 'Saving these settings means you agree to update your Live Chat to the latest version. You can view the installation code right after.',
-      confirmButtonText: 'Update Live Chat',
+      title: 'Change Settings',
+      text: 'Looks like you’ve updated your Live Chat settings. Would you like to save your changes?',
+      confirmButtonText: 'Save Changes',
       cancelButtonText: 'Cancel',
       showCancelButton: true,
     });

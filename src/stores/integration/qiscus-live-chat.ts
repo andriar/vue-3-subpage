@@ -45,26 +45,43 @@ const normalizeChannelData = (channels: OtherChannel[]): NormalizedOtherChannel[
 };
 
 export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () => {
-  const channelList = ref<NormalizedOtherChannel[]>([]);
-
-  const colorWidgetState = ref<string>(WIDGET_DEFAULTS.COLOR_WIDGET);
+  const isChatDirty = ref(false);
   const errorPostWidgetConfig = ref<any>();
 
-  // state for Channel Widget
-  const channelState = reactive({ ...WIDGET_DEFAULTS.CHANNEL_WIDGET });
+  // state for welcome dialog
+  const welcomeDialogState = reactive<IWelcomeDialogState>({ ...WIDGET_DEFAULTS.WELCOME_DIALOG });
+  const originalWelcomeDialogState = ref<IWelcomeDialogState>(
+    JSON.parse(JSON.stringify(WIDGET_DEFAULTS.WELCOME_DIALOG))
+  );
 
   // state for call to action
   const callToActionState = reactive<ICallToActionState>({ ...WIDGET_DEFAULTS.CALL_TO_ACTION });
-  // state for welcome dialog
-  const welcomeDialogState = reactive<IWelcomeDialogState>({ ...WIDGET_DEFAULTS.WELCOME_DIALOG });
+  const originalCallToActionState = ref<ICallToActionState>(
+    JSON.parse(JSON.stringify(WIDGET_DEFAULTS.CALL_TO_ACTION))
+  );
+
+  // state for Channel Widget
+  const channelState = reactive({ ...WIDGET_DEFAULTS.CHANNEL_WIDGET });
+  const channelList = ref<NormalizedOtherChannel[]>([]);
+  const originalChannelState = ref(JSON.parse(JSON.stringify(WIDGET_DEFAULTS.CHANNEL_WIDGET)));
+
   // state for login form
   const loginFormState = reactive<ILoginFormState>({ ...WIDGET_DEFAULTS.LOGIN_FORM });
+  const originalLoginFormState = ref<ILoginFormState>(
+    JSON.parse(JSON.stringify(WIDGET_DEFAULTS.LOGIN_FORM))
+  );
+
   // state for chat form
   const chatFormState = reactive<IChatFormState>({ ...WIDGET_DEFAULTS.CHAT_FORM });
   const originalChatFormState = ref<IChatFormState>(
     JSON.parse(JSON.stringify(WIDGET_DEFAULTS.CHAT_FORM))
   );
-  const isChatDirty = ref(false);
+
+  // state for color widget
+  const colorWidgetState = ref<string>(WIDGET_DEFAULTS.COLOR_WIDGET);
+  const originalColorWidgetState = ref<string>(
+    JSON.parse(JSON.stringify(WIDGET_DEFAULTS.CHAT_FORM))
+  );
 
   const customerIdentifierOptions = ref<{ label: string; value: string }[]>([
     {
@@ -118,9 +135,26 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
   // ACTIONS
 
   watchEffect(() => {
-    const data = JSON.stringify(chatFormState) !== JSON.stringify(originalChatFormState.value);
-    console.log('isChatDirty Data', data);
-    isChatDirty.value = data;
+    const isChatFormDirty =
+      JSON.stringify(chatFormState) !== JSON.stringify(originalChatFormState.value);
+    const isColorWidgetDirty =
+      JSON.stringify(colorWidgetState.value) !== JSON.stringify(originalColorWidgetState.value);
+    const isLoginFormDirty =
+      JSON.stringify(loginFormState) !== JSON.stringify(originalLoginFormState.value);
+    const isChannelWidgetDirty =
+      JSON.stringify(channelState) !== JSON.stringify(originalChannelState.value);
+    const isCallToActionDirty =
+      JSON.stringify(callToActionState) !== JSON.stringify(originalCallToActionState.value);
+    const isWelcomeDialogDirty =
+      JSON.stringify(welcomeDialogState) !== JSON.stringify(originalWelcomeDialogState.value);
+
+    isChatDirty.value =
+      isChatFormDirty ||
+      isColorWidgetDirty ||
+      isLoginFormDirty ||
+      isChannelWidgetDirty ||
+      isCallToActionDirty ||
+      isWelcomeDialogDirty;
   });
 
   const addChannel = (channel: OtherChannel): void => {
@@ -186,6 +220,9 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
       widgetConfigData.value?.grabberTimeout ?? defaults.grabberTimeout;
     welcomeDialogState.attentionGrabberImage =
       widgetConfigData.value?.attentionGrabberImage ?? defaults.attentionGrabberImage;
+
+    // Update originalWelcomeDialogState to match the populated state
+    originalWelcomeDialogState.value = JSON.parse(JSON.stringify(welcomeDialogState));
   };
 
   const populateCallToActionData = () => {
@@ -199,6 +236,9 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
     callToActionState.iconImage = widgetConfigData.value?.buttonIcon ?? defaults.iconImage;
     //
     callToActionState.borderRadius = widgetConfigData.value?.borderRadius ?? defaults.borderRadius; //=> New Data Widget V5
+
+    // Update originalCallToActionState to match the populated state
+    originalCallToActionState.value = JSON.parse(JSON.stringify(callToActionState));
   };
 
   const populateChannelWidgetData = () => {
@@ -223,6 +263,9 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
     //
     channelState.previewIntroduction =
       widgetConfigData.value?.channel_widget?.introduction ?? defaults.previewIntroduction; //=> New Data Widget V5
+
+    // Update originalChannelState to match the populated state
+    originalChannelState.value = JSON.parse(JSON.stringify(channelState));
   };
 
   const populateLoginFormData = () => {
@@ -238,6 +281,9 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
     loginFormState.secondDescription =
       widgetConfigData.value?.formSecondGreet ?? defaults.secondDescription; //=> New Data Widget V5
     loginFormState.brandLogo = widgetConfigData.value?.loginBrandLogo ?? defaults.brandLogo; //=> New Data Widget V5
+
+    // Update originalLoginFormState to match the populated state
+    originalLoginFormState.value = JSON.parse(JSON.stringify(loginFormState));
   };
 
   const populateChatFormData = () => {
@@ -252,12 +298,14 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
   };
   const populateColorWidgetData = () => {
     colorWidgetState.value = widgetConfigData.value?.colorWidget ?? WIDGET_DEFAULTS.COLOR_WIDGET; //=> New Data Widget V5
+
+    // Update originalColorWidgetState to match the populated state
+    originalColorWidgetState.value = JSON.parse(JSON.stringify(colorWidgetState.value));
   };
 
   const getWidgetConfig = async (appId: string, channelId: string) => {
     try {
       // Add check to ensure data is ready
-      console.log('widgetConfigData after fetch:', widgetConfigData.value);
       await fetchConfigWidget(appId, channelId);
       if (widgetConfigData) {
         populateWelcomeDialogData();
@@ -339,6 +387,11 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
         console.log(data, 'data');
       }
       originalChatFormState.value = JSON.parse(JSON.stringify(chatFormState));
+      originalColorWidgetState.value = JSON.parse(JSON.stringify(colorWidgetState.value));
+      originalLoginFormState.value = JSON.parse(JSON.stringify(loginFormState));
+      originalChannelState.value = JSON.parse(JSON.stringify(channelState));
+      originalCallToActionState.value = JSON.parse(JSON.stringify(callToActionState));
+      originalWelcomeDialogState.value = JSON.parse(JSON.stringify(welcomeDialogState));
       errorPostWidgetConfig.value = null;
     } catch (error) {
       errorPostWidgetConfig.value = error;
