@@ -13,6 +13,8 @@ import type { NormalizedOtherChannel } from '@/types/schemas/channels/qiscus-wid
 
 import ModalChannelList from './ModalChannelList.vue';
 
+const MAX_CHANNELS = 6;
+
 // --- Store ---
 const qiscusLiveChatStore = useQiscusLiveChatStore();
 
@@ -73,7 +75,7 @@ const deleteChannel = (channelId: number) => {
 };
 
 const isMaxChannel = computed(() => {
-  return qiscusLiveChatStore.channelList.length === 6;
+  return qiscusLiveChatStore.channelList.length === MAX_CHANNELS;
 });
 </script>
 
