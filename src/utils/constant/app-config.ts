@@ -1,0 +1,18 @@
+export const initAppConfig = {
+    appVersion: '',
+    baseUrl: '',
+    app_code: '',
+    name: '',
+    bot_webhook_url: '',
+    is_bot_enabled: false,
+    is_allocate_agent_webhook_enabled: false,
+    allocate_agent_webhook_url: '',
+    mark_as_resolved_webhook_url: '',
+    is_mark_as_resolved_webhook_enabled: false,
+    is_active: false,
+    is_sessional: false,
+    is_agent_allocation_enabled: false,
+    is_agent_takeover_enabled: false,
+    use_latest: false,
+    is_bulk_assignment_enabled: false,
+}

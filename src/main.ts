@@ -29,7 +29,7 @@ export function createOmnichannelApp(container: string | Element, config: IQiscu
   }
 
   // Create router with the provided appId
-  const router = createRouter(config.appId);
+  const router = createRouter(config.appConfig.app_code);
   app.use(router);
 
   const mountElement =
@@ -44,16 +44,14 @@ export function createOmnichannelApp(container: string | Element, config: IQiscu
 // Auto-mount if #app exists (for development)
 if (document.querySelector('#app')) {
   createOmnichannelApp('#app', {
-    baseUrl: import.meta.env.VITE_BASE_URL,
-    userToken: import.meta.env.VITE_QISCUS_USER_TOKEN,
-    appId: import.meta.env.VITE_QISCUS_APP_ID,
-    appVersion: import.meta.env.VITE_QISCUS_APP_VERSION,
-    sdkUserId: import.meta.env.VITE_QISCUS_SDK_USER_ID || '',
-    userSdkToken: import.meta.env.VITE_QISCUS_USER_SDK_TOKEN || '',
+    appConfig: import.meta.env.VITE_QISCUS_APP ? JSON.parse(import.meta.env.VITE_QISCUS_APP) : null,
     widget: {
       iframeUrl: import.meta.env.VITE_IFRAME_URL || import.meta.env.VITE_BASE_URL,
       env: import.meta.env.VITE_WIDGET_ENV || 'production',
     },
     user: import.meta.env.VITE_QISCUS_USER ? JSON.parse(import.meta.env.VITE_QISCUS_USER) : null,
+    sdkUser: import.meta.env.VITE_QISCUS_SDK_USER
+      ? JSON.parse(import.meta.env.VITE_QISCUS_SDK_USER)
+      : null,
   });
 }

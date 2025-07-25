@@ -1,72 +1,83 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
-import type { IQiscusAppConfig, IWidgetConfig } from '@/types/app';
-import type { IUser } from '@/types/user';
-import { initUser } from '@/utils/constant/user';
+import type { IAppConfig, IQiscusAppConfig, IWidgetConfig } from '@/types/app';
+import type { ISdkUser, IUser } from '@/types/user';
+import { initAppConfig } from '@/utils/constant/app-config';
+import { initSdkUser, initUser } from '@/utils/constant/user';
 
 export const useAppConfigStore = defineStore('app', () => {
   // State
-  const baseUrl = ref<string>('');
-  const userToken = ref<string>('');
-  const appId = ref<string>('');
-  const appVersion = ref<string>('');
-  const sdkUserId = ref<string>('');
-  const userSdkToken = ref<string>('');
   const widget = ref<IWidgetConfig | null>(null);
   const user = ref<IUser>({ ...initUser });
-  const userId = ref<number | null>(null);
+  const appConfig = ref<IAppConfig>({ ...initAppConfig });
+  const sdkUser = ref<ISdkUser>({ ...initSdkUser });
+
+  // Computed properties for backward compatibility
+  const userToken = computed(() => user.value.authentication_token);
+  const appId = computed(() => appConfig.value.app_code);
+  const appVersion = computed(() => appConfig.value.appVersion);
+  const baseUrl = computed(() => appConfig.value.baseUrl);
+  const userId = computed(() => user.value.id);
+  const sdkUserId = computed(() => sdkUser.value.id);
+  const userSdkToken = computed(() => sdkUser.value.token);
 
   // Getters
   const isConfigured = () => {
-    return !!(userToken.value && appId.value && appVersion.value);
+    return !!(
+      user.value.authentication_token &&
+      appConfig.value.app_code &&
+      appConfig.value.appVersion
+    );
   };
 
   const getHeaders = () => {
     return {
-      Authorization: userToken.value,
-      APP_ID: appId.value,
-      'Qiscus-App-Id': appId.value,
-      'App-Version': appVersion.value,
+      Authorization: user.value.authentication_token,
+      APP_ID: appConfig.value.app_code,
+      'Qiscus-App-Id': appConfig.value.app_code,
+      'App-Version': appConfig.value.appVersion,
     };
   };
 
   const getHeadersSdk = () => {
     return {
-      qiscus_sdk_app_id: appId.value,
-      qiscus_sdk_user_id: sdkUserId.value,
-      qiscus_sdk_token: userSdkToken.value,
+      qiscus_sdk_app_id: appConfig.value.app_code,
+      qiscus_sdk_user_id: sdkUser.value.id.toString(),
+      qiscus_sdk_token: sdkUser.value.token,
     };
   };
 
   // Actions
   const setConfig = (config: IQiscusAppConfig) => {
-    baseUrl.value = config.baseUrl;
-    userToken.value = config.userToken;
-    appId.value = config.appId;
-    appVersion.value = config.appVersion;
-    sdkUserId.value = config.sdkUserId;
-    userSdkToken.value = config.userSdkToken;
     widget.value = config.widget || null;
     user.value = config.user || { ...initUser };
+    appConfig.value = config.appConfig || { ...initAppConfig };
+    sdkUser.value = config.sdkUser || { ...initSdkUser };
   };
 
   const clearConfig = () => {
-    userToken.value = '';
-    appId.value = '';
-    appVersion.value = '';
-    sdkUserId.value = '';
-    userSdkToken.value = '';
+    appConfig.value = { ...initAppConfig };
+    sdkUser.value = { ...initSdkUser };
+    user.value = { ...initUser };
+    widget.value = null;
   };
 
   return {
     // State
+    appConfig,
+    sdkUser,
+    user,
+    widget,
+
+    // Computed properties for backward compatibility
     userToken,
     appId,
     appVersion,
     userId,
     baseUrl,
-    widget,
+    sdkUserId,
+    userSdkToken,
 
     // Getters
     isConfigured,
