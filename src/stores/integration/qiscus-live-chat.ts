@@ -230,7 +230,7 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
 
     callToActionState.isWithText = widgetConfigData.value?.buttonHasText ?? defaults.isWithText;
     callToActionState.liveChatButtonText =
-      widgetConfigData.value?.loginFormButtonLabel ?? defaults.liveChatButtonText;
+      widgetConfigData.value?.buttonText ?? defaults.liveChatButtonText;
     //
     callToActionState.isWithIcon = widgetConfigData.value?.buttonHasIcon ?? defaults.isWithIcon;
     callToActionState.iconImage = widgetConfigData.value?.buttonIcon ?? defaults.iconImage;
@@ -273,7 +273,7 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
     loginFormState.firstDescription =
       widgetConfigData.value?.formGreet ?? defaults.firstDescription;
     loginFormState.formSubtitle = widgetConfigData.value?.formSubtitle ?? defaults.formSubtitle;
-    loginFormState.buttonText = widgetConfigData.value?.buttonText ?? defaults.buttonText;
+    loginFormState.buttonText = widgetConfigData.value?.loginFormButtonLabel ?? defaults.buttonText;
     loginFormState.extraFields = widgetConfigData.value?.extra_fields ?? [];
     loginFormState.customerIdentifier =
       widgetConfigData.value?.customerIdentifierInputType ?? defaults.customerIdentifier;
@@ -346,7 +346,7 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
           formGreet: loginFormState.firstDescription,
           formSecondGreet: loginFormState.secondDescription, //=> new data // formSecondGreet
           formSubtitle: loginFormState.formSubtitle,
-          buttonText: loginFormState.buttonText,
+          loginFormButtonLabel: loginFormState.buttonText, //=> wrong data
           customerIdentifierInputType: loginFormState.customerIdentifier,
           extra_fields: loginFormState.extraFields,
           loginBrandLogo: loginFormState.brandLogo, //=> new data
@@ -359,7 +359,7 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
           buttonHasText: callToActionState.isWithText,
           buttonHasIcon: callToActionState.isWithIcon,
           buttonIcon: callToActionState.iconImage || DEFAULT_IMAGE_PREVIEW.LOGIN_BRAND_ICON,
-          loginFormButtonLabel: callToActionState.liveChatButtonText,
+          buttonText: callToActionState.liveChatButtonText, //= wrong data
           borderRadius: callToActionState.borderRadius, //=> new data
 
           // channel widget data
