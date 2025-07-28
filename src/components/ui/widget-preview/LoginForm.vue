@@ -12,6 +12,7 @@ import { useAppConfigStore } from '@/stores/app-config';
 import { CHANNEL_BADGE_URL } from '@/utils/constant/channels';
 
 const props = defineProps<{
+  brandLogo?: string;
   title: string;
   subtitle: string;
   description: string;
@@ -33,7 +34,8 @@ const { baseUrl } = useAppConfigStore();
   <div class="text-navy-500 shadow-card-float flex w-[360px] flex-col rounded-4xl bg-white">
     <div class="flex-1 p-8">
       <div v-if="!props.isChannelEnabled">
-        <QiscusIcon :size="32" />
+        <Image v-if="props.brandLogo" :src="props.brandLogo ?? ''" alt="Brand Logo" size="32" />
+        <QiscusIcon v-else :size="32" />
         <div class="mt-6 text-2xl break-words">{{ props.title }}</div>
         <div class="text-2xl font-bold break-words">{{ props.subtitle }}</div>
       </div>

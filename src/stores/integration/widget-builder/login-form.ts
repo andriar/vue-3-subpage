@@ -61,11 +61,11 @@ export const useLoginFormStore = defineStore('login-form', () => {
     const defaults = WIDGET_DEFAULTS.LOGIN_FORM;
 
     state.firstDescription = config?.formGreet ?? defaults.firstDescription;
+    state.secondDescription = config?.formSecondGreet ?? defaults.secondDescription;
     state.formSubtitle = config?.formSubtitle ?? defaults.formSubtitle;
     state.buttonText = config?.loginFormButtonLabel ?? defaults.buttonText;
-    state.extraFields = config?.extra_fields ?? [];
     state.customerIdentifier = config?.customerIdentifierInputType ?? defaults.customerIdentifier;
-    state.secondDescription = config?.formSecondGreet ?? defaults.secondDescription;
+    state.extraFields = config?.extra_fields ?? [];
     state.brandLogo = config?.loginBrandLogo ?? defaults.brandLogo;
 
     // Update original state
