@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { cva } from 'class-variance-authority';
 
+import { Image } from '@/components/common/common';
 import { Icon } from '@/components/icons';
-import type { IconName } from '@/components/icons/Icon.vue';
+import { useAppConfigStore } from '@/stores/app-config';
 
 interface Props {
   modelValue: string | undefined;
@@ -12,12 +13,14 @@ interface Props {
 
 interface Icon {
   name: string;
-  icon: IconName;
+  icon: string;
 }
 
 const props = defineProps<Props>();
 
 const emit = defineEmits(['update:modelValue']);
+const { baseUrl } = useAppConfigStore();
+
 const iconClasses = cva(
   'flex items-center justify-center p-3 rounded-lg cursor-pointer transition-all duration-200 border',
   {
@@ -55,7 +58,11 @@ const selectIcon = (iconName: string) => {
         :data-testid="`${id}-${icon.name}`"
         :id="`${id}-${icon.name}`"
       >
-        <Icon :name="icon.icon" :alt="icon.name" />
+        <Image
+          :src="icon.icon"
+          :alt="icon.name"
+          :fallback-src="`${baseUrl}/img/icons/${icon.name.toLowerCase()}.png`"
+        />
       </div>
     </div>
   </div>

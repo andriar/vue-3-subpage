@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import { computed, reactive, ref } from 'vue';
 
-import type { IconName } from '@/components/icons/Icon.vue';
 import type { ILoginFormState } from '@/types/live-chat';
 import type { LoginForm } from '@/types/schemas/channels/qiscus-widget/config-qiscus-widget';
 import { WIDGET_DEFAULTS } from '@/utils/constant/widget-default';
@@ -25,12 +24,27 @@ export const useLoginFormStore = defineStore('login-form', () => {
     { text: 'Dropdown', value: 'dropdown' },
   ]);
 
-  const iconsAdditionalField = ref<{ name: string; icon: IconName }[]>([
-    { name: 'Date', icon: 'date' },
-    { name: 'Location', icon: 'pin' },
-    { name: 'Briefcase', icon: 'briefcase' },
-    { name: 'Globe', icon: 'globe' },
-    { name: 'Phone', icon: 'phone' },
+  const iconsAdditionalField = ref<{ name: string; icon: string }[]>([
+    {
+      name: 'Date',
+      icon: 'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/date.png',
+    },
+    {
+      name: 'Location',
+      icon: 'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/map.png',
+    },
+    {
+      name: 'Briefcase',
+      icon: 'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/briefcase.png',
+    },
+    {
+      name: 'Globe',
+      icon: 'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/globe.png',
+    },
+    {
+      name: 'Phone',
+      icon: 'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/phone.png',
+    },
   ]);
 
   const updateOriginalState = () => {
