@@ -184,7 +184,7 @@ const uBot = useFetchBot();
 const uConfig = useFetchConfig();
 const uQiscus = useUpdateQiscus();
 const useConfig = useUpdateConfig();
-const { postWidgetConfig, isChatDirty } = useWidgetConfig();
+const { postWidgetConfig, isChatDirty, errorPostWidgetConfig } = useWidgetConfig();
 const { fetchChannelById, data: widget } = useFetchQiscusDetail();
 const { updateSecurity, error: errorUpdateSecurity } = useUpdateSecurityQiscus();
 const {
@@ -322,10 +322,28 @@ const handleTabChange = (newTab: string) => {
         if (result.isConfirmed) {
           await postWidgetConfig(channel.app_code, channel.id);
 
-          // Redirect user to new tab after saving
-          activeTab.value = newTab;
-        } else {
-          activeTab.value = newTab;
+          if (errorPostWidgetConfig.value) {
+            return showAlert.error({
+              title: 'Failed',
+              text: 'Failed to save changes. Please try again.',
+              confirmButtonText: 'Okay',
+              showCancelButton: false,
+            });
+          }
+
+          showAlert
+            .success({
+              title: 'Success',
+              text: "You've successfully saved your settings",
+              confirmButtonText: 'Okay',
+              showCancelButton: false,
+            })
+            .then((result) => {
+              if (result.isConfirmed) {
+                // Redirect user to new tab after saving
+                activeTab.value = newTab;
+              }
+            });
         }
       });
   } else {
@@ -341,7 +359,7 @@ onBeforeRouteLeave(async (_to, _from, next) => {
   if (isChatDirty.value && activeTab.value === 'Live Chat Builder') {
     const result = await showAlert.warning({
       title: 'Change Settings',
-      text: 'Looks like you’ve updated your Live Chat settings. Would you like to save your changes?',
+      text: "Looks like you've updated your Live Chat settings. Would you like to save your changes?",
       confirmButtonText: 'Save Changes',
       cancelButtonText: 'Cancel',
       showCancelButton: true,
@@ -349,6 +367,7 @@ onBeforeRouteLeave(async (_to, _from, next) => {
 
     if (!channel.id || !channel.app_code) {
       console.error('Missing required parameters');
+      next(false); // Block navigation
       return;
     }
 
@@ -356,10 +375,25 @@ onBeforeRouteLeave(async (_to, _from, next) => {
       // User wants to save changes
       await postWidgetConfig(channel.app_code, channel.id);
 
-      next();
-    } else {
-      // User cancelled or dismissed
-      next();
+      if (errorPostWidgetConfig.value) {
+        showAlert.error({
+          title: 'Failed',
+          text: 'Failed to save changes. Please try again.',
+          confirmButtonText: 'Okay',
+          showCancelButton: false,
+        });
+        next(false); // Block navigation
+        return;
+      }
+
+      await showAlert.success({
+        title: 'Success',
+        text: "You've successfully saved your settings",
+        confirmButtonText: 'Okay',
+        showCancelButton: false,
+      });
+
+      next(); // Allow navigation after saving
     }
   } else {
     // No unsaved changes or not on Live Chat Builder tab - allow navigation

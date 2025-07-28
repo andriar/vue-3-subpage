@@ -79,7 +79,7 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat-ori',
 
   // state for color widget
   const colorWidgetState = ref<string>(WIDGET_DEFAULTS.COLOR_WIDGET);
-  const originalColorWidgetState = ref<string>(JSON.parse(JSON.stringify(WIDGET_DEFAULTS.CHAT)));
+  const originalColorWidgetState = ref<string>(WIDGET_DEFAULTS.COLOR_WIDGET);
 
   const customerIdentifierOptions = ref<{ label: string; value: string }[]>([
     {

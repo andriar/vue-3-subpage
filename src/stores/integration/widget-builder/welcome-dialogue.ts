@@ -7,9 +7,7 @@ import { WIDGET_DEFAULTS } from '@/utils/constant/widget-default';
 
 export const useWelcomeDialogueStore = defineStore('welcome-dialogue', () => {
   const state = reactive<IWelcomeDialogFormState>({ ...WIDGET_DEFAULTS.WELCOME_DIALOG });
-  const originalState = ref<IWelcomeDialogFormState>(
-    JSON.parse(JSON.stringify(WIDGET_DEFAULTS.WELCOME_DIALOG))
-  );
+  const originalState = ref<IWelcomeDialogFormState>(WIDGET_DEFAULTS.WELCOME_DIALOG);
 
   const isDirty = computed(() => {
     return JSON.stringify(state) !== JSON.stringify(originalState.value);

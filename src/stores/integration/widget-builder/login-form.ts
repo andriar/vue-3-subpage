@@ -8,9 +8,7 @@ import { WIDGET_DEFAULTS } from '@/utils/constant/widget-default';
 
 export const useLoginFormStore = defineStore('login-form', () => {
   const state = reactive<ILoginFormState>({ ...WIDGET_DEFAULTS.LOGIN_FORM });
-  const originalState = ref<ILoginFormState>(
-    JSON.parse(JSON.stringify(WIDGET_DEFAULTS.LOGIN_FORM))
-  );
+  const originalState = ref<ILoginFormState>(WIDGET_DEFAULTS.LOGIN_FORM);
 
   const isDirty = computed(() => {
     return JSON.stringify(state) !== JSON.stringify(originalState.value);
