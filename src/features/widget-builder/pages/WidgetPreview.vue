@@ -2,10 +2,10 @@
 import { onMounted, onUnmounted } from 'vue';
 
 import { useAppConfigStore } from '@/stores/app-config';
-import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
+import { useLoginFormStore } from '@/stores/integration/widget-builder/login-form';
 
 const { appId, widget, baseUrl } = useAppConfigStore();
-const { loginFormState } = useQiscusLiveChatStore();
+const { state: loginFormState } = useLoginFormStore();
 const isStaging = widget?.env === 'staging';
 const isLatest = widget?.env === 'latest';
 const iframeUrl = widget?.iframeUrl || '';
@@ -54,7 +54,6 @@ onMounted(() => {
   const script = document.createElement('script');
   script.src = qismoScriptSrc;
   script.async = true; // Always load asynchronously
-
   script.onload = () => {
     // @ts-ignore
     const Qismo = window.Qismo;

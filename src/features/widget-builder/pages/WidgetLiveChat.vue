@@ -2,15 +2,6 @@
 import { type Component, computed, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-// Props definition
-const props = defineProps<{
-  isLatestVersion: () => boolean;
-}>();
-
-const emit = defineEmits<{
-  (e: 'product-version-check', isValidVersion: boolean): void;
-}>();
-
 import RoundedTab from '@/components/common/Tabs/RoundedTab.vue';
 import { Button, Drawer } from '@/components/common/common';
 import {
@@ -28,7 +19,16 @@ import WelcomeDialog from '@/features/widget-builder/WelcomeDialog.vue';
 import Channels from '@/features/widget-builder/channels/Channels.vue';
 import ColorScheme from '@/features/widget-builder/color-scheme/ColorScheme.vue';
 import { useAppConfigStore } from '@/stores/app-config';
-import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
+import { useWidgetConfig } from '@/stores/integration/widget-builder/widget-config';
+
+// Props definition
+const props = defineProps<{
+  isLatestVersion: () => boolean;
+}>();
+
+const emit = defineEmits<{
+  (e: 'product-version-check', isValidVersion: boolean): void;
+}>();
 
 type TabName = string;
 
@@ -106,7 +106,7 @@ watch(
 );
 
 // Store integration
-const { postWidgetConfig, getWidgetConfig } = useQiscusLiveChatStore();
+const { postWidgetConfig, getWidgetConfig } = useWidgetConfig();
 const { appId } = useAppConfigStore();
 const iframeSrc = ref(`${window.location.origin + window.location.pathname}/preview`);
 
@@ -158,10 +158,16 @@ onMounted(async () => {
   <div>
     <div class="bg-white-100 flex w-full flex-col rounded-2xl border-[1px] border-gray-300">
       <div
-        class="bg-white-100 sticky top-0 z-50 flex w-full items-center justify-between rounded-t-2xl border-b-[1px] border-gray-300 p-4 gap-2">
+        class="bg-white-100 sticky top-0 z-50 flex w-full items-center justify-between gap-2 rounded-t-2xl border-b-[1px] border-gray-300 p-4"
+      >
         <RoundedTab :tabs="tabs" v-model="activeTab" />
-        <Button id="save-preview-btn" class="min-w-max" @click="saveAndPreview" :loading="isLoading"
-          :disabled="isLoading">
+        <Button
+          id="save-preview-btn"
+          class="min-w-max"
+          @click="saveAndPreview"
+          :loading="isLoading"
+          :disabled="isLoading"
+        >
           Save & Preview
         </Button>
       </div>
@@ -174,8 +180,12 @@ onMounted(async () => {
 
     <Drawer :isOpen="isDrawerOpen" @close="isDrawerOpen = false">
       <!-- Preview content should come from store/props -->
-      <iframe ref="dynamicIframeRef" :src="iframeSrc" title="Live Chat Preview"
-        style="width: 100%; height: 100%"></iframe>
+      <iframe
+        ref="dynamicIframeRef"
+        :src="iframeSrc"
+        title="Live Chat Preview"
+        style="width: 100%; height: 100%"
+      ></iframe>
     </Drawer>
   </div>
 </template>

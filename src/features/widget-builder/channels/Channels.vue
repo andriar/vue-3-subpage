@@ -9,7 +9,7 @@ import TextArea from '@/components/form/TextArea.vue';
 import { useUploadSdkImage } from '@/composables/images/useUploadSdkImage';
 import { useSweetAlert } from '@/composables/useSweetAlert';
 import WidgetFormLayout from '@/features/widget-builder/components/layout/WidgetFormLayout.vue';
-import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
+import { useChannelWidgetStore } from '@/stores/integration/widget-builder/channels';
 
 import ChannelListCard from './components/ChannelListCard.vue';
 import PreviewChannels from './components/PreviewChannels.vue';
@@ -17,7 +17,7 @@ import PreviewChannels from './components/PreviewChannels.vue';
 // --- Store & Composable ---
 const { showAlert } = useSweetAlert();
 const { loading, data, error, upload } = useUploadSdkImage();
-const { channelState, channelList } = storeToRefs(useQiscusLiveChatStore());
+const { widgetState: channelState, channelList } = storeToRefs(useChannelWidgetStore());
 
 // Validates if the Live Chat toggle can be disabled
 const hasNoEnabledChannels = computed(() => {

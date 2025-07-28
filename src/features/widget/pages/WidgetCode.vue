@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Banner from '@/components/common/Banner.vue';
 import { useAppConfigStore } from '@/stores/app-config';
-import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
+import { useLoginFormStore } from '@/stores/integration/widget-builder/login-form';
 
 import CodeSnippet from '../components/forms/CodeSnippet.vue';
 
@@ -11,7 +11,7 @@ const props = defineProps<{
 }>();
 
 const { appId, widget, baseUrl } = useAppConfigStore();
-const { loginFormState } = useQiscusLiveChatStore();
+const { state: loginFormState } = useLoginFormStore();
 const isStaging = widget?.env === 'staging';
 const isLatest = widget?.env === 'latest';
 const iframeUrl = widget?.iframeUrl || '';

@@ -8,7 +8,7 @@ import Switch from '@/components/common/Switch.vue';
 import { ChatIcon } from '@/components/icons';
 import Icon from '@/components/icons/Icon.vue';
 import Divider from '@/components/ui/Divider.vue';
-import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
+import { useChannelWidgetStore } from '@/stores/integration/widget-builder/channels';
 import type { NormalizedOtherChannel } from '@/types/schemas/channels/qiscus-widget/config-qiscus-widget';
 
 import ModalChannelList from './ModalChannelList.vue';
@@ -16,7 +16,7 @@ import ModalChannelList from './ModalChannelList.vue';
 const MAX_CHANNELS = 6;
 
 // --- Store ---
-const qiscusLiveChatStore = useQiscusLiveChatStore();
+const { channelList, removeChannel } = useChannelWidgetStore();
 
 // --- Local state ---
 const isModalOpen = ref(false);
@@ -25,7 +25,7 @@ const editingChannelData = ref<NormalizedOtherChannel | null>(null);
 
 // --- Method & function ---
 const getFieldOptions = (channelId: number) => {
-  const channel = qiscusLiveChatStore.channelList.find((channel) => channel.index === channelId);
+  const channel = channelList.find((channel) => channel.index === channelId);
   if (!channel) return [];
 
   return [
@@ -61,7 +61,7 @@ const handleDropdownToggle = (channelId: number, isOpen: boolean) => {
 };
 
 const editChannel = (channelId: number) => {
-  const channel = qiscusLiveChatStore.channelList.find((channel) => channel.index === channelId);
+  const channel = channelList.find((channel) => channel.index === channelId);
   if (channel && channel.index) {
     editingChannelData.value = { ...channel };
     isModalOpen.value = true;
@@ -70,12 +70,12 @@ const editChannel = (channelId: number) => {
 };
 
 const deleteChannel = (channelId: number) => {
-  qiscusLiveChatStore.removeChannel(channelId);
+  removeChannel(channelId);
   closeAllDropdowns();
 };
 
 const isMaxChannel = computed(() => {
-  return qiscusLiveChatStore.channelList.length === MAX_CHANNELS;
+  return channelList.length === MAX_CHANNELS;
 });
 </script>
 
@@ -101,15 +101,12 @@ const isMaxChannel = computed(() => {
         </Button>
       </div>
 
-      <Divider v-if="qiscusLiveChatStore.channelList.length > 0" />
+      <Divider v-if="channelList.length > 0" />
 
       <!-- channel list -->
-      <div
-        v-if="qiscusLiveChatStore.channelList.length > 0"
-        class="flex flex-col items-start gap-6"
-      >
+      <div v-if="channelList.length > 0" class="flex flex-col items-start gap-6">
         <div
-          v-for="channel in qiscusLiveChatStore.channelList"
+          v-for="channel in channelList"
           :key="channel.index"
           class="flex w-full items-center gap-4"
         >

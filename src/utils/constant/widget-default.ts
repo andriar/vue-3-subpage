@@ -34,7 +34,7 @@ export const WIDGET_DEFAULTS = {
     customerIdentifier: 'email',
     extraFields: [],
   },
-  CHAT_FORM: {
+  CHAT: {
     customerServiceName: 'Qiscus Customer Care',
     customerServiceAvatar: '',
   },

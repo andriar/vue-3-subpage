@@ -4,13 +4,12 @@ import { computed } from 'vue';
 
 import ChannelList from '@/components/ui/widget-preview/ChannelList.vue';
 import ChannelListLoading from '@/components/ui/widget-preview/ChannelListLoading.vue';
-import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
+import { useChannelWidgetStore } from '@/stores/integration/widget-builder/channels';
 
-const qiscusLiveChatStore = useQiscusLiveChatStore();
-const { channelState } = storeToRefs(qiscusLiveChatStore);
+const { widgetState: channelState, channelList } = storeToRefs(useChannelWidgetStore());
 
 const channelPreviewData = computed(() => {
-  return qiscusLiveChatStore.channelList.filter((channel) => channel.is_enable);
+  return channelList.value.filter((channel) => channel.is_enable);
 });
 </script>
 

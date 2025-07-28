@@ -69,12 +69,12 @@ export interface ILoginFormState {
   extraFields: IAdditionalField[]; //extra_fields
 }
 
-export interface IChatFormState {
+export interface IChatState {
   customerServiceName: string; //customerServiceName
   customerServiceAvatar: string; //customerServiceAvatar
 }
 
-export interface IWelcomeDialogState {
+export interface IWelcomeDialogFormState {
   isWelcomeDialog: boolean; //welcomeDialogStatus
   isAttentionGrabber: boolean; //attentionGrabberStatus
   firstDescriptionWelcomeDialog: string; //welcomeText

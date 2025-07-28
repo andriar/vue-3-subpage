@@ -15,7 +15,7 @@ import WelcomingPage from '@/components/ui/widget-preview/WelcomingPage.vue';
 import WelcomingPageLoading from '@/components/ui/widget-preview/WelcomingPageLoading.vue';
 import { useUploadSdkImage } from '@/composables/images/useUploadSdkImage';
 import WidgetFormLayout from '@/features/widget-builder/components/layout/WidgetFormLayout.vue';
-import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
+import { useWelcomeDialogueStore } from '@/stores/integration/widget-builder/welcome-dialogue';
 import { DEFAULT_IMAGE_PREVIEW } from '@/utils/constant/images';
 
 import OptionalInput from './components/form/OptionalInput.vue';
@@ -32,7 +32,7 @@ const ACCEPTED_IMAGE_TYPES = {
   PNG_JPG: '.png,.jpg',
 } as const;
 
-const { welcomeDialogState } = storeToRefs(useQiscusLiveChatStore());
+const { state: welcomeDialogState } = storeToRefs(useWelcomeDialogueStore());
 const brandIconUpload = useUploadSdkImage();
 const actionIconUpload = useUploadSdkImage();
 const attentionGrabberImageUpload = useUploadSdkImage();

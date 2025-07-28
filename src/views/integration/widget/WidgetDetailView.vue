@@ -6,7 +6,11 @@
         Qiscus Live Chat List
       </router-link>
 
-      <router-link to="/" id="route-integration" class="text-primary flex items-center gap-2 font-semibold">
+      <router-link
+        to="/"
+        id="route-integration"
+        class="text-primary flex items-center gap-2 font-semibold"
+      >
         <HomeIcon :size="20" />
         Integration
       </router-link>
@@ -14,43 +18,63 @@
 
     <div class="mx-auto flex w-11/12 flex-col gap-8">
       <div class="flex items-center gap-3">
-        <Image :src="CHANNEL_BADGE_URL.qiscus" alt="Qiscus Logo" class="h-6 w-6" :width="24" :height="24" />
+        <Image
+          :src="CHANNEL_BADGE_URL.qiscus"
+          alt="Qiscus Logo"
+          class="h-6 w-6"
+          :width="24"
+          :height="24"
+        />
 
         <h2 class="text-text-title text-xl font-semibold">Qiscus Live Chat</h2>
       </div>
 
       <div v-if="!isAutoresponderFormOpen" class="flex flex-col gap-8">
-        <MainTab :tabs="tabLabels" v-model="activeTab" />
+        <MainTab :tabs="tabLabels" :modelValue="activeTab" @update:modelValue="handleTabChange" />
         <!-- Dynamic component rendering -->
-        <component 
-          :channel-id="props.id" 
-          :is="currentTabComponent" 
-          v-if="currentTabComponent" 
+        <component
+          :channel-id="props.id"
+          :is="currentTabComponent"
+          v-if="currentTabComponent"
           v-model="settingData"
           @open-auto-responder-form="handleOpenAutoResponderForm"
           @product-version-check="productVersionCheck"
-          v-bind="activeTab.toLowerCase() === 'live chat builder' ? { 'is-latest-version': isLatestVersion } : {}"
+          v-bind="
+            activeTab.toLowerCase() === 'live chat builder'
+              ? { 'is-latest-version': isLatestVersion }
+              : {}
+          "
         />
       </div>
 
-      <form id="auto-responder-form" @submit.prevent="handleSubmitAutoResponder" v-if="isAutoresponderFormOpen">
+      <form
+        id="auto-responder-form"
+        @submit.prevent="handleSubmitAutoResponder"
+        v-if="isAutoresponderFormOpen"
+      >
         <AutoResponderForm v-model="channel.configs" :is-bot="isBot" />
 
         <div class="mt-8 flex justify-end gap-4">
-          <Button id="cancel-btn" intent="secondary" @click="handleCancelAutoResponder">Cancel</Button>
+          <Button id="cancel-btn" intent="secondary" @click="handleCancelAutoResponder"
+            >Cancel</Button
+          >
           <Button id="submit-btn" type="submit">Save Changes</Button>
         </div>
       </form>
     </div>
 
     <!-- product update -->
-    <ProductUpdater :is-open="isProductUpdateOpen" @cancel="handleCancelProductUpdate"
-      @update="handleUpdateProductUpdate" :loading="loadingUpdateWidget" />
+    <ProductUpdater
+      :is-open="isProductUpdateOpen"
+      @cancel="handleCancelProductUpdate"
+      @update="handleUpdateProductUpdate"
+      :loading="loadingUpdateWidget"
+    />
   </div>
 </template>
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
 
 import Button from '@/components/common/Button.vue';
 import MainTab from '@/components/common/Tabs/MainTab.vue';
@@ -71,7 +95,7 @@ import QiscusTermConditionDescription from '@/features/widget/components/ui/Qisc
 import WidgetCode from '@/features/widget/pages/WidgetCode.vue';
 import WidgetOverview from '@/features/widget/pages/WidgetOverview.vue';
 import WidgetSettings from '@/features/widget/pages/WidgetSetting.vue';
-import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
+import { useWidgetConfig } from '@/stores/integration/widget-builder/widget-config';
 import type { IWidgetChannel } from '@/types/channels';
 import { CHANNEL_BADGE_URL } from '@/utils/constant/channels';
 
@@ -150,21 +174,29 @@ const channel = reactive<IWidgetChannel>({
     send_online_if_resolved: false,
   },
 });
-
 const settingData = ref({
   is_enabled: false,
   is_secure: false,
 });
+const isProductUpdateOpen = ref(false);
 
 const uBot = useFetchBot();
 const uConfig = useFetchConfig();
 const uQiscus = useUpdateQiscus();
 const useConfig = useUpdateConfig();
+const { postWidgetConfig, isChatDirty, errorPostWidgetConfig } = useWidgetConfig();
 const { fetchChannelById, data: widget } = useFetchQiscusDetail();
 const { updateSecurity, error: errorUpdateSecurity } = useUpdateSecurityQiscus();
+const {
+  update: updateWidget,
+  error: errorUpdateWidget,
+  loading: loadingUpdateWidget,
+} = useUpdateQiscus();
 
 // --- URL sync watchers ---
 watch(activeTab, (newTab) => {
+  // Check if there are unsaved changes when switching tab
+
   const selectedTab = tabs.find((tab) => tab.label === newTab);
   if (newTab.toLowerCase() === 'overview') {
     productVersionCheck();
@@ -240,8 +272,9 @@ async function updateConversationSecurity(
   showAlert.success({
     title: 'Success',
     showCancelButton: false,
-    text: `Security enhancement settings for the Qiscus Live Chat channel have been successfully ${isSecure ? 'enabled' : 'disabled'
-      }`,
+    text: `Security enhancement settings for the Qiscus Live Chat channel have been successfully ${
+      isSecure ? 'enabled' : 'disabled'
+    }`,
   });
 }
 
@@ -264,6 +297,105 @@ async function handleSubmitAutoResponder() {
 
   isAutoresponderFormOpen.value = false;
 }
+
+const handleTabChange = (newTab: string) => {
+  // Only show alert when switching FROM "Live Chat Builder" to another tab
+  if (
+    isChatDirty.value &&
+    activeTab.value === 'Live Chat Builder' &&
+    newTab !== 'Live Chat Builder'
+  ) {
+    showAlert
+      .warning({
+        title: 'Change Settings',
+        text: 'Looks like you’ve updated your Live Chat settings. Would you like to save your changes?',
+        confirmButtonText: 'Save Changes',
+        cancelButtonText: 'Cancel',
+        showCancelButton: true,
+      })
+      .then(async (result) => {
+        if (!channel.id || !channel.app_code) {
+          console.error('Missing required parameters');
+          return;
+        }
+
+        if (result.isConfirmed) {
+          await postWidgetConfig(channel.app_code, channel.id);
+
+          if (errorPostWidgetConfig.value) {
+            return showAlert.error({
+              title: 'Failed',
+              text: 'Failed to save changes. Please try again.',
+              confirmButtonText: 'Okay',
+              showCancelButton: false,
+            });
+          }
+
+          await showAlert.success({
+            title: 'Success',
+            text: "You've successfully saved your settings",
+            confirmButtonText: 'Okay',
+            showCancelButton: false,
+          });
+
+          // Redirect user to new tab after saving
+          activeTab.value = newTab;
+        }
+      });
+  } else {
+    // No unsaved changes or not switching from Live Chat Builder
+    // Switch tabs normally
+    activeTab.value = newTab;
+  }
+};
+
+// Handle router navigation when there are unsaved changes
+onBeforeRouteLeave(async (_to, _from, next) => {
+  // Only show alert when leaving from Live Chat Builder tab with unsaved changes
+  if (isChatDirty.value && activeTab.value === 'Live Chat Builder') {
+    const result = await showAlert.warning({
+      title: 'Change Settings',
+      text: "Looks like you've updated your Live Chat settings. Would you like to save your changes?",
+      confirmButtonText: 'Save Changes',
+      cancelButtonText: 'Cancel',
+      showCancelButton: true,
+    });
+
+    if (!channel.id || !channel.app_code) {
+      console.error('Missing required parameters');
+      next(false); // Block navigation
+      return;
+    }
+
+    if (result.isConfirmed) {
+      // User wants to save changes
+      await postWidgetConfig(channel.app_code, channel.id);
+
+      if (errorPostWidgetConfig.value) {
+        showAlert.error({
+          title: 'Failed',
+          text: 'Failed to save changes. Please try again.',
+          confirmButtonText: 'Okay',
+          showCancelButton: false,
+        });
+        next(false); // Block navigation
+        return;
+      }
+
+      await showAlert.success({
+        title: 'Success',
+        text: "You've successfully saved your settings",
+        confirmButtonText: 'Okay',
+        showCancelButton: false,
+      });
+
+      next(); // Allow navigation after saving
+    }
+  } else {
+    // No unsaved changes or not on Live Chat Builder tab - allow navigation
+    next();
+  }
+});
 
 function handleCancelAutoResponder() {
   isAutoresponderFormOpen.value = false;
@@ -346,25 +478,20 @@ async function handleChangeSecurity(isSecure: boolean, oldValueIsSecure: boolean
   }
 }
 
-// product update
-const { update: updateWidget, error: errorUpdateWidget, loading: loadingUpdateWidget } = useUpdateQiscus();
-const { postWidgetConfig } = useQiscusLiveChatStore();
-const isProductUpdateOpen = ref(false);
-
 const isLatestVersion = () => {
-    const version = parseInt(widget.value?.widget_version || '0');
-    if (version < 5) {
-      return false;
-    }
-    return true;
+  const version = parseInt(widget.value?.widget_version || '0');
+  if (version < 5) {
+    return false;
+  }
+  return true;
 };
 
 const productVersionCheck = (val?: boolean) => {
   const isValid = val || isLatestVersion();
   if (!isValid) {
     isProductUpdateOpen.value = true;
-    return
-  } 
+    return;
+  }
   isProductUpdateOpen.value = false;
 };
 
@@ -388,20 +515,22 @@ const handleUpdateProductUpdate = async () => {
       confirmButtonText: 'Okay',
       showCancelButton: false,
     });
-  };
+  }
 
   productVersionCheck(true);
   await postWidgetConfig(channel.app_code, channel.id);
 
-  showAlert.success({
-    title: 'Success',
-    text: 'Success updating Live Chat Version.',
-    confirmButtonText: 'Okay',
-    showCancelButton: false,
-  }).then(() => {
-    fetchChannelById(channel.id as string);
-  })
-}
+  showAlert
+    .success({
+      title: 'Success',
+      text: 'Success updating Live Chat Version.',
+      confirmButtonText: 'Okay',
+      showCancelButton: false,
+    })
+    .then(() => {
+      fetchChannelById(channel.id as string);
+    });
+};
 
 onMounted(async () => {
   channel.id = props.id ? String(props.id) : '';
@@ -413,11 +542,11 @@ onMounted(async () => {
 
   // need to set data autoresponder
   // iConfig.data.value.is_enabled
-  
+
   setData();
-  
+
   // check after set data widget
-  if(activeTab.value.toLowerCase() === 'overview') {
+  if (activeTab.value.toLowerCase() === 'overview') {
     productVersionCheck();
   }
 });

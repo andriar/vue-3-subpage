@@ -42,7 +42,7 @@ const ExtraFieldSchema = z.array(
   })
 );
 
-const WelcomeDialogSchema = z.object({
+const WelcomeDialogueSchema = z.object({
   welcomeMessageStatus: z.boolean(),
   welcomeText: z.string(),
   welcomeTimeout: z.string(),
@@ -63,7 +63,7 @@ const WelcomeDialogSchema = z.object({
 
 const CalltoActionSchema = z.object({
   buttonHasText: z.boolean(),
-  loginFormButtonLabel: z.string(),
+  buttonText: z.string(),
   buttonHasIcon: z.boolean(),
   buttonIcon: z.url(),
 
@@ -79,7 +79,7 @@ const ChannelSchema = z.object({
 const LoginFormSchema = z.object({
   formGreet: z.string(),
   formSubtitle: z.string(),
-  buttonText: z.string(),
+  loginFormButtonLabel: z.string(),
   extra_fields: ExtraFieldSchema.nullable(),
   customerIdentifierInputType: z.string(),
 
@@ -88,7 +88,7 @@ const LoginFormSchema = z.object({
   loginBrandLogo: z.string().optional(),
 });
 
-const ChatFormSchema = z.object({
+const ChatSchema = z.object({
   customerServiceName: z.string(),
   customerServiceAvatar: z.url(),
 });
@@ -98,11 +98,11 @@ const QiscusWidgetConfigDataSchema = z.object({
   selectedWidgetPage: z.string(),
 
   // organize schemas
-  ...WelcomeDialogSchema.shape,
+  ...WelcomeDialogueSchema.shape,
   ...CalltoActionSchema.shape,
   ...ChannelSchema.shape,
   ...LoginFormSchema.shape,
-  ...ChatFormSchema.shape,
+  ...ChatSchema.shape,
 
   // widget V5 new data
   colorWidget: z.string().optional(),
@@ -116,6 +116,13 @@ const QiscusWidgetConfigSchema = z.object({
 });
 
 export const QiscusWidgetConfigResponseSchema = createApiResponseSchema(QiscusWidgetConfigSchema);
+
+// Widget type
+export type WelcomeDialogue = z.infer<typeof WelcomeDialogueSchema>;
+export type CallToAction = z.infer<typeof CalltoActionSchema>;
+export type ChannelLiveChat = z.infer<typeof ChannelSchema>;
+export type LoginForm = z.infer<typeof LoginFormSchema>;
+export type Chat = z.infer<typeof ChatSchema>;
 
 export type OtherChannel = z.infer<typeof OtherChannelSchema>;
 export type NormalizedOtherChannel = Omit<OtherChannel, 'index'> & { index: number };
