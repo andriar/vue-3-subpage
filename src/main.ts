@@ -16,6 +16,10 @@ import { useAppConfigStore } from './stores/app-config';
 import { useAuthStore } from './stores/auth';
 import type { IQiscusAppConfig } from './types/app';
 
+
+
+
+
 export function createOmnichannelApp(container: string | Element, config: IQiscusAppConfig) {
   const app = createApp(App);
   const pinia = createPinia();
@@ -70,12 +74,12 @@ if (document.querySelector('#app')) {
           }
         })()
       : null,
-    sdkUser: import.meta.env.VITE_QISCUS_SDK_USER
+    sdkUser: import.meta.env.VITE_QISCUS_SDKUSER
       ? (() => {
           try {
-            return JSON.parse(import.meta.env.VITE_QISCUS_SDK_USER);
+            return JSON.parse(import.meta.env.VITE_QISCUS_SDKUSER);
           } catch (e) {
-            console.error('Failed to parse VITE_QISCUS_SDK_USER', e);
+            console.error('Failed to parse VITE_QISCUS_SDKUSER', e);
             return null;
           }
         })()
