@@ -132,7 +132,7 @@ export const useChannelWidgetStore = defineStore('channel-widget', () => {
     // Computed
     isDirty,
 
-    // Channel operationsP
+    // Channel operations
     addChannel,
     removeChannel,
     updateChannel,

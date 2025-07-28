@@ -6,7 +6,9 @@ import { WIDGET_DEFAULTS } from '@/utils/constant/widget-default';
 
 export const useColorWidgetStore = defineStore('color-widget', () => {
   const colorWidgetState = ref<string>(WIDGET_DEFAULTS.COLOR_WIDGET);
-  const originalColorWidgetState = ref<string>(JSON.parse(JSON.stringify(WIDGET_DEFAULTS.CHAT)));
+  const originalColorWidgetState = ref<string>(
+    JSON.parse(JSON.stringify(WIDGET_DEFAULTS.COLOR_WIDGET))
+  );
 
   const isDirty = computed(() => {
     return (

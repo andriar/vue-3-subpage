@@ -11,7 +11,7 @@ import { useUploadSdkImage } from '@/composables/images/useUploadSdkImage';
 import { useChannelWidgetStore } from '@/stores/integration/widget-builder/channels';
 import type { NormalizedOtherChannel } from '@/types/schemas/channels/qiscus-widget/config-qiscus-widget';
 
-const qiscusLiveChatStore = useChannelWidgetStore();
+const { addChannel, updateChannel } = useChannelWidgetStore();
 const { loading, data, error, upload } = useUploadSdkImage();
 
 const channelName = ref<string>('');
@@ -67,9 +67,9 @@ const handleAddChannel = (): void => {
       ...formData,
       is_active: modelValue.value.is_active,
     };
-    qiscusLiveChatStore.updateChannel(modelValue.value.index, updatedChannel);
+    updateChannel(modelValue.value.index, updatedChannel);
   } else {
-    qiscusLiveChatStore.addChannel({
+    addChannel({
       ...formData,
       is_enable: false,
     });
