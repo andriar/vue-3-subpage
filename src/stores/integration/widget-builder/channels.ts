@@ -36,7 +36,7 @@ const normalizeChannelData = (channels: OtherChannel[]): NormalizedOtherChannel[
 export const useChannelWidgetStore = defineStore('channel-widget', () => {
   // Widget configuration state
   const widgetState = reactive({ ...WIDGET_DEFAULTS.CHANNEL_WIDGET });
-  const originalWidgetState = ref(WIDGET_DEFAULTS.CHANNEL_WIDGET);
+  const originalWidgetState = ref({ ...WIDGET_DEFAULTS.CHANNEL_WIDGET });
 
   // Channel list state
   const channelList = ref<NormalizedOtherChannel[]>([]);

@@ -8,7 +8,7 @@ import { WIDGET_DEFAULTS } from '@/utils/constant/widget-default';
 
 export const useCallToActionStore = defineStore('call-to-action', () => {
   const state = reactive<ICallToActionState>({ ...WIDGET_DEFAULTS.CALL_TO_ACTION });
-  const originalState = ref<ICallToActionState>(WIDGET_DEFAULTS.CALL_TO_ACTION);
+  const originalState = ref<ICallToActionState>({ ...WIDGET_DEFAULTS.CALL_TO_ACTION });
 
   const isDirty = computed(() => {
     return JSON.stringify(state) !== JSON.stringify(originalState.value);

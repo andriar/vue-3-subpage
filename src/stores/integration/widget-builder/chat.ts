@@ -8,7 +8,7 @@ import { WIDGET_DEFAULTS } from '@/utils/constant/widget-default';
 
 export const useChatStore = defineStore('chat', () => {
   const state = reactive<IChatState>({ ...WIDGET_DEFAULTS.CHAT });
-  const originalState = ref<IChatState>(WIDGET_DEFAULTS.CHAT);
+  const originalState = ref<IChatState>({ ...WIDGET_DEFAULTS.CHAT });
 
   const isDirty = computed(() => {
     return JSON.stringify(state) !== JSON.stringify(originalState.value);
