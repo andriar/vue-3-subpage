@@ -8,10 +8,10 @@ import ImageInput from '@/components/form/ImageInput.vue';
 import Input from '@/components/form/Input.vue';
 import TextArea from '@/components/form/TextArea.vue';
 import { useUploadSdkImage } from '@/composables/images/useUploadSdkImage';
-import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
+import { useChannelWidgetStore } from '@/stores/integration/widget-builder/channels';
 import type { NormalizedOtherChannel } from '@/types/schemas/channels/qiscus-widget/config-qiscus-widget';
 
-const qiscusLiveChatStore = useQiscusLiveChatStore();
+const qiscusLiveChatStore = useChannelWidgetStore();
 const { loading, data, error, upload } = useUploadSdkImage();
 
 const channelName = ref<string>('');

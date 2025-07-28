@@ -73,7 +73,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
 import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
 
@@ -96,7 +95,7 @@ import QiscusTermConditionDescription from '@/features/widget/components/ui/Qisc
 import WidgetCode from '@/features/widget/pages/WidgetCode.vue';
 import WidgetOverview from '@/features/widget/pages/WidgetOverview.vue';
 import WidgetSettings from '@/features/widget/pages/WidgetSetting.vue';
-import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
+import { useWidgetConfig } from '@/stores/integration/widget-builder/widget-config';
 import type { IWidgetChannel } from '@/types/channels';
 import { CHANNEL_BADGE_URL } from '@/utils/constant/channels';
 
@@ -185,8 +184,7 @@ const uBot = useFetchBot();
 const uConfig = useFetchConfig();
 const uQiscus = useUpdateQiscus();
 const useConfig = useUpdateConfig();
-const { postWidgetConfig } = useQiscusLiveChatStore();
-const { isChatDirty } = storeToRefs(useQiscusLiveChatStore());
+const { postWidgetConfig, isChatDirty } = useWidgetConfig();
 const { fetchChannelById, data: widget } = useFetchQiscusDetail();
 const { updateSecurity, error: errorUpdateSecurity } = useUpdateSecurityQiscus();
 const {

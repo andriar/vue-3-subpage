@@ -8,7 +8,7 @@ import Switch from '@/components/common/Switch.vue';
 import { ChatIcon } from '@/components/icons';
 import Icon from '@/components/icons/Icon.vue';
 import Divider from '@/components/ui/Divider.vue';
-import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
+import { useChannelWidgetStore } from '@/stores/integration/widget-builder/channels';
 import type { NormalizedOtherChannel } from '@/types/schemas/channels/qiscus-widget/config-qiscus-widget';
 
 import ModalChannelList from './ModalChannelList.vue';
@@ -16,7 +16,7 @@ import ModalChannelList from './ModalChannelList.vue';
 const MAX_CHANNELS = 6;
 
 // --- Store ---
-const qiscusLiveChatStore = useQiscusLiveChatStore();
+const qiscusLiveChatStore = useChannelWidgetStore();
 
 // --- Local state ---
 const isModalOpen = ref(false);

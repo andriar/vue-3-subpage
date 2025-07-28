@@ -17,17 +17,22 @@ import Divider from '@/components/ui/Divider.vue';
 import LoginForm from '@/components/ui/widget-preview/LoginForm.vue';
 import { useUploadSdkImage } from '@/composables/images/useUploadSdkImage';
 import WidgetFormLayout from '@/features/widget-builder/components/layout/WidgetFormLayout.vue';
-import { useQiscusLiveChatStore } from '@/stores/integration/qiscus-live-chat';
+import { useChannelWidgetStore } from '@/stores/integration/widget-builder/channels';
+import { useLoginFormStore } from '@/stores/integration/widget-builder/login-form';
 import type { IAdditionalField } from '@/types/live-chat';
 import { DEFAULT_IMAGE_PREVIEW } from '@/utils/constant/images';
 
 import DropdownItemInput from './components/form/DropdownItemInput.vue';
 import IconSelectInput from './components/form/IconSelectInput.vue';
 
-const qiscusLiveChatStore = useQiscusLiveChatStore();
 const { loading, data, error, upload } = useUploadSdkImage();
-const { channelState } = storeToRefs(useQiscusLiveChatStore());
-const { loginFormState } = storeToRefs(useQiscusLiveChatStore());
+const { widgetState: channelState } = storeToRefs(useChannelWidgetStore());
+const {
+  state: loginFormState,
+  fieldTypeOptionsAdditionalField,
+  customerIdentifierOptions,
+  iconsAdditionalField,
+} = storeToRefs(useLoginFormStore());
 
 const additionalField = reactive<IAdditionalField>({
   type: '',
@@ -129,7 +134,8 @@ const handleDropdownToggle = (index: number, isOpen: boolean) => {
 const editField = (field: IAdditionalField) => {
   // Find the index of the field being edited
   const index = loginFormState.value.extraFields.findIndex(
-    (f) => f.name === field.name && f.type === field.type && f.placeholder === field.placeholder
+    (f: IAdditionalField) =>
+      f.name === field.name && f.type === field.type && f.placeholder === field.placeholder
   );
 
   if (index !== -1) {
@@ -224,7 +230,7 @@ const uploadImage = async (file: File) => {
             id="phone-number-login"
             v-model="loginFormState.customerIdentifier"
             label="Choose Customer Identifier"
-            :options="qiscusLiveChatStore.customerIdentifierOptions"
+            :options="customerIdentifierOptions"
           />
           <Banner
             v-if="loginFormState.customerIdentifier === 'phone'"
@@ -286,7 +292,7 @@ const uploadImage = async (file: File) => {
         :buttonText="loginFormState.buttonText"
         :customerIdentifier="loginFormState.customerIdentifier"
         :fields="
-          loginFormState.extraFields.map((field) => ({
+          loginFormState.extraFields.map((field: IAdditionalField) => ({
             id: field.name,
             icon: field.iconField || DEFAULT_IMAGE_PREVIEW.LOGIN_BRAND_ICON,
             type: field.type === 'dropdown' ? 'select' : field.type,
@@ -310,7 +316,7 @@ const uploadImage = async (file: File) => {
           <Select
             id="field-type"
             label="Field Type"
-            :options="qiscusLiveChatStore.fieldTypeOptionsAdditionalField"
+            :options="fieldTypeOptionsAdditionalField"
             v-model="additionalField.type"
           />
         </div>
@@ -342,7 +348,7 @@ const uploadImage = async (file: File) => {
           <IconSelectInput
             id="icon-field"
             v-model="additionalField.iconField"
-            :icons="qiscusLiveChatStore.iconsAdditionalField"
+            :icons="iconsAdditionalField"
           />
         </div>
       </div>
