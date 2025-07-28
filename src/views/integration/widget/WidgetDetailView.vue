@@ -195,7 +195,7 @@ const {
 
 // --- URL sync watchers ---
 watch(activeTab, (newTab) => {
-  // Check if there are unsaced changes when switching tab
+  // Check if there are unsaved changes when switching tab
 
   const selectedTab = tabs.find((tab) => tab.label === newTab);
   if (newTab.toLowerCase() === 'overview') {
@@ -331,19 +331,15 @@ const handleTabChange = (newTab: string) => {
             });
           }
 
-          showAlert
-            .success({
-              title: 'Success',
-              text: "You've successfully saved your settings",
-              confirmButtonText: 'Okay',
-              showCancelButton: false,
-            })
-            .then((result) => {
-              if (result.isConfirmed) {
-                // Redirect user to new tab after saving
-                activeTab.value = newTab;
-              }
-            });
+          await showAlert.success({
+            title: 'Success',
+            text: "You've successfully saved your settings",
+            confirmButtonText: 'Okay',
+            showCancelButton: false,
+          });
+
+          // Redirect user to new tab after saving
+          activeTab.value = newTab;
         }
       });
   } else {
