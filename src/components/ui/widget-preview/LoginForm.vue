@@ -1,16 +1,12 @@
 <script setup lang="ts">
 import Image from '@/components/common/Image.vue';
 import {
-  BriefcaseIcon,
   ChevronDownIcon,
   ChevronLeftIcon,
-  DateIcon,
-  GlobeIcon,
   PhoneIcon,
-  PinIcon,
   QiscusIcon,
   SignIcon,
-  UserIcon,
+  UserIcon
 } from '@/components/icons';
 import { CHANNEL_BADGE_URL } from '@/utils/constant/channels';
 
@@ -29,19 +25,6 @@ const props = defineProps<{
     placeholder: string;
   }[];
 }>();
-
-// Buat registry dari semua icon yang tersedia
-const iconRegistry: Record<string, any> = {
-  Date: DateIcon,
-  Location: PinIcon,
-  Phone: PhoneIcon,
-  Briefcase: BriefcaseIcon,
-  Globe: GlobeIcon,
-};
-
-const getIconComponent = (iconName: string) => {
-  return iconRegistry[iconName] || null;
-};
 </script>
 
 <template>
@@ -104,11 +87,7 @@ const getIconComponent = (iconName: string) => {
           class="shadow-card flex w-full items-center gap-3 rounded-2xl px-3 py-4"
         >
           <div class="rounded-lg bg-gray-100 p-[7px]">
-            <component
-              v-if="getIconComponent(field.icon)"
-              :is="getIconComponent(field.icon)"
-              :size="18"
-            />
+            <Image v-if="field.icon" :src="field.icon" alt="field.label" />
             <div
               v-else
               class="flex h-[18px] w-[18px] items-center justify-center rounded bg-gray-300 text-xs"

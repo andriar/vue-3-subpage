@@ -33,12 +33,12 @@ const iconClasses = cva(
   }
 );
 
-const getIconClasses = (iconName: string) =>
-  iconClasses({ selected: props.modelValue === iconName });
+const getIconClasses = (iconUrl: string) =>
+  iconClasses({ selected: props.modelValue === iconUrl });
 
-const selectIcon = (iconName: string) => {
-  if (iconName !== props.modelValue) {
-    emit('update:modelValue', iconName);
+const selectIcon = (iconUrl: string) => {
+  if (iconUrl !== props.modelValue) {
+    emit('update:modelValue', iconUrl);
   }
 };
 </script>
@@ -51,8 +51,8 @@ const selectIcon = (iconName: string) => {
       <div
         v-for="icon in props.icons"
         :key="icon.name"
-        :class="getIconClasses(icon.name)"
-        @click="selectIcon(icon.name)"
+        :class="getIconClasses(icon.icon)"
+        @click="selectIcon(icon.icon)"
         :title="icon.name"
         :data-value="icon.name"
         :data-testid="`${id}-${icon.name}`"

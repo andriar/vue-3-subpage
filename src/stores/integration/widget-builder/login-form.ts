@@ -1,9 +1,15 @@
 import { defineStore } from 'pinia';
 import { computed, reactive, ref } from 'vue';
 
+
+
 import type { ILoginFormState } from '@/types/live-chat';
 import type { LoginForm } from '@/types/schemas/channels/qiscus-widget/config-qiscus-widget';
 import { WIDGET_DEFAULTS } from '@/utils/constant/widget-default';
+
+
+
+
 
 export const useLoginFormStore = defineStore('login-form', () => {
   const state = reactive<ILoginFormState>({ ...WIDGET_DEFAULTS.LOGIN_FORM });
@@ -21,7 +27,7 @@ export const useLoginFormStore = defineStore('login-form', () => {
   const fieldTypeOptionsAdditionalField = ref([
     { text: 'Input Text', value: 'input' },
     { text: 'Text Area', value: 'textarea' },
-    { text: 'Dropdown', value: 'dropdown' },
+    { text: 'Dropdown', value: 'select' },
   ]);
 
   const iconsAdditionalField = ref<{ name: string; icon: string }[]>([

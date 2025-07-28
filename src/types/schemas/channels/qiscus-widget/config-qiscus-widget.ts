@@ -1,6 +1,12 @@
 import { z } from 'zod';
 
+
+
 import { createApiResponseSchema } from '../../common';
+
+
+
+
 
 const OtherChannelSchema = z.object({
   badge_url: z.string().optional(),
@@ -39,6 +45,7 @@ const ExtraFieldSchema = z.array(
     placeholder: z.string(),
     required: z.boolean(),
     type: z.string(),
+    iconField: z.string().optional(),
   })
 );
 
