@@ -1,23 +1,21 @@
 import { defineStore } from 'pinia';
 import { reactive, ref, watchEffect } from 'vue';
 
+
+
 import { qiscusApi } from '@/api/channels';
 import type { IconName } from '@/components/icons/Icon.vue';
 import { useFetchConfigWidgetQiscus } from '@/composables/channels/qiscus/widget/useFetchConfigWidget';
 import type { IWidgetConfigPayload } from '@/types/channels';
-import type {
-  ICallToActionState,
-  IChatState,
-  ILoginFormState,
-  IWelcomeDialogFormState,
-} from '@/types/live-chat';
-import type {
-  NormalizedOtherChannel,
-  OtherChannel,
-} from '@/types/schemas/channels/qiscus-widget/config-qiscus-widget';
+import type { ICallToActionState, IChatState, ILoginFormState, IWelcomeDialogFormState } from '@/types/live-chat';
+import type { NormalizedOtherChannel, OtherChannel } from '@/types/schemas/channels/qiscus-widget/config-qiscus-widget';
 import { CHANNEL_BADGE_URL } from '@/utils/constant/channels';
 import { DEFAULT_IMAGE_PREVIEW } from '@/utils/constant/images';
 import { WIDGET_DEFAULTS } from '@/utils/constant/widget-default';
+
+
+
+
 
 const { fetchConfigWidget, data: widgetConfigData } = useFetchConfigWidgetQiscus();
 
@@ -102,7 +100,7 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat-ori',
     },
     {
       text: 'Dropdown',
-      value: 'dropdown',
+      value: 'select',
     },
   ]);
   const iconsAdditionalField = ref<{ name: string; icon: IconName }[]>([

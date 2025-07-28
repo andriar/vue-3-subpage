@@ -55,7 +55,7 @@ const isAdditionalFieldValid = computed(() => {
   if (!additionalField.placeholder.trim()) return false;
 
   // If type dropdown, make sure there is at least 1 option
-  if (additionalField.type === 'dropdown') {
+  if (additionalField.type === 'select') {
     return additionalField.options && additionalField.options.length > 0;
   }
 
@@ -295,7 +295,7 @@ const uploadImage = async (file: File) => {
           loginFormState.extraFields.map((field: IAdditionalField) => ({
             id: field.name,
             icon: field.iconField || DEFAULT_IMAGE_PREVIEW.LOGIN_BRAND_ICON,
-            type: field.type === 'dropdown' ? 'select' : field.type,
+            type: field.type,
             label: field.name,
             placeholder: field.placeholder,
           }))
