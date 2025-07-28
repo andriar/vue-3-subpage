@@ -2,7 +2,6 @@ import { defineStore } from 'pinia';
 import { reactive, ref } from 'vue';
 
 import { qiscusApi } from '@/api/channels';
-import type { IconName } from '@/components/icons/Icon.vue';
 import { useFetchConfigWidgetQiscus } from '@/composables/channels/qiscus/widget/useFetchConfigWidget';
 import type { IWidgetConfigPayload } from '@/types/channels';
 import type {
@@ -82,30 +81,30 @@ export const useQiscusLiveChatStore = defineStore('create-qiscus-live-chat', () 
       value: 'textarea',
     },
     {
-      text: 'Dropdown',
-      value: 'dropdown',
+      text: 'Select',
+      value: 'select',
     },
   ]);
-  const iconsAdditionalField = ref<{ name: string; icon: IconName }[]>([
+  const iconsAdditionalField = ref<{ name: string; icon: string }[]>([
     {
       name: 'Date',
-      icon: 'date',
+      icon: 'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/date.png',
     },
     {
       name: 'Location',
-      icon: 'pin',
+      icon: 'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/map.png',
     },
     {
       name: 'Briefcase',
-      icon: 'briefcase',
+      icon: 'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/briefcase.png',
     },
     {
       name: 'Globe',
-      icon: 'globe',
+      icon: 'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/globe.png',
     },
     {
       name: 'Phone',
-      icon: 'phone',
+      icon: 'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/phone.png',
     },
   ]);
 

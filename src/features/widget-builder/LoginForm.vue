@@ -329,7 +329,7 @@ const uploadImage = async (file: File) => {
             label="Placeholder"
             placeholder="e,g: Type your address here"
           />
-          <template v-if="additionalField.type === 'dropdown' && additionalField.options">
+          <template v-if="additionalField.type === 'select' && additionalField.options">
             <DropdownItemInput v-model="additionalField.options" />
           </template>
           <div class="my-2 flex items-center">
