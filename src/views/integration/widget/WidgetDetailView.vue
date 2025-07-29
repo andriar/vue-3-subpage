@@ -38,7 +38,7 @@
           v-if="currentTabComponent"
           v-model="settingData"
           @open-auto-responder-form="handleOpenAutoResponderForm"
-          @product-version-check="productVersionCheck"
+          @product-version-check="handleUpdateProductUpdate"
           v-bind="
             activeTab.toLowerCase() === 'live chat builder'
               ? { 'is-latest-version': isLatestVersion }
@@ -184,7 +184,7 @@ const uBot = useFetchBot();
 const uConfig = useFetchConfig();
 const uQiscus = useUpdateQiscus();
 const useConfig = useUpdateConfig();
-const { postWidgetConfig, isChatDirty, errorPostWidgetConfig } = useWidgetConfig();
+const { postWidgetConfig, isChatDirty } = useWidgetConfig();
 const { fetchChannelById, data: widget } = useFetchQiscusDetail();
 const { updateSecurity, error: errorUpdateSecurity } = useUpdateSecurityQiscus();
 const {
@@ -298,50 +298,24 @@ async function handleSubmitAutoResponder() {
   isAutoresponderFormOpen.value = false;
 }
 
-const handleTabChange = (newTab: string) => {
+const handleTabChange = async (newTab: string) => {
   // Only show alert when switching FROM "Live Chat Builder" to another tab
   if (
     isChatDirty.value &&
     activeTab.value === 'Live Chat Builder' &&
     newTab !== 'Live Chat Builder'
   ) {
-    showAlert
-      .warning({
-        title: 'Change Settings',
-        text: 'Looks like you’ve updated your Live Chat settings. Would you like to save your changes?',
-        confirmButtonText: 'Save Changes',
-        cancelButtonText: 'Cancel',
-        showCancelButton: true,
-      })
-      .then(async (result) => {
-        if (!channel.id || !channel.app_code) {
-          console.error('Missing required parameters');
-          return;
-        }
+    const resultShowAlert = await showAlert.warning({
+      title: 'Unsaved Changes',
+      text: 'If you navigate away from this page, all your data will be unsaved. You will directed to the other menu',
+      confirmButtonText: 'Stay On This Page',
+      cancelButtonText: 'Leave Without Saving',
+      showCancelButton: true,
+    });
 
-        if (result.isConfirmed) {
-          await postWidgetConfig(channel.app_code, channel.id);
-
-          if (errorPostWidgetConfig.value) {
-            return showAlert.error({
-              title: 'Failed',
-              text: 'Failed to save changes. Please try again.',
-              confirmButtonText: 'Okay',
-              showCancelButton: false,
-            });
-          }
-
-          await showAlert.success({
-            title: 'Success',
-            text: "You've successfully saved your settings",
-            confirmButtonText: 'Okay',
-            showCancelButton: false,
-          });
-
-          // Redirect user to new tab after saving
-          activeTab.value = newTab;
-        }
-      });
+    if (resultShowAlert.dismiss) {
+      activeTab.value = newTab;
+    }
   } else {
     // No unsaved changes or not switching from Live Chat Builder
     // Switch tabs normally
@@ -353,43 +327,16 @@ const handleTabChange = (newTab: string) => {
 onBeforeRouteLeave(async (_to, _from, next) => {
   // Only show alert when leaving from Live Chat Builder tab with unsaved changes
   if (isChatDirty.value && activeTab.value === 'Live Chat Builder') {
-    const result = await showAlert.warning({
-      title: 'Change Settings',
-      text: "Looks like you've updated your Live Chat settings. Would you like to save your changes?",
-      confirmButtonText: 'Save Changes',
-      cancelButtonText: 'Cancel',
+    const resultShowAlert = await showAlert.warning({
+      title: 'Unsaved Changes',
+      text: 'If you navigate away from this page, all your data will be unsaved. You will directed to the other menu',
+      confirmButtonText: 'Stay On This Page',
+      cancelButtonText: 'Leave Without Saving',
       showCancelButton: true,
     });
 
-    if (!channel.id || !channel.app_code) {
-      console.error('Missing required parameters');
-      next(false); // Block navigation
-      return;
-    }
-
-    if (result.isConfirmed) {
-      // User wants to save changes
-      await postWidgetConfig(channel.app_code, channel.id);
-
-      if (errorPostWidgetConfig.value) {
-        showAlert.error({
-          title: 'Failed',
-          text: 'Failed to save changes. Please try again.',
-          confirmButtonText: 'Okay',
-          showCancelButton: false,
-        });
-        next(false); // Block navigation
-        return;
-      }
-
-      await showAlert.success({
-        title: 'Success',
-        text: "You've successfully saved your settings",
-        confirmButtonText: 'Okay',
-        showCancelButton: false,
-      });
-
-      next(); // Allow navigation after saving
+    if (resultShowAlert.dismiss) {
+      next();
     }
   } else {
     // No unsaved changes or not on Live Chat Builder tab - allow navigation
@@ -523,7 +470,7 @@ const handleUpdateProductUpdate = async () => {
   showAlert
     .success({
       title: 'Success',
-      text: 'Success updating Live Chat Version.',
+      text: 'You’ve successfully upgraded to the new Qiscus Live Chat',
       confirmButtonText: 'Okay',
       showCancelButton: false,
     })
