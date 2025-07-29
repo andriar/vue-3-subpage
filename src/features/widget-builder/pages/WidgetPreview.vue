@@ -3,8 +3,11 @@ import { onMounted, onUnmounted } from 'vue';
 
 import { useAppConfigStore } from '@/stores/app-config';
 import { useLoginFormStore } from '@/stores/integration/widget-builder/login-form';
+import { useWidgetConfig } from '@/stores/integration/widget-builder/widget-config';
+import type { IAdditionalField } from '@/types/live-chat';
 
 const { appId, widget, baseUrl } = useAppConfigStore();
+const { getWidgetConfig } = useWidgetConfig();
 const { state: loginFormState } = useLoginFormStore();
 const isStaging = widget?.env === 'staging';
 const isLatest = widget?.env === 'latest';
@@ -19,12 +22,13 @@ const getPathSegment = (indexFromEnd: number = 1): string => {
 
 const channelId: string = getPathSegment(2);
 
-onMounted(() => {
+onMounted(async () => {
+  await getWidgetConfig(appId, channelId);
   let configs: {
     options: {
       channel_id: string | number;
       mobileBreakPoint: number;
-      extra_fields: string;
+      extra_fields: IAdditionalField[];
       [key: string]: any;
     };
     staging?: boolean;
@@ -32,7 +36,7 @@ onMounted(() => {
     options: {
       channel_id: channelId,
       mobileBreakPoint: 400,
-      extra_fields: JSON.stringify(loginFormState.extraFields),
+      extra_fields: loginFormState.extraFields,
     },
   };
 
