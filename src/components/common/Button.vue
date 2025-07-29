@@ -37,7 +37,7 @@ const buttonClass = computed(() =>
     variants: {
       intent: {
         primary: 'bg-primary text-white shadow-sm',
-        secondary: 'bg-transparent ring ring-primary text-primary ',
+        secondary: 'bg-transparent inset-ring ring-primary text-primary ',
         danger: 'bg-transparent ring ring-red-600 text-red-600 shadow-sm',
         flat: 'bg-transparent text-primary',
       },
@@ -131,9 +131,15 @@ const buttonClass = computed(() =>
 </script>
 
 <template>
-  <component :is="componentType" :id="id" :to="props.to && !props.disabled ? to : undefined"
-    :type="componentType === 'button' ? type : undefined" :disabled="componentType === 'button' ? disabled : undefined"
-    :class="buttonClass" @click="handleClick">
+  <component
+    :is="componentType"
+    :id="id"
+    :to="props.to && !props.disabled ? to : undefined"
+    :type="componentType === 'button' ? type : undefined"
+    :disabled="componentType === 'button' ? disabled : undefined"
+    :class="buttonClass"
+    @click="handleClick"
+  >
     <slot name="prefixIcon" />
     <slot />
     <slot name="suffixIcon" />

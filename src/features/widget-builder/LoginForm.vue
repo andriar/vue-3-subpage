@@ -39,7 +39,7 @@ const additionalField = reactive<IAdditionalField>({
   name: '',
   placeholder: '',
   required: false,
-  iconField: 'Date',
+  iconField: 'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/date.png',
   options: [],
 });
 
@@ -74,7 +74,8 @@ const resetAdditionalField = () => {
   additionalField.name = '';
   additionalField.placeholder = '';
   additionalField.required = false;
-  additionalField.iconField = 'Date';
+  additionalField.iconField =
+    'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/date.png';
   additionalField.options = [];
   // Reset edit mode
   isEditMode.value = false;
@@ -180,11 +181,12 @@ const uploadImage = async (file: File) => {
         <template #inputs>
           <ImageInput
             v-if="!channelState.isChannelsEnabled"
-            label="Brand Icon"
-            id="login-form-icon"
+            v-model="loginFormState.brandLogo"
             :isUploading="loading"
             @upload="uploadImage"
             @error="(e) => (error = new Error(e))"
+            label="Brand Icon"
+            id="login-form-icon"
           >
             <template #tips>
               <div class="text-sm font-normal text-gray-800">
@@ -285,7 +287,10 @@ const uploadImage = async (file: File) => {
     <!-- PREVIEW -->
     <div class="bg-white-100 sticky top-20 z-40 flex flex-1 flex-col items-end gap-4 p-6">
       <LoginForm
+        :brandLogo="loginFormState.brandLogo"
         :isChannelEnabled="channelState.isChannelsEnabled"
+        :liveChatImage="channelState.channelBadgeIcon"
+        :liveChatTitle="channelState.previewLiveChatName"
         :title="loginFormState.firstDescription"
         :subtitle="loginFormState.secondDescription"
         :description="loginFormState.formSubtitle"
