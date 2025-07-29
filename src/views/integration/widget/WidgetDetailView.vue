@@ -184,7 +184,7 @@ const uBot = useFetchBot();
 const uConfig = useFetchConfig();
 const uQiscus = useUpdateQiscus();
 const useConfig = useUpdateConfig();
-const { postWidgetConfig, isChatDirty } = useWidgetConfig();
+const { postWidgetConfig, isChatDirty, errorPostWidgetConfig } = useWidgetConfig();
 const { fetchChannelById, data: widget } = useFetchQiscusDetail();
 const { updateSecurity, error: errorUpdateSecurity } = useUpdateSecurityQiscus();
 const {
@@ -466,6 +466,15 @@ const handleUpdateProductUpdate = async () => {
 
   productVersionCheck(true);
   await postWidgetConfig(channel.app_code, channel.id);
+
+  if (errorPostWidgetConfig.value) {
+    return showAlert.error({
+      title: 'Failed',
+      text: 'Failed to save changes. Please try again.',
+      confirmButtonText: 'Okay',
+      showCancelButton: false,
+    });
+  }
 
   showAlert
     .success({
