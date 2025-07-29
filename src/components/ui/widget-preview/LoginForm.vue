@@ -92,13 +92,8 @@ const { baseUrl } = useAppConfigStore();
           :key="field.id"
           class="shadow-card flex w-full items-center gap-3 rounded-2xl px-3 py-4"
         >
-          <div class="rounded-lg bg-gray-100 p-[7px]">
-            <Image
-              v-if="field.icon"
-              :src="field.icon"
-              alt="field.label"
-              :fallback-src="`${baseUrl}/img/icons/${field.icon.toLowerCase()}.png`"
-            />
+          <div class="rounded-lg bg-gray-100 p-[7px] max-h-[32px] max-w-[32px]">
+            <Image :height="18" :width="18" v-if="field.icon" :src="field.icon" alt="field.label" :fallback-src="`${baseUrl}/img/icons/${field.icon.toLowerCase()}.png`" />
           </div>
           <input
             :type="field.type"
