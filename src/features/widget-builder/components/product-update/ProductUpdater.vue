@@ -36,46 +36,70 @@
 <script setup lang="ts">
 import LottieCarousel from '@/components/common/Carousel/LottieCarousel.vue';
 import { Button, Checkbox } from '@/components/common/common';
-import { computed, ref, watch } from 'vue';
+import { PRODUCT_UPDATE_ANIMATION_DATA } from '@/utils/constant/animation-data';
+import { computed, onUnmounted, ref, watch } from 'vue';
 
 const animationData = ref<{ data: any }[]>([]);
 const animationsLoading = ref(true);
+const isMounted = ref(true);
 
-const fetchAnimations = async (url: string) => {
+onUnmounted(() => {
+  isMounted.value = false;
+});
+
+const fetchAnimations = async (url: string, timeout = 10000): Promise<any | null> => {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeout);
+  
   try {
-    const response = await fetch(url);
-    const data = await response.json();
-    return data;
+    const response = await fetch(url, { signal: controller.signal });
+    clearTimeout(timeoutId);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.json();
   } catch (error) {
-    console.error('Failed to load animations:', error);
+    clearTimeout(timeoutId);
+    if (error instanceof Error && error.name === 'AbortError') {
+      console.error(`Animation fetch timeout for ${url}`);
+    } else {
+      console.error(`Failed to load animation from ${url}:`, error);
+    }
     return null;
   }
-}
+};
 
 const loadAnimationDataBatched = async () => {
   animationsLoading.value = true;
+
+  const isValid = (d: any): d is object => d && typeof d === 'object';
   
   try {
     // Start all requests immediately
-    const largeAnimationPromise = fetchAnimations('https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/animations/hero-1.json');
+    const largeAnimationPromise = fetchAnimations(PRODUCT_UPDATE_ANIMATION_DATA.LARGE_ANIMATION_URL);
     const smallAnimationsPromise = Promise.all([
-      fetchAnimations('https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/animations/hero-2.json'),
-      fetchAnimations('https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/animations/hero-3.json'),
-      fetchAnimations('https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/animations/hero-4.json'),
+      ...PRODUCT_UPDATE_ANIMATION_DATA.SMALL_ANIMATION_URLS.map(url => fetchAnimations(url)),
     ]);
     
     // Load smaller animations first and show them immediately
     const [data2, data3, data4] = await smallAnimationsPromise;
+
+    if(!isMounted.value) return;
+    
     animationData.value = [
       { data: null }, // placeholder for the large animation
-      { data: data2 },
-      { data: data3 },
-      { data: data4 },
+      { data: isValid(data2) ? data2 : null },
+      { data: isValid(data3) ? data3 : null },
+      { data: isValid(data4) ? data4 : null },
     ];
     animationsLoading.value = false; // User can start interacting
     
     // Load large animation in background and insert when ready
     const data1 = await largeAnimationPromise;
+    if (!isMounted.value || !isValid(data1)) return;
+    
     if (animationData.value[0]) {
       animationData.value[0].data = data1;
     }
