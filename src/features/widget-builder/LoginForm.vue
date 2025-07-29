@@ -289,6 +289,7 @@ const uploadImage = async (file: File) => {
       <LoginForm
         :brandLogo="loginFormState.brandLogo"
         :isChannelEnabled="channelState.isChannelsEnabled"
+        :liveChatImage="channelState.channelBadgeIcon"
         :liveChatTitle="channelState.previewLiveChatName"
         :title="loginFormState.firstDescription"
         :subtitle="loginFormState.secondDescription"

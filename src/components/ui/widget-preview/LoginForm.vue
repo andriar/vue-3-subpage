@@ -16,6 +16,7 @@ const props = defineProps<{
   subtitle: string;
   description: string;
   liveChatTitle?: string;
+  liveChatImage?: string;
   brandLogo?: string;
   buttonText?: string;
   isChannelEnabled?: boolean;
@@ -43,7 +44,7 @@ const { baseUrl } = useAppConfigStore();
       <div v-else>
         <ChevronLeftIcon :size="28" />
         <div class="text-surface-primary-blue mt-8 flex items-center gap-3 text-2xl font-semibold">
-          <Image :src="CHANNEL_BADGE_URL.qiscus" alt="Qiscus Live Chat" />
+          <Image :src="props.liveChatImage || CHANNEL_BADGE_URL.qiscus" alt="Qiscus Live Chat" />
           <h2 class="min-w-0 flex-1 break-words">{{ props.liveChatTitle || 'Live Chat' }}</h2>
         </div>
       </div>
