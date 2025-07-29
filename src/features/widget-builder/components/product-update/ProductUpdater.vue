@@ -41,34 +41,47 @@ import { computed, ref, watch } from 'vue';
 const animationData = ref<{ data: any }[]>([]);
 const animationsLoading = ref(true);
 
+const fetchAnimations = async (url: string) => {
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Failed to load animations:', error);
+    return null;
+  }
+}
+
 const loadAnimationDataBatched = async () => {
   animationsLoading.value = true;
   
   try {
-    // Load first 2 animations quickly
-    const [data1, data2] = await Promise.all([
-      import('@/assets/lottie/widget-update-v5/hero-1.json'),
-      import('@/assets/lottie/widget-update-v5/hero-2.json'),
+    // Start all requests immediately
+    const largeAnimationPromise = fetchAnimations('https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/animations/hero-1.json');
+    const smallAnimationsPromise = Promise.all([
+      fetchAnimations('https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/animations/hero-2.json'),
+      fetchAnimations('https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/animations/hero-3.json'),
+      fetchAnimations('https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/animations/hero-4.json'),
     ]);
     
+    // Load smaller animations first and show them immediately
+    const [data2, data3, data4] = await smallAnimationsPromise;
     animationData.value = [
-      { data: data1.default },
-      { data: data2.default },
+      { data: null }, // placeholder for the large animation
+      { data: data2 },
+      { data: data3 },
+      { data: data4 },
     ];
+    animationsLoading.value = false; // User can start interacting
     
-    // Load remaining animations in background
-    const [data3, data4] = await Promise.all([
-      import('@/assets/lottie/widget-update-v5/hero-3.json'),
-      import('@/assets/lottie/widget-update-v5/hero-4.json'),
-    ]);
+    // Load large animation in background and insert when ready
+    const data1 = await largeAnimationPromise;
+    if (animationData.value[0]) {
+      animationData.value[0].data = data1;
+    }
     
-    animationData.value.push(
-      { data: data3.default },
-      { data: data4.default }
-    );
   } catch (error) {
     console.error('Failed to load animations:', error);
-  } finally {
     animationsLoading.value = false;
   }
 };
