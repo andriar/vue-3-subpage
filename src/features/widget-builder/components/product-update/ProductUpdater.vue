@@ -36,39 +36,76 @@
 <script setup lang="ts">
 import LottieCarousel from '@/components/common/Carousel/LottieCarousel.vue';
 import { Button, Checkbox } from '@/components/common/common';
-import { computed, ref, watch } from 'vue';
+import { PRODUCT_UPDATE_ANIMATION_DATA } from '@/utils/constant/animation-data';
+import { computed, onUnmounted, ref, watch } from 'vue';
 
 const animationData = ref<{ data: any }[]>([]);
 const animationsLoading = ref(true);
+const isMounted = ref(true);
+
+onUnmounted(() => {
+  isMounted.value = false;
+});
+
+const fetchAnimations = async (url: string, timeout = 10000): Promise<any | null> => {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeout);
+  
+  try {
+    const response = await fetch(url, { signal: controller.signal });
+    clearTimeout(timeoutId);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    clearTimeout(timeoutId);
+    if (error instanceof Error && error.name === 'AbortError') {
+      console.error(`Animation fetch timeout for ${url}`);
+    } else {
+      console.error(`Failed to load animation from ${url}:`, error);
+    }
+    return null;
+  }
+};
 
 const loadAnimationDataBatched = async () => {
   animationsLoading.value = true;
+
+  const isValid = (d: any): d is object => d && typeof d === 'object';
   
   try {
-    // Load first 2 animations quickly
-    const [data1, data2] = await Promise.all([
-      import('@/assets/lottie/widget-update-v5/hero-1.json'),
-      import('@/assets/lottie/widget-update-v5/hero-2.json'),
+    // Start all requests immediately
+    const largeAnimationPromise = fetchAnimations(PRODUCT_UPDATE_ANIMATION_DATA.LARGE_ANIMATION_URL);
+    const smallAnimationsPromise = Promise.all([
+      ...PRODUCT_UPDATE_ANIMATION_DATA.SMALL_ANIMATION_URLS.map(url => fetchAnimations(url)),
     ]);
+    
+    // Load smaller animations first and show them immediately
+    const [data2, data3, data4] = await smallAnimationsPromise;
+
+    if(!isMounted.value) return;
     
     animationData.value = [
-      { data: data1.default },
-      { data: data2.default },
+      { data: null }, // placeholder for the large animation
+      { data: isValid(data2) ? data2 : null },
+      { data: isValid(data3) ? data3 : null },
+      { data: isValid(data4) ? data4 : null },
     ];
+    animationsLoading.value = false; // User can start interacting
     
-    // Load remaining animations in background
-    const [data3, data4] = await Promise.all([
-      import('@/assets/lottie/widget-update-v5/hero-3.json'),
-      import('@/assets/lottie/widget-update-v5/hero-4.json'),
-    ]);
+    // Load large animation in background and insert when ready
+    const data1 = await largeAnimationPromise;
+    if (!isMounted.value || !isValid(data1)) return;
     
-    animationData.value.push(
-      { data: data3.default },
-      { data: data4.default }
-    );
+    if (animationData.value[0]) {
+      animationData.value[0].data = data1;
+    }
+    
   } catch (error) {
     console.error('Failed to load animations:', error);
-  } finally {
     animationsLoading.value = false;
   }
 };
