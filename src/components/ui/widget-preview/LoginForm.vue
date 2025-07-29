@@ -6,16 +6,17 @@ import {
   PhoneIcon,
   QiscusIcon,
   SignIcon,
-  UserIcon
+  UserIcon,
 } from '@/components/icons';
 import { useAppConfigStore } from '@/stores/app-config';
 import { CHANNEL_BADGE_URL } from '@/utils/constant/channels';
 
 const props = defineProps<{
-  brandLogo?: string;
   title: string;
   subtitle: string;
   description: string;
+  liveChatTitle?: string;
+  brandLogo?: string;
   buttonText?: string;
   isChannelEnabled?: boolean;
   customerIdentifier?: string;
@@ -41,9 +42,9 @@ const { baseUrl } = useAppConfigStore();
       </div>
       <div v-else>
         <ChevronLeftIcon :size="28" />
-        <div class="text-surface-primary-blue mt-8 flex gap-3 text-2xl font-semibold">
+        <div class="text-surface-primary-blue mt-8 flex items-center gap-3 text-2xl font-semibold">
           <Image :src="CHANNEL_BADGE_URL.qiscus" alt="Qiscus Live Chat" />
-          <h2>Live Chat</h2>
+          <h2 class="min-w-0 flex-1 break-words">{{ props.liveChatTitle || 'Live Chat' }}</h2>
         </div>
       </div>
       <div :class="[props.isChannelEnabled ? 'mt-2' : 'mt-8', 'text-md break-words']">
@@ -91,7 +92,12 @@ const { baseUrl } = useAppConfigStore();
           class="shadow-card flex w-full items-center gap-3 rounded-2xl px-3 py-4"
         >
           <div class="rounded-lg bg-gray-100 p-[7px]">
-            <Image v-if="field.icon" :src="field.icon" alt="field.label" :fallback-src="`${baseUrl}/img/icons/${field.icon.toLowerCase()}.png`" />
+            <Image
+              v-if="field.icon"
+              :src="field.icon"
+              alt="field.label"
+              :fallback-src="`${baseUrl}/img/icons/${field.icon.toLowerCase()}.png`"
+            />
           </div>
           <input
             :type="field.type"

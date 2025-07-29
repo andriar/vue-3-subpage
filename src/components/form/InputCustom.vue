@@ -4,29 +4,62 @@
     <div :class="wrapperClasses({ isFocused, error, disabled })">
       <div :class="contentWrapperClasses()">
         <slot name="suffix-icon" />
-        <input v-bind="$attrs" :id="id" :type="currentType" :class="inputClasses({ disabled })" :value="modelValue"
-          @input="onInput" @focus="isFocused = true" @blur="isFocused = false" :placeholder="placeholder"
-          :disabled="disabled" />
+        <input
+          v-bind="$attrs"
+          :id="id"
+          :type="currentType"
+          :class="inputClasses({ disabled })"
+          :value="modelValue"
+          @input="onInput"
+          @focus="isFocused = true"
+          @blur="isFocused = false"
+          :placeholder="placeholder"
+          :disabled="disabled"
+        />
 
-        <button v-if="clearable" type="button" id="clear-btn"
-          class="invisible cursor-pointer transition-colors duration-300 ease-in-out" :class="{
+        <button
+          v-if="clearable"
+          type="button"
+          id="clear-btn"
+          class="invisible cursor-pointer transition-colors duration-300 ease-in-out"
+          :class="{
             visible: modelValue,
-          }" @click="onClear" :disabled="disabled">
-          <CloseIcon :size="20" class="h-5 w-5 text-gray-800 hover:text-black-700  active:text-black-700/60" />
+          }"
+          @click="onClear"
+          :disabled="disabled"
+        >
+          <CloseIcon
+            :size="20"
+            class="hover:text-black-700 active:text-black-700/60 h-5 w-5 text-gray-800"
+          />
         </button>
 
-        <button v-if="type === 'password'" type="button" id="show-password-btn" class="cursor-pointer"
-          @click="togglePasswordVisibility">
-          <EyeIcon class="h-5 w-5 text-gray-800 hover:text-black-700 active:text-black-700/60" />
+        <button
+          v-if="type === 'password'"
+          type="button"
+          id="show-password-btn"
+          class="cursor-pointer"
+          @click="togglePasswordVisibility"
+        >
+          <EyeIcon class="hover:text-black-700 active:text-black-700/60 h-5 w-5 text-gray-800" />
         </button>
       </div>
 
-      <button v-if="$slots['append-button']" type="button" id="append-btn" :class="appendButtonClasses({ disabled })">
+      <button
+        v-if="$slots['append-button']"
+        type="button"
+        id="append-btn"
+        :class="appendButtonClasses({ disabled })"
+      >
         <slot name="append-button" :disabled="disabled"></slot>
       </button>
 
-      <button v-if="$slots['append-button-icon']" type="button" id="append-btn-icon"
-        :class="appendButtonIconClasses({ disabled })">
+      <button
+        v-if="$slots['append-button-icon']"
+        type="button"
+        id="append-btn-icon"
+        :class="appendButtonIconClasses({ disabled })"
+      >
         <slot name="append-button-icon" :disabled="disabled"></slot>
       </button>
     </div>
@@ -120,31 +153,34 @@ const wrapperClasses = cva(
   }
 );
 
-const contentWrapperClasses = cva('flex w-full flex-row items-center gap-3 px-3 py-3', {
+const contentWrapperClasses = cva('flex w-full flex-row items-center gap-3 px-3 py-3 bg-white', {
   variants: {
     disabled: {
       true: '!bg-red-500',
-      false: 'bg-white'
+      false: 'bg-white',
     },
   },
 });
 
-const inputClasses = cva('w-full outline-none text-sm font-medium leading-5 placeholder:text-gray-800', {
-  variants: {
-    disabled: {
-      true: 'cursor-not-allowed !bg-surface-disable',
-      false: 'bg-white'
+const inputClasses = cva(
+  'w-full outline-none text-sm font-medium leading-5 placeholder:text-gray-800',
+  {
+    variants: {
+      disabled: {
+        true: 'cursor-not-allowed !bg-surface-disable',
+        false: 'bg-white',
+      },
     },
-  },
-});
+  }
+);
 
 const appendButtonClasses = cva(
-  'flex min-w-fit cursor-pointer items-center justify-center gap-2 border-l border-gray-300 bg-gray-200 px-3 py-2 text-sm font-medium',
+  'flex min-w-fit cursor-pointer items-center justify-center gap-2 border-l border-gray-300 bg-surface-secondary px-3 py-2 text-sm font-medium',
   {
     variants: {
       disabled: {
         true: 'bg-surface-disable text-gray-800',
-        false: 'bg-gray-200 text-black-700',
+        false: 'bg-surface-secondary text-black-700',
       },
     },
   }

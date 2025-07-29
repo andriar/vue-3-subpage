@@ -39,7 +39,7 @@ const additionalField = reactive<IAdditionalField>({
   name: '',
   placeholder: '',
   required: false,
-  iconField: 'Date',
+  iconField: 'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/date.png',
   options: [],
 });
 
@@ -74,7 +74,8 @@ const resetAdditionalField = () => {
   additionalField.name = '';
   additionalField.placeholder = '';
   additionalField.required = false;
-  additionalField.iconField = 'Date';
+  additionalField.iconField =
+    'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/date.png';
   additionalField.options = [];
   // Reset edit mode
   isEditMode.value = false;
@@ -288,6 +289,7 @@ const uploadImage = async (file: File) => {
       <LoginForm
         :brandLogo="loginFormState.brandLogo"
         :isChannelEnabled="channelState.isChannelsEnabled"
+        :liveChatTitle="channelState.previewLiveChatName"
         :title="loginFormState.firstDescription"
         :subtitle="loginFormState.secondDescription"
         :description="loginFormState.formSubtitle"

@@ -33,8 +33,7 @@ const iconClasses = cva(
   }
 );
 
-const getIconClasses = (iconUrl: string) =>
-  iconClasses({ selected: props.modelValue === iconUrl });
+const getIconClasses = (iconUrl: string) => iconClasses({ selected: props.modelValue === iconUrl });
 
 const selectIcon = (iconUrl: string) => {
   if (iconUrl !== props.modelValue) {
