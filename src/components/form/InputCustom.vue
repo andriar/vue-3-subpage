@@ -157,7 +157,6 @@ const contentWrapperClasses = cva('flex w-full flex-row items-center gap-3 px-3 
   variants: {
     disabled: {
       true: '!bg-red-500',
-      false: 'bg-white',
     },
   },
 });
