@@ -21,7 +21,7 @@
           <thead class="sticky -top-2 z-10 bg-white">
             <tr class="text-text-subtitle text-[12px]"  style="box-shadow: inset 0 -1px 0 #8f8f8f">
               <th class="max-w-[362px] px-2 py-4 text-left font-normal">Channel Name</th>
-              <th class="px-6 py-4 text-left font-normal">Tag Channel</th>
+              <th class="px-6 py-4 text-left font-normal">Channel Tag</th>
               <th class="px-6 py-4 text-right font-normal">Action</th>
             </tr>
           </thead>
