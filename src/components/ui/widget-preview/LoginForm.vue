@@ -35,12 +35,15 @@ const { baseUrl } = useAppConfigStore();
 <template>
   <div class="text-navy-500 shadow-card-float flex w-[360px] flex-col rounded-4xl bg-white">
     <div class="flex-1 p-8">
+      <!-- HEADER PREVIEW -->
       <div v-if="!props.isChannelEnabled">
         <Image v-if="props.brandLogo" :src="props.brandLogo ?? ''" alt="Brand Logo" size="32" />
         <QiscusIcon v-else :size="32" />
         <div class="mt-6 text-2xl break-words">{{ props.title }}</div>
         <div class="text-2xl font-bold break-words">{{ props.subtitle }}</div>
       </div>
+
+      <!-- if channel enabled -->
       <div v-else>
         <ChevronLeftIcon :size="28" />
         <div class="text-surface-primary-blue mt-8 flex items-center gap-3 text-2xl font-semibold">
@@ -52,6 +55,7 @@ const { baseUrl } = useAppConfigStore();
         {{ props.description }}
       </div>
 
+      <!-- MAIN CONTENT PREVIEW -->
       <div class="mt-8 flex w-full flex-col gap-4">
         <div class="shadow-card flex w-full items-center gap-3 rounded-2xl px-3 py-4">
           <div class="rounded-lg bg-gray-100 p-[7px]">
@@ -92,8 +96,15 @@ const { baseUrl } = useAppConfigStore();
           :key="field.id"
           class="shadow-card flex w-full items-center gap-3 rounded-2xl px-3 py-4"
         >
-          <div class="rounded-lg bg-gray-100 p-[7px] max-h-[32px] max-w-[32px]">
-            <Image :height="18" :width="18" v-if="field.icon" :src="field.icon" alt="field.label" :fallback-src="`${baseUrl}/img/icons/${field.icon.toLowerCase()}.png`" />
+          <div class="max-h-[32px] max-w-[32px] rounded-lg bg-gray-100 p-[7px]">
+            <Image
+              v-if="field.icon"
+              :height="18"
+              :width="18"
+              :src="field.icon"
+              :fallback-src="`${baseUrl}/img/icons/${field.icon.toLowerCase()}.png`"
+              alt="field.label"
+            />
           </div>
           <input
             :type="field.type"

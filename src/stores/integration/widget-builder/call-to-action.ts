@@ -41,11 +41,17 @@ export const useCallToActionStore = defineStore('call-to-action', () => {
     borderRadius: state.borderRadius, // Widget V5 Data
   });
 
+  const resetToDefaults = () => {
+    Object.assign(state, { ...WIDGET_DEFAULTS.CALL_TO_ACTION });
+    originalState.value = { ...WIDGET_DEFAULTS.CALL_TO_ACTION };
+  };
+
   return {
     state,
     isDirty,
     populateFromConfig,
     getPayloadData,
     updateOriginalState,
+    resetToDefaults,
   };
 });

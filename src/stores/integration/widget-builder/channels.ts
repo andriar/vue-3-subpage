@@ -122,6 +122,13 @@ export const useChannelWidgetStore = defineStore('channel-widget', () => {
     },
   });
 
+  const resetToDefaults = () => {
+    Object.assign(widgetState, { ...WIDGET_DEFAULTS.CHANNEL_WIDGET });
+    originalWidgetState.value = { ...WIDGET_DEFAULTS.CHANNEL_WIDGET };
+    channelList.value = [];
+    originalChannelList.value = [];
+  };
+
   return {
     // Widget state
     widgetState,
@@ -141,5 +148,6 @@ export const useChannelWidgetStore = defineStore('channel-widget', () => {
     populateFromConfig,
     getPayloadData,
     updateOriginalState,
+    resetToDefaults,
   };
 });
