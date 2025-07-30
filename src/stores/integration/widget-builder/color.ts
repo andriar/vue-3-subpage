@@ -25,10 +25,16 @@ export const useColorWidgetStore = defineStore('color-widget', () => {
     updateOriginalState();
   };
 
+  const resetToDefaults = () => {
+    colorWidgetState.value = WIDGET_DEFAULTS.COLOR_WIDGET;
+    originalColorWidgetState.value = WIDGET_DEFAULTS.COLOR_WIDGET;
+  };
+
   return {
     colorWidgetState,
     isDirty,
     populateFromConfig,
     updateOriginalState,
+    resetToDefaults,
   };
 });

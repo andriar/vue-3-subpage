@@ -54,6 +54,15 @@ export const useWidgetConfig = () => {
     colorWidgetStore.updateOriginalState();
   };
 
+  const resetAllStores = () => {
+    welcomeDialogStore.resetToDefaults();
+    callToActionStore.resetToDefaults();
+    channelWidgetStore.resetToDefaults();
+    loginFormStore.resetToDefaults();
+    chatFormStore.resetToDefaults();
+    colorWidgetStore.resetToDefaults();
+  };
+
   const getWidgetConfig = async (appId: string, channelId: string) => {
     try {
       await fetchConfigWidget(appId, channelId);
@@ -108,5 +117,6 @@ export const useWidgetConfig = () => {
     postWidgetConfig,
     populateAllStores,
     updateAllOriginalStates,
+    resetAllStores,
   };
 };

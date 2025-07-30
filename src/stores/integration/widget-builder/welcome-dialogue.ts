@@ -59,11 +59,17 @@ export const useWelcomeDialogueStore = defineStore('welcome-dialogue', () => {
     attentionGrabberImage: state.attentionGrabberImage,
   });
 
+  const resetToDefaults = () => {
+    Object.assign(state, { ...WIDGET_DEFAULTS.WELCOME_DIALOG });
+    originalState.value = { ...WIDGET_DEFAULTS.WELCOME_DIALOG };
+  };
+
   return {
     state,
     isDirty,
     populateFromConfig,
     getPayloadData,
     updateOriginalState,
+    resetToDefaults,
   };
 });

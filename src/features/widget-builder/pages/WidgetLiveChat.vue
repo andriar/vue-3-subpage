@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { type Component, computed, onMounted, ref, watch } from 'vue';
+import { type Component, computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import RoundedTab from '@/components/common/Tabs/RoundedTab.vue';
@@ -107,7 +107,7 @@ watch(
 );
 
 // Store integration
-const { postWidgetConfig, getWidgetConfig } = useWidgetConfig();
+const { postWidgetConfig, getWidgetConfig, resetAllStores } = useWidgetConfig();
 const { appId } = useAppConfigStore();
 const { showAlert } = useSweetAlert();
 const iframeSrc = ref(`${window.location.origin + window.location.pathname}/preview`);
@@ -168,6 +168,10 @@ onMounted(async () => {
   // Ensure id is string or number, not array
   const channelId = (Array.isArray(id) ? id[0] : id) as string;
   getWidgetConfig(appId, channelId);
+});
+
+onUnmounted(() => {
+  resetAllStores();
 });
 </script>
 

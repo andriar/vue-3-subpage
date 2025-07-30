@@ -33,11 +33,17 @@ export const useChatStore = defineStore('chat', () => {
     customerServiceAvatar: state.customerServiceAvatar || CHANNEL_BADGE_URL.qiscus,
   });
 
+  const resetToDefaults = () => {
+    Object.assign(state, { ...WIDGET_DEFAULTS.CHAT });
+    originalState.value = { ...WIDGET_DEFAULTS.CHAT };
+  };
+
   return {
     state,
     isDirty,
     populateFromConfig,
     getPayloadData,
     updateOriginalState,
+    resetToDefaults,
   };
 });
