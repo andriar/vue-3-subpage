@@ -12,6 +12,7 @@ import {
   TableIcon,
   ToggleLeftIcon,
 } from '@/components/icons';
+import { useSweetAlert } from '@/composables/useSweetAlert';
 import CallToAction from '@/features/widget-builder/CallToAction.vue';
 import Chat from '@/features/widget-builder/Chat.vue';
 import LoginForm from '@/features/widget-builder/LoginForm.vue';
@@ -27,7 +28,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: 'product-version-check', isValidVersion: boolean): void;
+  (e: 'product-version-check'): void;
 }>();
 
 type TabName = string;
@@ -108,6 +109,7 @@ watch(
 // Store integration
 const { postWidgetConfig, getWidgetConfig } = useWidgetConfig();
 const { appId } = useAppConfigStore();
+const { showAlert } = useSweetAlert();
 const iframeSrc = ref(`${window.location.origin + window.location.pathname}/preview`);
 
 // Drawer state
@@ -122,9 +124,24 @@ const saveAndPreview = async () => {
   }
 
   const isValidVersion = props.isLatestVersion();
+
+  // Handle if widget is not latest version
   if (!isValidVersion) {
-    emit('product-version-check', false);
-    return;
+    const resultShowAlert = await showAlert.warning({
+      title: 'Live Chat Changes',
+      text: 'Saving these settings means you agree to update your Live Chat to the latest version. You can view the installation code right after.',
+      confirmButtonText: 'Update Live Chat',
+      cancelButtonText: 'Stay On Old Version',
+    });
+
+    if (resultShowAlert.dismiss) {
+      return;
+    }
+
+    if (resultShowAlert.isConfirmed) {
+      emit('product-version-check');
+      return;
+    }
   }
 
   try {
