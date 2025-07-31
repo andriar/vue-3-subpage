@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 import Image from '@/components/common/Image.vue';
+import Select from '@/components/form/Select.vue';
 import {
   ChevronDownIcon,
   ChevronLeftIcon,
@@ -27,9 +30,15 @@ const props = defineProps<{
     type: string;
     label: string;
     placeholder: string;
+    options?: {
+      value: string | number;
+      text: string;
+    }[];
   }[];
 }>();
 const { baseUrl } = useAppConfigStore();
+
+const selectedField = ref<Record<string, string | number | undefined>>({});
 </script>
 
 <template>
@@ -106,7 +115,17 @@ const { baseUrl } = useAppConfigStore();
               alt="field.label"
             />
           </div>
+
+          <Select
+            v-if="field.type === 'select'"
+            :options="field.options || []"
+            class="w-full max-w-[228px]"
+            variant="ghost"
+            v-model="selectedField[field.id]"
+            :placeholder="field.placeholder"
+          />
           <input
+            v-else
             :type="field.type"
             class="w-full outline-none placeholder:text-gray-800"
             :placeholder="field.placeholder"

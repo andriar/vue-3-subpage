@@ -1,5 +1,5 @@
 <template>
-  <div :class="containerClasses()">
+  <div>
     <label v-if="label" :for="id" :class="computedLabelClasses">
       {{ label }}
     </label>
@@ -122,6 +122,10 @@ const props = defineProps({
     type: String,
     default: 'Select your field type',
   },
+  variant: {
+    type: String as () => 'default' | 'ghost',
+    default: 'default',
+  },
 });
 
 const emit = defineEmits<{
@@ -161,9 +165,6 @@ const handleBlur = async () => {
   }, 150);
 };
 
-// CVA classes for styling
-const containerClasses = cva('mb-4');
-
 const labelClasses = cva('block text-sm font-normal text-text-subtitle mb-2 rounded-md ', {
   variants: {
     disabled: {
@@ -177,9 +178,13 @@ const selectWrapperClasses = cva('relative', {
 });
 
 const selectClasses = cva(
-  ' w-full cursor-default rounded-md border py-3 pl-3 pr-10 text-left shadow-sm focus:outline-none focus:ring-1 sm:text-sm',
+  ' w-full cursor-default rounded-md  py-3 pl-3 pr-10 text-left  focus:outline-none focus:ring-1 sm:text-sm',
   {
     variants: {
+      variant: {
+        default: 'bg-white text-gray-900 border cursor-pointer shadow-sm',
+        ghost: 'bg-transparent text-gray-900 border-none shadow-none cursor-pointer',
+      },
       disabled: {
         true: 'cursor-not-allowed !text-gray-800 !bg-surface-disable',
         false: 'bg-white text-gray-900 cursor-pointer',
@@ -189,14 +194,27 @@ const selectClasses = cva(
       },
     },
     defaultVariants: {
+      variant: 'default',
       disabled: false,
       error: false,
     },
     compoundVariants: [
       {
+        variant: 'default',
         disabled: false,
         error: false,
         class: 'border-gray-300 focus:ring-primary focus:border-primary',
+      },
+      {
+        variant: 'ghost',
+        disabled: false,
+        error: false,
+        class: 'focus:ring-primary',
+      },
+      {
+        variant: 'ghost',
+        error: true,
+        class: '!ring-1 !ring-danger focus:!ring-danger !border-0',
       },
     ],
   }
@@ -213,6 +231,7 @@ const computedSelectClasses = computed(() =>
   selectClasses({
     disabled: props.disabled,
     error: props.error,
+    variant: props.variant,
   })
 );
 </script>
