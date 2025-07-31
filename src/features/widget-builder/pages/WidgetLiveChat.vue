@@ -162,6 +162,17 @@ if (!params.id) {
   throw new Error('Channel ID is required');
 }
 
+// Handle iframe load
+const handleIframeLoad = () => {
+  const iframeElement: any = document.querySelector('iframe#preview-iframe');
+  if (iframeElement) {
+    const iframeWindow = iframeElement.contentWindow;
+    if (iframeWindow) {
+      iframeWindow.document.querySelector('.app-sidebar')?.remove();
+    }
+  }
+};
+
 onMounted(async () => {
   const { id } = params;
   if (!id) return;
@@ -202,10 +213,12 @@ onUnmounted(() => {
     <Drawer :isOpen="isDrawerOpen" @close="isDrawerOpen = false">
       <!-- Preview content should come from store/props -->
       <iframe
+        id="preview-iframe"
         ref="dynamicIframeRef"
         :src="iframeSrc"
         title="Live Chat Preview"
         style="width: 100%; height: 100%"
+        @load="handleIframeLoad"
       ></iframe>
     </Drawer>
   </div>
