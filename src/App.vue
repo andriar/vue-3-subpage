@@ -1,10 +1,17 @@
 <template>
-  <div id="app">
-    <main class="container mx-auto">
+  <div>
+    <Navbar />
+    <main class="container mx-auto pl-[60px]">
       <router-view v-slot="{ Component }">
-        <transition :enter-active-class="enterActiveClass" :enter-from-class="enterFromClass"
-          :enter-to-class="enterToClass" :leave-active-class="leaveActiveClass" :leave-from-class="leaveFromClass"
-          :leave-to-class="leaveToClass" mode="out-in">
+        <transition
+          :enter-active-class="enterActiveClass"
+          :enter-from-class="enterFromClass"
+          :enter-to-class="enterToClass"
+          :leave-active-class="leaveActiveClass"
+          :leave-from-class="leaveFromClass"
+          :leave-to-class="leaveToClass"
+          mode="out-in"
+        >
           <component :is="Component" />
         </transition>
       </router-view>
@@ -20,13 +27,16 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, ref, watchEffect } from 'vue';
 import { RouterView } from 'vue-router';
+
+// Import the reactive navigationDirection
+import Navbar from './components/ui/Navbar.vue';
 import { useFetchFeature } from './composables/channels/useFetchFeature';
 import { useSweetAlert } from './composables/useSweetAlert';
-import { navigationDirection } from './router'; // Import the reactive navigationDirection
+import { navigationDirection } from './router';
 import { useAppDetailStore } from './stores/app-detail';
 import { usePlanStore } from './stores/plan';
 
-const MainLoading = defineAsyncComponent(() => import('./components/ui/MainLoading.vue'))
+const MainLoading = defineAsyncComponent(() => import('./components/ui/MainLoading.vue'));
 
 // Define reactive variables for transition classes
 const enterActiveClass = ref('transition-all duration-100 ease-out');
@@ -35,7 +45,6 @@ const enterToClass = ref('opacity-100 translate-x-0');
 const leaveActiveClass = ref('transition-all duration-100 ease-in');
 const leaveFromClass = ref('opacity-100 translate-x-0');
 const leaveToClass = ref('opacity-0 -translate-x-5');
-
 
 // Watch for changes in navigationDirection and update transition classes
 watchEffect(() => {
@@ -61,16 +70,17 @@ watchEffect(() => {
 
 const feature = useFetchFeature();
 const plan = usePlanStore();
-const app = useAppDetailStore()
+const app = useAppDetailStore();
 
-const { showAlert } = useSweetAlert()
-const loading = ref<boolean>(false)
+const { showAlert } = useSweetAlert();
+const loading = ref<boolean>(false);
 
 onMounted(() => {
-  loading.value = true
-  Promise.all([feature.fetchFeature(), plan.getPlanData(), app.fetch()]).then(() => {
-    loading.value = false
-  })
+  loading.value = true;
+  Promise.all([feature.fetchFeature(), plan.getPlanData(), app.fetch()])
+    .then(() => {
+      loading.value = false;
+    })
     .catch(() => {
       showAlert.error({
         title: 'Error',
