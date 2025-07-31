@@ -245,6 +245,7 @@ async function updateChannelStatus(id: number, is_active: boolean) {
       text: `If you disable this channel, messages from customers trying to reach you will not be received in the Qiscus omnichannel. Do you want to proceed?`,
       confirmButtonText: 'Let me think again',
       cancelButtonText: 'Disable Now',
+      allowOutsideClick: false,
     });
 
     if (resultShowAlert.isConfirmed) return;
