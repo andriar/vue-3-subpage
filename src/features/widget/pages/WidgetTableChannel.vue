@@ -213,6 +213,17 @@ const channels = computed(() =>
 async function updateChannelStatus(id: number, is_active: boolean) {
   const { update, data, error } = useUpdateQiscus();
 
+  if (!is_active) {
+    const resultShowAlert = await showAlert.warning({
+      title: 'Deactivate Channel',
+      text: `If you disable this channel, messages from customers trying to reach you will not be received in the Qiscus omnichannel. Do you want to proceed?`,
+      confirmButtonText: 'Let me think again',
+      cancelButtonText: 'Disable Now',
+    });
+
+    if (resultShowAlert.isConfirmed) return;
+  }
+
   try {
     await update(id, { is_active });
 
@@ -231,9 +242,7 @@ async function updateChannelStatus(id: number, is_active: boolean) {
       return;
     }
 
-    // Update the local listData with the new state from the API response
     const newData = toValue(data) as unknown as QiscusChannel;
-    // if (newData) updateExistingListData(newData); // => try to unused this function, soon will be removed
 
     const status = newData.is_active ? 'Activated' : 'Deactivated';
     showAlert.success({
@@ -258,23 +267,6 @@ async function updateChannelStatus(id: number, is_active: boolean) {
     });
   }
 }
-
-// function updateExistingListData(newData: QiscusChannel) {
-//   const fIdx = listData.value.findIndex((ld) => ld.id === newData.id);
-
-//   if (fIdx === -1) return;
-//   if (!listData.value[fIdx]) return;
-
-//   listData.value[fIdx].is_active = newData.is_active;
-
-//   const status = newData.is_active ? 'Activated' : 'Deactivated';
-//   showAlert.success({
-//     title: 'Success',
-//     text: `${status} channel successfully`,
-//     confirmButtonText: 'Okay',
-//     showCancelButton: false,
-//   });
-// }
 
 onMounted(async () => {
   await fetchChannels();
