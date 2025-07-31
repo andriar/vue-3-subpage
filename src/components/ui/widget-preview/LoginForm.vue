@@ -38,7 +38,7 @@ const props = defineProps<{
 }>();
 const { baseUrl } = useAppConfigStore();
 
-const selectedField = ref<string | number | undefined>(undefined);
+const selectedField = ref<Record<string, string | number | undefined>>({});
 </script>
 
 <template>
@@ -121,7 +121,7 @@ const selectedField = ref<string | number | undefined>(undefined);
             :options="field.options || []"
             class="w-full max-w-[228px]"
             variant="ghost"
-            v-model="selectedField"
+            v-model="selectedField[field.id]"
             :placeholder="field.placeholder"
           />
           <input
