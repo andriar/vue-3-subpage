@@ -118,7 +118,7 @@ const channels = [
       'Engage customers in real time through a customizable and visually appealing Qiscus Live Chat on your website.',
   },
   {
-    type: 'custom_channel',
+    type: 'custom-channel',
     name: 'Custom Channel',
     group: 'other',
     icon: 'https://omnichannel.qiscus.com/img/custom.svg',
