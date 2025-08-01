@@ -257,13 +257,13 @@ export const integrationRoutes: RouteRecordRaw[] = [
     ],
   },
   {
-    path: '/custom-channel',
+    path: '/custom_channel',
     name: 'custom-channel',
-    redirect: { name: 'custom-channel-list' },
+    redirect: { name: 'custom_channel-list' },
     children: [
       {
         path: '',
-        name: 'custom-channel-list',
+        name: 'custom_channel-list',
         component: () => import('@/views/integration/custom-channel/CustomChannelView.vue'),
         meta: {
           requiresAuth: true,
@@ -272,19 +272,19 @@ export const integrationRoutes: RouteRecordRaw[] = [
       },
       {
         path: 'create',
-        name: 'custom-channel-create',
+        name: 'custom_channel-create',
         component: () => null,
         beforeEnter: () => {
-          window.location.href = `/integration?ch=custom-channel&act=create`;
+          window.location.href = `/integration?ch=custom_channel&act=create`;
           return false;
         },
       },
       {
         path: ':id',
-        name: 'custom-channel-detail',
+        name: 'custom_channel-detail',
         component: () => null,
         beforeEnter: (to) => {
-          window.location.href = `/integration?ch=custom-channel&id=${to.params.id}`;
+          window.location.href = `/integration?ch=custom_channel&id=${to.params.id}`;
           return false;
         },
       },
