@@ -191,7 +191,7 @@ export const integrationRoutes: RouteRecordRaw[] = [
     ],
   },
   {
-    path: '/telegram',
+    path: '/telegram-channel',
     name: 'telegram',
     redirect: { name: 'telegram-detail' },
     children: [

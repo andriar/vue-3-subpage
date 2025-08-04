@@ -100,7 +100,7 @@ const channels = [
     description: 'Connect your LINE Account to manage chats easily from your omnichannel inbox.',
   },
   {
-    type: 'telegram',
+    type: 'telegram-channel',
     name: 'Telegram',
     group: 'business_messaging',
     icon: 'https://omnichannel.qiscus.com/img/telegram_badge.svg',
