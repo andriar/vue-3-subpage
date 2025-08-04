@@ -236,7 +236,7 @@ const handleNewIntegration = () => {
 
 const getDetailChannel = (channel: { id: number }) => {
   router.push({
-    name: 'custom_channel-detail',
+    name: 'custom-channel-detail',
     params: {
       id: channel.id.toString(),
     },
