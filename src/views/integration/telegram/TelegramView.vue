@@ -5,7 +5,7 @@ import Banner from '@/components/common/Banner.vue';
 import CollapsibleGroup from '@/components/common/CollapsibleGroup.vue';
 import MainTab from '@/components/common/Tabs/MainTab.vue';
 import { Button, Image, Switch } from '@/components/common/common';
-import { BackIcon, HomeIcon } from '@/components/icons';
+import { BackIcon } from '@/components/icons';
 import {
   useCreateTelegram,
   useDeleteTelegram,
