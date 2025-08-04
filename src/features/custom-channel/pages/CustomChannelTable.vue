@@ -230,7 +230,7 @@ const paginationInfo = computed(() => {
 // handlers
 const handleNewIntegration = () => {
   router.push({
-    name: 'custom_channel-create',
+    name: 'custom-channel-create',
   });
 };
 
