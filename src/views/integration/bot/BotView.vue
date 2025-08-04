@@ -5,7 +5,7 @@ import { onMounted, reactive, ref, watch } from 'vue';
 import MainTab from '@/components/common/Tabs/MainTab.vue';
 import { Banner, Button, CollapsibleGroup, Image, Switch } from '@/components/common/common';
 import InputCustom from '@/components/form/InputCustom.vue';
-import { BackIcon, CopyIcon, HomeIcon } from '@/components/icons';
+import { BackIcon, CopyIcon } from '@/components/icons';
 import {
   useActivateBot,
   useFetchBot,
@@ -166,12 +166,6 @@ onMounted(async () => {
     <div class="flex items-center justify-between">
       <router-link to="/" id="route-integration" replace class="text-primary flex items-center gap-2 font-semibold">
         <BackIcon :size="20" />
-        Integration
-      </router-link>
-
-      <router-link to="/" id="route-back-integration" replace
-        class="text-primary flex items-center gap-2 font-semibold">
-        <HomeIcon :size="20" />
         Integration
       </router-link>
     </div>

@@ -397,12 +397,6 @@ onMounted(async () => {
         <BackIcon :size="20" />
         Integration
       </router-link>
-
-      <router-link to="/" id="route-back-integration" replace
-        class="text-primary flex items-center gap-2 font-semibold">
-        <HomeIcon :size="20" />
-        Integration
-      </router-link>
     </div>
 
     <div class="mx-auto flex w-11/12 flex-col gap-8">
