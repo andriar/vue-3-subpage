@@ -259,7 +259,7 @@ export const integrationRoutes: RouteRecordRaw[] = [
   {
     path: '/custom-channel',
     name: 'custom-channel',
-    redirect: { name: 'custom_channel-list' },
+    redirect: { name: 'custom-channel-list' },
     children: [
       {
         path: '',
