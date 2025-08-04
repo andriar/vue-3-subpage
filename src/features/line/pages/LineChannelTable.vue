@@ -1,21 +1,34 @@
 <template>
   <div class="flex h-full w-full flex-col">
-    <div class="flex flex-col md:flex-row gap-2 md:items-center md:justify-between p-4">
-      <InputCustom id="search-input" v-model="searchQuery" placeholder="Search channel name" class="md:min-w-[340px]"
-        clearable>
+    <div class="flex flex-col gap-2 p-4 md:flex-row md:items-center md:justify-between">
+      <InputCustom
+        id="search-input"
+        v-model="searchQuery"
+        placeholder="Search channel name"
+        class="md:min-w-[340px]"
+        clearable
+      >
         <template #suffix-icon>
           <SearchIcon :size="24" />
         </template>
       </InputCustom>
-      <Button id="new-integration-btn" @click="handleNewIntegration" variant="primary"
-        class="flex items-center gap-2 w-fit" size="small" no-animation>
+      <Button
+        id="new-integration-btn"
+        @click="handleNewIntegration"
+        variant="primary"
+        class="flex w-fit items-center gap-2"
+        size="small"
+        no-animation
+      >
         <PlusIcon :size="24" />
         New Integration
       </Button>
     </div>
 
-    <div class="relative flex flex-1 flex-col min-h-[776px] justify-between overflow-auto px-4 py-2">
-      <div class="flex flex-col flex-1">
+    <div
+      class="relative flex min-h-[776px] flex-1 flex-col justify-between overflow-auto px-4 py-2"
+    >
+      <div class="flex flex-1 flex-col">
         <table class="w-full table-fixed">
           <thead class="sticky -top-2 z-10 bg-white">
             <tr class="text-text-subtitle text-[12px]" style="box-shadow: inset 0 -1px 0 #8f8f8f">
@@ -25,45 +38,70 @@
             </tr>
           </thead>
           <tbody v-if="!loadingList" class="divide-y divide-gray-100">
-            <tr v-for="channel in channels" :key="channel.id" class="hover:bg-gray-50"
-              @click.prevent="getDetailChannel(channel)">
+            <tr
+              v-for="channel in channels"
+              :key="channel.id"
+              class="hover:bg-gray-50"
+              @click.prevent="getDetailChannel(channel)"
+            >
               <td class="border-stroke-regular max-w-[362px] cursor-pointer border-b px-2 py-4">
                 <div class="flex items-center gap-2">
-                  <Image :src="channel.badgeUrl" :fallbackSrc="CHANNEL_BADGE_URL.line" alt="channel badge" :width="24"
-                    :height="24" class="aspect-square rounded-full object-cover max-w-6 max-h-6" />
-                  <span class="text-text-title overflow-hidden font-medium text-ellipsis whitespace-nowrap">{{
-                    channel.name
-                    }}</span>
+                  <Image
+                    :src="channel.badgeUrl"
+                    :fallbackSrc="CHANNEL_BADGE_URL.line"
+                    alt="channel badge"
+                    :width="24"
+                    :height="24"
+                    class="aspect-square max-h-6 max-w-6 rounded-full object-cover"
+                  />
+                  <span
+                    class="text-text-title overflow-hidden font-medium text-ellipsis whitespace-nowrap"
+                    >{{ channel.name }}</span
+                  >
                 </div>
               </td>
               <td class="border-stroke-regular cursor-pointer border-b px-6 py-4">
                 <div class="flex items-center gap-2">
                   <span class="text-text-title font-semibold">{{ channel.id }}</span>
-                  <ButtonIcon title="Copy Channel ID" @click.stop="copyToClipboard(`${channel.id}`)">
+                  <ButtonIcon
+                    title="Copy Channel ID"
+                    @click.stop="copyToClipboard(`${channel.id}`)"
+                  >
                     <CopyIcon :size="16" />
                   </ButtonIcon>
                 </div>
               </td>
               <td class="border-stroke-regular border-b px-6 py-4 text-right">
-                <Switch id="enable-channel-switch" v-model="channel.isActive" size="small" variant="success" @click.stop
-                  @update:model-value="updateChannelStatus(channel.id, $event)" />
+                <Switch
+                  id="enable-channel-switch"
+                  v-model="channel.isActive"
+                  size="small"
+                  variant="success"
+                  @click.stop
+                  @update:model-value="updateChannelStatus(channel.id, $event)"
+                />
               </td>
             </tr>
           </tbody>
         </table>
 
-        <div v-if="loadingList" class="grid h-full place-items-center flex-1 min-h-[650px]">
+        <div v-if="loadingList" class="grid h-full min-h-[650px] flex-1 place-items-center">
           <Animate :source="loadingAnimationData" />
         </div>
 
-        <div v-if="channels.length === 0 && !loadingList" class="absolute inset-0 flex items-center justify-center">
-          <EmptyState title="No Results"
+        <div
+          v-if="channels.length === 0 && !loadingList"
+          class="absolute inset-0 flex items-center justify-center"
+        >
+          <EmptyState
+            title="No Results"
             description="You may want to try using different keywords or checking for the typos to find it."
-            image-url="https://omnichannel.qiscus.com/img/empty-customer.svg" />
+            image-url="https://omnichannel.qiscus.com/img/empty-customer.svg"
+          />
         </div>
       </div>
 
-      <div v-if="isShowPagination" class="flex justify-between px-6 py-4 items-end">
+      <div v-if="isShowPagination" class="flex items-end justify-between px-6 py-4">
         <div class="flex items-center gap-2">
           <span class="text-text-subtitle text-sm">
             {{ paginationInfo }}
@@ -77,6 +115,9 @@
 </template>
 
 <script setup lang="ts">
+import { type Ref, computed, onMounted, ref, toValue, watch } from 'vue';
+import { useRouter } from 'vue-router';
+
 import loadingAnimationData from '@/assets/lottie/loading.json';
 import { Animate, Button, ButtonIcon, Image, Switch } from '@/components/common/common';
 import InputCustom from '@/components/form/InputCustom.vue';
@@ -88,14 +129,11 @@ import { useUpdateLineChannel } from '@/composables/channels/line/useUpdateLineC
 import { useSweetAlert } from '@/composables/useSweetAlert';
 import type { LineChannel } from '@/types/schemas/channels/line-channel';
 import { CHANNEL_BADGE_URL } from '@/utils/constant/channels';
-import { computed, onMounted, ref, toValue, watch, type Ref } from 'vue';
-import { useRouter } from 'vue-router';
-
 
 interface FetchParams {
   search?: string;
   page?: number;
-};
+}
 
 const searchQuery = ref('') as Ref<string>;
 const params = ref<FetchParams>({});
@@ -106,11 +144,10 @@ const { showAlert } = useSweetAlert();
 // router
 const router = useRouter();
 
-
 // helper
 function copyToClipboard(text: string) {
   navigator.clipboard.writeText(text);
-};
+}
 
 const debounce = (func: Function, delay: number) => {
   let timeout: NodeJS.Timeout;
@@ -121,7 +158,6 @@ const debounce = (func: Function, delay: number) => {
     timeout = setTimeout(() => func.apply(context, args), delay);
   };
 };
-
 
 // fetch channels
 const { fetchChannels, data: listData, loading: loadingList, meta } = useFetchLineChannel();
@@ -141,7 +177,6 @@ const channels = computed(() =>
     webhookUrl: channel.webhook_url,
   }))
 );
-
 
 // pagination
 async function pagination(type: 'first' | 'prev' | 'next' | 'last') {
@@ -170,7 +205,7 @@ async function pagination(type: 'first' | 'prev' | 'next' | 'last') {
   };
 
   await fetchChannels(toValue(params));
-};
+}
 
 const isShowPagination = computed(() => {
   // Check if meta.value exists and has relevant properties, and channels array is not empty
@@ -186,12 +221,11 @@ const paginationInfo = computed(() => {
   return `${start}-${end} of ${newMeta.total} items`;
 });
 
-
 // handlers
 const handleNewIntegration = () => {
   router.push({
     name: 'line-new',
-  })
+  });
 };
 
 const getDetailChannel = (channel: { id: number }) => {
@@ -203,10 +237,21 @@ const getDetailChannel = (channel: { id: number }) => {
   });
 };
 
-
 // update channel status handler
 async function updateChannelStatus(id: number, is_active: boolean) {
   const { update, data, error } = useUpdateLineChannel();
+
+  if (!is_active) {
+    const resultShowAlert = await showAlert.warning({
+      title: 'Deactivate Channel',
+      text: `If you disable this channel, messages from customers trying to reach you will not be received in the Qiscus omnichannel. Do you want to proceed?`,
+      confirmButtonText: 'Let me think again',
+      cancelButtonText: 'Disable Now',
+      allowOutsideClick: false,
+    });
+
+    if (resultShowAlert.isConfirmed) return;
+  }
 
   try {
     await update(id, { is_active });
@@ -226,9 +271,17 @@ async function updateChannelStatus(id: number, is_active: boolean) {
       return;
     }
 
-    // Update the local listData with the new state from the API response
     const newData = toValue(data) as unknown as LineChannel;
-    if (newData) updateExistingListData(newData);
+
+    const status = newData.is_active ? 'Activated' : 'Deactivated';
+    showAlert.success({
+      title: 'Success',
+      text: `${status} channel successfully`,
+      confirmButtonText: 'Okay',
+      showCancelButton: false,
+    });
+
+    await fetchChannels(toValue(params));
   } catch (err: any) {
     // Handle unexpected errors during the update process (e.g., network issues)
     const channelToRevert = channels.value.find((c) => c.id === id);
@@ -243,24 +296,6 @@ async function updateChannelStatus(id: number, is_active: boolean) {
     });
   }
 }
-
-function updateExistingListData(newData: LineChannel) {
-  const fIdx = listData.value.findIndex((ld) => ld.id === newData.id);
-
-  if (fIdx === -1) return;
-  if (!listData.value[fIdx]) return;
-
-  listData.value[fIdx].is_active = newData.is_active;
-
-  const status = newData.is_active ? 'Activated' : 'Deactivated';
-  showAlert.success({
-    title: 'Success',
-    text: `${status} channel successfully`,
-    confirmButtonText: 'Okay',
-    showCancelButton: false,
-  });
-};
-
 
 // search handler
 const handleSearch = debounce((newVal: string) => {

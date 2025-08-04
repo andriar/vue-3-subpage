@@ -62,6 +62,21 @@ const isAdditionalFieldValid = computed(() => {
   return true;
 });
 
+const extraFieldData = computed(() => {
+  return loginFormState.value.extraFields.map((field: IAdditionalField) => ({
+    id: field.name,
+    icon: field.iconField || DEFAULT_IMAGE_PREVIEW.LOGIN_BRAND_ICON,
+    type: field.type,
+    label: field.name,
+    placeholder: field.placeholder,
+    options:
+      field.options?.map((data) => ({
+        value: data.id,
+        text: data.label,
+      })) || [],
+  }));
+});
+
 const addAdditionalField = () => {
   // Reset to add mode
   isEditMode.value = false;
@@ -296,15 +311,7 @@ const uploadImage = async (file: File) => {
         :description="loginFormState.formSubtitle"
         :buttonText="loginFormState.buttonText"
         :customerIdentifier="loginFormState.customerIdentifier"
-        :fields="
-          loginFormState.extraFields.map((field: IAdditionalField) => ({
-            id: field.name,
-            icon: field.iconField || DEFAULT_IMAGE_PREVIEW.LOGIN_BRAND_ICON,
-            type: field.type,
-            label: field.name,
-            placeholder: field.placeholder,
-          }))
-        "
+        :fields="extraFieldData"
       />
       <div class="bg-surface-disable h-16 w-16 rounded-full" />
     </div>

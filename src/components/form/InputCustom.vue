@@ -38,10 +38,13 @@
           v-if="type === 'password'"
           type="button"
           id="show-password-btn"
-          class="cursor-pointer"
+          class="cursor-pointer px-3"
           @click="togglePasswordVisibility"
         >
-          <EyeIcon class="hover:text-black-700 active:text-black-700/60 h-5 w-5 text-gray-800" />
+          <EyeIcon
+            :size="20"
+            class="hover:text-black-700 active:text-black-700/60 text-gray-800 transition-colors"
+          />
         </button>
       </div>
 
@@ -153,16 +156,10 @@ const wrapperClasses = cva(
   }
 );
 
-const contentWrapperClasses = cva('flex w-full flex-row items-center gap-3 px-3 py-3 bg-white', {
-  variants: {
-    disabled: {
-      true: '!bg-red-500',
-    },
-  },
-});
+const contentWrapperClasses = cva('flex w-full flex-row items-center bg-surface-secondary');
 
 const inputClasses = cva(
-  'w-full outline-none text-sm font-medium leading-5 placeholder:text-gray-800',
+  'w-full outline-none text-sm font-medium leading-5 p-3 placeholder:text-gray-800',
   {
     variants: {
       disabled: {

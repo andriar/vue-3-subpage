@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Image from '@/components/common/Image.vue';
-import { ChatIcon, ChevronRightIcon } from '@/components/icons';
+import { ChatIcon, ChevronRightIcon, QiscusIcon } from '@/components/icons';
 import { DEFAULT_IMAGE_PREVIEW } from '@/utils/constant/images';
 
 interface Props {
@@ -37,11 +37,14 @@ const props = withDefaults(defineProps<Props>(), {
       <!-- Header section -->
       <div class="flex flex-col gap-6">
         <!-- Logo section -->
-        <div
-          v-if="!props.imageUrl"
-          class="bg-surface-disable aspect-square h-7.5 w-7.5 animate-pulse rounded-full"
-        ></div>
-        <img v-else :src="props.imageUrl" alt="" class="h-8 w-8" width="32" height="32" />
+        <QiscusIcon v-if="!props.imageUrl" :size="32" />
+        <Image
+          v-else
+          :src="props.imageUrl"
+          alt="brand icon welcome dialogue"
+          :width="32"
+          :height="32"
+        />
 
         <!-- Title section -->
         <div>

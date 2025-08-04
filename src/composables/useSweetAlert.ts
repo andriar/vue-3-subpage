@@ -7,6 +7,8 @@ interface AlertParams {
   cancelButtonText?: string;
   showCancelButton?: boolean;
   customClass?: SweetAlertOptions['customClass'];
+  allowOutsideClick?: boolean;
+  allowEscapeKey?: boolean;
 }
 
 // Centralized default custom classes for better organization
@@ -52,7 +54,15 @@ export const useSweetAlert = () => {
    */
   const _buildAlertOptions = (
     type: SweetAlertOptions['icon'],
-    { text, title, confirmButtonText, cancelButtonText, showCancelButton = true }: AlertParams,
+    {
+      text,
+      title,
+      confirmButtonText,
+      cancelButtonText,
+      showCancelButton = true,
+      allowOutsideClick,
+      allowEscapeKey,
+    }: AlertParams,
     customClasses: SweetAlertOptions['customClass'] = DEFAULT_POPUP_CLASSES // Default to common classes
   ): SweetAlertOptions => {
     let iconHtml = '';
@@ -86,6 +96,8 @@ export const useSweetAlert = () => {
       cancelButtonText: cancelButtonText || 'Cancel',
       showCancelButton: showCancelButton,
       customClass: customClasses, // Apply the determined custom classes
+      allowOutsideClick: allowOutsideClick ?? true,
+      allowEscapeKey: allowEscapeKey ?? true,
     };
   };
 

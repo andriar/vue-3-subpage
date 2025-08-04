@@ -1,6 +1,6 @@
 <template>
   <Banner>
-    <p>
+    <p class="text-sm font-medium text-black-700">
       To learn more about WhatsApp Integration, you can refer to this
       <a
         class="text-notification-link font-semibold underline"

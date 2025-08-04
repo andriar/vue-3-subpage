@@ -1,6 +1,6 @@
 <template>
     <Banner>
-      <p>
+      <p class="text-sm font-medium text-black-700">
         To learn more about Facebook Messenger Integration, you can refer to this
         <a class="text-notification-link font-semibold underline"
         href="https://documentation.qiscus.com/omnichannel-chat/application#facebook-messenger" target="_blank" rel="noopener noreferrer">Documentation</a>.

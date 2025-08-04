@@ -191,7 +191,7 @@ export const integrationRoutes: RouteRecordRaw[] = [
     ],
   },
   {
-    path: '/telegram',
+    path: '/telegram-channel',
     name: 'telegram',
     redirect: { name: 'telegram-detail' },
     children: [
@@ -257,13 +257,13 @@ export const integrationRoutes: RouteRecordRaw[] = [
     ],
   },
   {
-    path: '/custom_channel',
-    name: 'custom_channel',
-    redirect: { name: 'custom_channel-list' },
+    path: '/custom-channel',
+    name: 'custom-channel',
+    redirect: { name: 'custom-channel-list' },
     children: [
       {
         path: '',
-        name: 'custom_channel-list',
+        name: 'custom-channel-list',
         component: () => import('@/views/integration/custom-channel/CustomChannelView.vue'),
         meta: {
           requiresAuth: true,
@@ -272,19 +272,19 @@ export const integrationRoutes: RouteRecordRaw[] = [
       },
       {
         path: 'create',
-        name: 'custom_channel-create',
+        name: 'custom-channel-create',
         component: () => null,
         beforeEnter: () => {
-          window.location.href = `/integration?ch=custom_channel&act=create`;
+          window.location.href = `/integration?ch=custom-channel&act=create`;
           return false;
         },
       },
       {
         path: ':id',
-        name: 'custom_channel-detail',
+        name: 'custom-channel-detail',
         component: () => null,
         beforeEnter: (to) => {
-          window.location.href = `/integration?ch=custom_channel&id=${to.params.id}`;
+          window.location.href = `/integration?ch=custom-channel&id=${to.params.id}`;
           return false;
         },
       },

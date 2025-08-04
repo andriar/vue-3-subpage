@@ -16,9 +16,9 @@
 
     <SubTab :tabs="dataTabs" v-model="activeTab" />
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-8">
-      <router-link :to="channel.type" :id="`${channel.id}-card`" v-for="channel in filteredChannels" :key="channel.id">
-        <ChannelCard :channel="channel" />
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+      <router-link :to="channel.type" :id="`${channel.id}-card`" v-for="channel in filteredChannels" :key="channel.id" class="h-full">
+        <ChannelCard :channel="channel" class="h-full" />
       </router-link>
     </div>
   </div>
@@ -100,7 +100,7 @@ const channels = [
     description: 'Connect your LINE Account to manage chats easily from your omnichannel inbox.',
   },
   {
-    type: 'telegram',
+    type: 'telegram-channel',
     name: 'Telegram',
     group: 'business_messaging',
     icon: 'https://omnichannel.qiscus.com/img/telegram_badge.svg',
@@ -118,7 +118,7 @@ const channels = [
       'Engage customers in real time through a customizable and visually appealing Qiscus Live Chat on your website.',
   },
   {
-    type: 'custom_channel',
+    type: 'custom-channel',
     name: 'Custom Channel',
     group: 'other',
     icon: 'https://omnichannel.qiscus.com/img/custom.svg',
