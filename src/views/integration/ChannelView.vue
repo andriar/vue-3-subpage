@@ -93,7 +93,7 @@ const channels = [
       'Manage all your Facebook Page messages efficiently, right from your omnichannel inbox.',
   },
   {
-    type: 'line',
+    type: 'line-channel',
     name: 'LINE',
     group: 'business_messaging',
     icon: 'https://omnichannel.qiscus.com/img/line_badge.svg',
