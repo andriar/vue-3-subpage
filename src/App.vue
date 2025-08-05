@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <main class="container mx-auto">
+    <main class="mx-12">
       <router-view v-slot="{ Component }">
         <transition :enter-active-class="enterActiveClass" :enter-from-class="enterFromClass"
           :enter-to-class="enterToClass" :leave-active-class="leaveActiveClass" :leave-from-class="leaveFromClass"

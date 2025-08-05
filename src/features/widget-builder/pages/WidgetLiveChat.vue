@@ -179,6 +179,18 @@ onMounted(async () => {
   // Ensure id is string or number, not array
   const channelId = (Array.isArray(id) ? id[0] : id) as string;
   getWidgetConfig(appId, channelId);
+
+  const iframeElement: any = document.querySelector('iframe#preview-iframe');
+  if (iframeElement) {
+    const iframeWindow = iframeElement.contentWindow;
+    const styleElement = iframeWindow.createElement('style');
+    styleElement.type = 'text/css';
+
+    const cssRules = '.app-sidebar { display: none !important }';
+    styleElement.appendChild(iframeWindow.createTextNode(cssRules));
+
+    iframeWindow.head.appendChild(styleElement);
+  }
 });
 
 onUnmounted(() => {
@@ -190,16 +202,10 @@ onUnmounted(() => {
   <div>
     <div class="bg-white-100 flex w-full flex-col rounded-2xl border-[1px] border-gray-300">
       <div
-        class="bg-white-100 sticky top-0 z-50 flex w-full items-center justify-between gap-2 rounded-t-2xl border-b-[1px] border-gray-300 p-4"
-      >
+        class="bg-white-100 sticky top-0 z-50 flex w-full items-center justify-between gap-2 rounded-t-2xl border-b-[1px] border-gray-300 p-4">
         <RoundedTab :tabs="tabs" v-model="activeTab" />
-        <Button
-          id="save-preview-btn"
-          class="min-w-max"
-          @click="saveAndPreview"
-          :loading="isLoading"
-          :disabled="isLoading"
-        >
+        <Button id="save-preview-btn" class="min-w-max" @click="saveAndPreview" :loading="isLoading"
+          :disabled="isLoading">
           Save & Preview
         </Button>
       </div>
@@ -212,14 +218,8 @@ onUnmounted(() => {
 
     <Drawer :isOpen="isDrawerOpen" @close="isDrawerOpen = false">
       <!-- Preview content should come from store/props -->
-      <iframe
-        id="preview-iframe"
-        ref="dynamicIframeRef"
-        :src="iframeSrc"
-        title="Live Chat Preview"
-        style="width: 100%; height: 100%"
-        @load="handleIframeLoad"
-      ></iframe>
+      <iframe id="preview-iframe" ref="dynamicIframeRef" :src="iframeSrc" title="Live Chat Preview"
+        style="width: 100%; height: 100%" @load="handleIframeLoad"></iframe>
     </Drawer>
   </div>
 </template>

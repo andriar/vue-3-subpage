@@ -1,6 +1,6 @@
 <template>
   <div
-    class="card bg-white-100 flex min-h-40 max-w-md cursor-pointer flex-col gap-3 rounded-2xl border border-gray-300 p-6 transition-colors duration-200 ease-in"
+    class="card bg-white-100 flex min-h-40 cursor-pointer flex-col gap-3 rounded-2xl border border-gray-300 p-6 transition-colors duration-200 ease-in"
     :class="channel.type">
     <div class="z-10 flex items-center justify-between text-sm font-semibold">
       <div class="flex items-center gap-3">
