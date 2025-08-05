@@ -17,9 +17,9 @@
     <SubTab :tabs="dataTabs" v-model="activeTab" />
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
-      <router-link :to="channel.type" :id="`${channel.id}-card`" v-for="channel in filteredChannels" :key="channel.id"
-        class="h-full">
-        <ChannelCard :channel="channel" class="h-full" />
+      <router-link v-for="channel in filteredChannels" :to="channel.type" :id="`${channel.type}-card`"
+        :key="channel.type" class="h-full">
+        <ChannelCard :channel="channel" class="h-full" :id="channel.type" />
       </router-link>
     </div>
   </div>
@@ -93,7 +93,7 @@ const channels = [
       'Manage all your Facebook Page messages efficiently, right from your omnichannel inbox.',
   },
   {
-    type: 'line-channel',
+    type: 'line',
     name: 'LINE',
     group: 'business_messaging',
     icon: 'https://omnichannel.qiscus.com/img/line_badge.svg',
@@ -101,7 +101,7 @@ const channels = [
     description: 'Connect your LINE Account to manage chats easily from your omnichannel inbox.',
   },
   {
-    type: 'telegram-channel',
+    type: 'telegram',
     name: 'Telegram',
     group: 'business_messaging',
     icon: 'https://omnichannel.qiscus.com/img/telegram_badge.svg',

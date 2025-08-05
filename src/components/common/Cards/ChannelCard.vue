@@ -85,12 +85,12 @@ defineProps<{
   background-size: cover;
 }
 
-.card.custom_channel::after {
+.card.custom-channel::after {
   background-image: url('https://omnichannel.qiscus.com/img/custom.svg');
   background-size: cover;
 }
 
-.card.bot_integration::after {
+.card.bot-integration::after {
   background-image: url('https://omnichannel.qiscus.com/img/bot_badge.svg');
   background-size: cover;
 }
