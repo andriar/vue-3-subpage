@@ -22,12 +22,12 @@ const emit = defineEmits<{
 }>();
 
 const TabItemClass = cva(
-  'flex items-center gap-2 pt-2 pb-3 px-5 justify-center cursor-pointer select-none relative after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0 after:bg-primary after:rounded-t-lg after:transition-all after:duration-300',
+  'flex items-center gap-2 pt-2 pb-3 px-5 justify-center cursor-pointer select-none relative after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0 after:bg-primary after:rounded-t-lg after:transition-all after:duration-300 ',
   {
     variants: {
       isActive: {
         true: 'relative after:h-1',
-        false: 'text-black-700 hover:after:bg-primary/50',
+        false: 'text-black-700 hover:after:bg-primary/50 min-w-2 text-nowrap overflow-hidden',
       },
     },
     defaultVariants: {
@@ -63,7 +63,7 @@ function selectTab(tab: TabItem, child: TabItem | null) {
     <li v-for="tab in currentTabs" :key="tab.id" :class="TabItemClass({ isActive: modelValue.id === tab.id })"
       @click="selectParentTab(tab)" class="hover:text-primary-500 hover:after:h-1">
       <component :is="tab.icon" v-if="tab.icon" width="16" height="16" class="text-primary-500" />
-      {{ tab.label }}
+      <span class="truncate">{{ tab.label }}</span>
       <ChevronDownIcon v-if="tab.children && tab.children.length > 0" width="16" height="16" />
 
       <ul
