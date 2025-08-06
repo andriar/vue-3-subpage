@@ -35,7 +35,7 @@ export const CHANNEL_LIST = [
     name: 'WhatsApp',
     group: 'business_messaging',
     icon: CHANNEL_BADGE_URL.whatsapp,
-    status: 'popular',
+    status: '',
     description:
       'Send personalized replies or broadcast messages to hundreds of customers in just a few clicks using WhatsApp.',
   },
@@ -53,7 +53,7 @@ export const CHANNEL_LIST = [
     name: 'Tiktok',
     group: 'business_messaging',
     icon: CHANNEL_BADGE_URL.tiktok,
-    status: 'new',
+    status: '',
     description:
       'Connect your TikTok business account to easily reply to DMs from your omnichannel inbox.',
   },
@@ -88,7 +88,7 @@ export const CHANNEL_LIST = [
     name: 'Qiscus Live Chat',
     group: 'live_chat',
     icon: CHANNEL_BADGE_URL.qiscus,
-    status: 'popular',
+    status: '',
     description:
       'Engage customers in real time through a customizable and visually appealing Qiscus Live Chat on your website.',
   },
