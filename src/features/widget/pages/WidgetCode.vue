@@ -42,8 +42,7 @@ const jsCode = `
   <div class="flex flex-col gap-8">
     <Banner intent="positive" type="outline">
       <div>
-        Copy the code below and paste it into the &lt;script&gt; tag of your website to install the
-        Qiscus Live Chat.
+        Copy the code below and place it inside a &lt;script&gt; tag on your website to install Qiscus Live Chat.
       </div>
     </Banner>
 
