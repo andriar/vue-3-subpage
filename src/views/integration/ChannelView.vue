@@ -61,7 +61,7 @@ const channels = [
     name: 'WhatsApp',
     group: 'business_messaging',
     icon: 'https://omnichannel.qiscus.com/img/whatsapp_badge.svg',
-    status: 'popular',
+    status: '',
     description:
       'Send personalized replies or broadcast messages to hundreds of customers in just a few clicks using WhatsApp.',
   },
@@ -79,7 +79,7 @@ const channels = [
     name: 'Tiktok',
     group: 'business_messaging',
     icon: 'https://omnichannel.qiscus.com/img/tiktok_badge.svg',
-    status: 'new',
+    status: '',
     description:
       'Connect your TikTok business account to easily reply to DMs from your omnichannel inbox.',
   },
@@ -114,7 +114,7 @@ const channels = [
     name: 'Qiscus Live Chat',
     group: 'live_chat',
     icon: 'https://omnichannel.qiscus.com/img/qiscus_badge.svg',
-    status: 'popular',
+    status: '',
     description:
       'Engage customers in real time through a customizable and visually appealing Qiscus Live Chat on your website.',
   },
