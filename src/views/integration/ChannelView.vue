@@ -15,7 +15,7 @@ const router = useRouter();
 const { showAlert } = useSweetAlert();
 const { featureData } = storeToRefs(useAppFeaturesStore());
 
-const activeTab = ref(CHANNEL_TABS[0]!);
+const activeTab = ref(CHANNEL_TABS[0] || { id: 'all', label: 'All' });
 
 // Add type for channel types
 type ChannelType = keyof typeof CHANNEL_FEATURE_MAPPING;
@@ -87,7 +87,7 @@ const getFeatureStatus = (channelType: ChannelType) => {
 };
 
 const handleChannelClick = async (channel: any) => {
-  if (channel.featureStatus === 3) {
+  if (channel.featureStatus === FEATURE_STATUS.DISABLED) {
     await showAlert.error({
       title: 'Failed',
       text: `This feature is disabled because it's not included in your current plan`,
