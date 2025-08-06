@@ -97,7 +97,7 @@ const handleChannelClick = async (channel: any) => {
     return;
   }
 
-  // Navigate to channel if status is not 3
+  // Navigate to channel if status is not 3 (not disabled)
   router.push(channel.type);
 };
 </script>
