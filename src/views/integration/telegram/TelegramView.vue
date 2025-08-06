@@ -44,6 +44,14 @@ const {
 const isConfigEmpty = computed(() => !hasConfigValues());
 const currentChannel = computed(() => telegramData.value[0] || null);
 const isUserCreateChannel = computed(() => !channel.value.name && !channel.value.username);
+const shouldHideAutoResponder = computed(() => {
+  return (
+    configs.value.offline_message === '' &&
+    configs.value.online_message === '' &&
+    configs.value.send_offline_each_message === false &&
+    configs.value.send_online_if_resolved === false
+  );
+});
 
 // --- Reactive State ---
 const isEnableTelegram = ref(false);
@@ -452,6 +460,7 @@ onMounted(async () => {
                 {{ item.content }}
                 <div>
                   <Switch
+                    v-if="!shouldHideAutoResponder"
                     id="enable-autoresponder-switch"
                     variant="success"
                     size="medium"
