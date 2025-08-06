@@ -67,16 +67,16 @@ const configs = ref<IAutoResponder>({ ...channel.value.configs });
 const items = [
   {
     id: '1',
-    title: 'Enable Bot Integration',
+    title: 'Enable Telegram Integration',
     content:
-      'Turning on bot integration lets the bot chat smoothly in a room, even if the toggle is off. When you enable this feature, the bot can still send messages, making sure important updates and notifications get through without any breaks.',
+      'Enabling Telegram Integration allows the bot to communicate seamlessly in a chat room, even if the feature is turned off. When activated, the bot can still send messages, ensuring that key updates and notifications are delivered without interruption.',
     initiallyOpen: true,
   },
   {
     id: '2',
-    title: 'Enable Bot On Disable Chat',
+    title: 'Auto Responder',
     content:
-      'Allow bot to send messages when the bot toggle button is disabled in a chat room. If you set the toggle to enabled, you allow sending messages from bot to room even though the bot toggle in the room is disabled.',
+      'Auto Responder is a system that automatically sends messages only to this channel according to the customer service operating hours. Admin can set the auto responder message when services are both during and outside the office hour.',
   },
 ];
 
@@ -152,11 +152,11 @@ async function createTelegramChannel() {
     bot_token: channel.value.token,
     configs: hasConfigValues()
       ? {
-        offline_message: configs.value.offline_message,
-        online_message: configs.value.online_message,
-        send_online_if_resolved: configs.value.send_online_if_resolved,
-        send_offline_each_message: configs.value.send_offline_each_message,
-      }
+          offline_message: configs.value.offline_message,
+          online_message: configs.value.online_message,
+          send_online_if_resolved: configs.value.send_online_if_resolved,
+          send_offline_each_message: configs.value.send_offline_each_message,
+        }
       : null,
   };
 
@@ -193,11 +193,11 @@ async function updateTelegramChannel() {
     is_active: isEnableTelegram.value,
     configs: hasConfigValues()
       ? {
-        offline_message: configs.value.offline_message,
-        online_message: configs.value.online_message,
-        send_online_if_resolved: configs.value.send_online_if_resolved,
-        send_offline_each_message: configs.value.send_offline_each_message,
-      }
+          offline_message: configs.value.offline_message,
+          online_message: configs.value.online_message,
+          send_online_if_resolved: configs.value.send_online_if_resolved,
+          send_offline_each_message: configs.value.send_offline_each_message,
+        }
       : null,
   };
 
@@ -319,11 +319,11 @@ async function toggleTelegramIntegration(status: boolean) {
     is_active: status,
     configs: hasConfigValues()
       ? {
-        offline_message: configs.value.offline_message,
-        online_message: configs.value.online_message,
-        send_online_if_resolved: configs.value.send_online_if_resolved,
-        send_offline_each_message: configs.value.send_offline_each_message,
-      }
+          offline_message: configs.value.offline_message,
+          online_message: configs.value.online_message,
+          send_online_if_resolved: configs.value.send_online_if_resolved,
+          send_offline_each_message: configs.value.send_offline_each_message,
+        }
       : null,
   };
 
@@ -393,7 +393,12 @@ onMounted(async () => {
 <template>
   <div class="flex flex-col gap-8 px-12 py-8">
     <div class="flex items-center justify-between">
-      <router-link to="/" id="route-integration" replace class="text-primary flex items-center gap-2 font-semibold">
+      <router-link
+        to="/"
+        id="route-integration"
+        replace
+        class="text-primary flex items-center gap-2 font-semibold"
+      >
         <BackIcon :size="20" />
         Integration
       </router-link>
@@ -401,16 +406,25 @@ onMounted(async () => {
 
     <div class="mx-auto flex w-11/12 flex-col gap-8">
       <div class="flex items-center gap-3">
-        <Image :src="CHANNEL_BADGE_URL.telegram" alt="Telegram Logo" class="h-6 w-6" :width="24" :height="24" />
-        <h2 class="text-xl font-semibold text-black-700">Telegram</h2>
+        <Image
+          :src="CHANNEL_BADGE_URL.telegram"
+          alt="Telegram Logo"
+          class="h-6 w-6"
+          :width="24"
+          :height="24"
+        />
+        <h2 class="text-black-700 text-xl font-semibold">Telegram</h2>
       </div>
 
       <Banner>
-        <p class="text-sm font-medium text-black-700">
+        <p class="text-black-700 text-sm font-medium">
           To integrate the Qiscus Omnichannel Chat with Telegram, you can check this
-          <a class="text-notification-link font-semibold underline"
+          <a
+            class="text-notification-link font-semibold underline"
             href="https://documentation.qiscus.com/omnichannel-chat/application#telegram"
-            target="_blank">Documentation</a>.
+            target="_blank"
+            >Documentation</a
+          >.
         </p>
       </Banner>
 
@@ -420,44 +434,77 @@ onMounted(async () => {
         <template v-if="activeTab == 'Settings'">
           <CollapsibleGroup :items="items">
             <template #item-id-1="{ item }">
-              <div class="flex justify-between gap-8 text-sm text-text-subtitle">
+              <div class="text-text-subtitle flex justify-between gap-8 text-sm">
                 <div v-html="item.content"></div>
                 <div>
-                  <Switch id="enable-telegram-switch" variant="success" :model-value="isEnableTelegram"
-                    @update:model-value="toggleTelegramIntegration" size="medium" />
+                  <Switch
+                    id="enable-telegram-switch"
+                    variant="success"
+                    :model-value="isEnableTelegram"
+                    @update:model-value="toggleTelegramIntegration"
+                    size="medium"
+                  />
                 </div>
               </div>
             </template>
             <template #item-id-2="{ item }">
-              <div class="flex justify-between gap-8 text-sm text-text-subtitle">
+              <div class="text-text-subtitle flex justify-between gap-8 text-sm">
                 {{ item.content }}
                 <div>
-                  <Switch id="enable-autoresponder-switch" variant="success" size="medium"
-                    :modelValue="isEnableAutoResponder" @update:modelValue="toggleAutoResponder" />
+                  <Switch
+                    id="enable-autoresponder-switch"
+                    variant="success"
+                    size="medium"
+                    :modelValue="isEnableAutoResponder"
+                    @update:modelValue="toggleAutoResponder"
+                  />
                 </div>
               </div>
-              <Button id="open-autoresponder-btn" intent="secondary" class="mt-4" @click="openAutoResponderForm">Set
-                Channel Auto Responder</Button>
+              <Button
+                id="open-autoresponder-btn"
+                intent="secondary"
+                class="mt-4"
+                @click="openAutoResponderForm"
+                >Set Channel Auto Responder</Button
+              >
             </template>
           </CollapsibleGroup>
         </template>
 
         <template v-if="activeTab == 'Overview'">
-          <form id="create-telegram-form" v-if="!isAutoresponderFormOpen" @submit.prevent=""
-            class="flex flex-col gap-8">
+          <form
+            id="create-telegram-form"
+            v-if="!isAutoresponderFormOpen"
+            @submit.prevent=""
+            class="flex flex-col gap-8"
+          >
             <CreateTelegramForm v-model="channel" />
 
             <div v-if="isUserCreateChannel" class="flex justify-end gap-4">
-              <Button id="next-btn" type="submit" @click="handleCreateChannel"
-                :disabled="createTelegramLoading || !channel.token">Next</Button>
+              <Button
+                id="next-btn"
+                type="submit"
+                @click="handleCreateChannel"
+                :disabled="createTelegramLoading || !channel.token"
+                >Next</Button
+              >
             </div>
 
             <div v-else class="flex justify-between">
-              <Button id="delete-btn" intent="danger" @click="handleDeleteChannel"
-                :disabled="deleteTelegramLoading">Delete
-                Channel</Button>
-              <Button id="submit-btn" type="submit" @click="handleUpdateChannel" :disabled="updateTelegramLoading">Save
-                Changes</Button>
+              <Button
+                id="delete-btn"
+                intent="danger"
+                @click="handleDeleteChannel"
+                :disabled="deleteTelegramLoading"
+                >Delete Channel</Button
+              >
+              <Button
+                id="submit-btn"
+                type="submit"
+                @click="handleUpdateChannel"
+                :disabled="updateTelegramLoading"
+                >Save Changes</Button
+              >
             </div>
           </form>
         </template>
@@ -467,10 +514,15 @@ onMounted(async () => {
         <AutoResponderForm v-model="configs" :is-bot="isBot" />
 
         <div class="mt-8 flex justify-end gap-4">
-          <Button id="close-autoresponder-btn" intent="secondary" @click="closeAutoResponderForm">Back</Button>
-          <Button id="submit-autoresponder-btn" type="submit"
+          <Button id="close-autoresponder-btn" intent="secondary" @click="closeAutoResponderForm"
+            >Back</Button
+          >
+          <Button
+            id="submit-autoresponder-btn"
+            type="submit"
             @click="isUserCreateChannel ? createTelegramChannel() : handleUpdateAutoResponder()"
-            :disabled="isConfigEmpty || createTelegramLoading || updateConfigLoading">
+            :disabled="isConfigEmpty || createTelegramLoading || updateConfigLoading"
+          >
             Save Changes
           </Button>
         </div>
