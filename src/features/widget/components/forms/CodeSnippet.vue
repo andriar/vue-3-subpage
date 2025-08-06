@@ -34,9 +34,17 @@ const languageClass = computed<string>(() => `language-${props.language}`);
 
 
 const copyButtonText = ref<string>('Copy Code');
+
+const decodeHtmlEntities = (text: string): string => {
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = text;
+  return textarea.value;
+};
+
 const copyCode = async (): Promise<void> => {
   try {
-    await navigator.clipboard.writeText(props.code);
+    const decodedCode = decodeHtmlEntities(props.code);
+    await navigator.clipboard.writeText(decodedCode);
     copyButtonText.value = 'Copied!';
     setTimeout(() => {
       copyButtonText.value = 'Copy Code';
