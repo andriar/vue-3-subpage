@@ -70,12 +70,12 @@ defineProps<{
   background-size: cover;
 }
 
-.card.line::after {
+.card.line-channel::after {
   background-image: url('https://omnichannel.qiscus.com/img/line_badge.svg');
   background-size: cover;
 }
 
-.card.telegram::after {
+.card.telegram-channel::after {
   background-image: url('https://omnichannel.qiscus.com/img/telegram_badge.svg');
   background-size: cover;
 }
