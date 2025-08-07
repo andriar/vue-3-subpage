@@ -6,10 +6,11 @@
         v-model="searchQuery"
         placeholder="Search channel name"
         class="md:min-w-[340px]"
-        clearable
       >
         <template #suffix-icon>
-          <SearchIcon :size="24" />
+          <div class="pl-4">
+            <SearchIcon :size="24" />
+          </div>
         </template>
       </InputCustom>
       <Button
