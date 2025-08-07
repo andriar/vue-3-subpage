@@ -16,7 +16,7 @@
       </router-link>
     </div>
 
-    <div class="mx-auto flex w-11/12 flex-col gap-8">
+    <div class="flex w-full flex-col gap-8 px-12">
       <div class="flex items-center gap-3">
         <Image
           :src="CHANNEL_BADGE_URL.qiscus"

@@ -1,13 +1,23 @@
 <template>
   <div class="flex flex-col gap-8 px-12 py-8">
-    <router-link to="/" id="route-integration" class="text-primary flex items-center gap-2 font-semibold">
+    <router-link
+      to="/"
+      id="route-integration"
+      class="text-primary flex items-center gap-2 text-sm font-semibold"
+    >
       <BackIcon :size="20" class="text-primary" />
       Integration
     </router-link>
 
     <!-- Header -->
     <div class="flex items-center gap-2">
-      <Image :src="CHANNEL_BADGE_URL.qiscus" alt="Qiscus Logo" class="h-6 w-6" :width="24" :height="24" />
+      <Image
+        :src="CHANNEL_BADGE_URL.qiscus"
+        alt="Qiscus Logo"
+        class="h-6 w-6"
+        :width="24"
+        :height="24"
+      />
 
       <h2 class="text-text-title text-xl font-semibold">Qiscus Live Chat</h2>
     </div>

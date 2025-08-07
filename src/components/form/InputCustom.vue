@@ -2,7 +2,7 @@
   <div :class="containerClasses()">
     <label v-if="label" :for="id" :class="labelClasses({ disabled })">{{ label }}</label>
     <div :class="wrapperClasses({ isFocused, error, disabled })">
-      <div :class="contentWrapperClasses()">
+      <div :class="contentWrapperClasses({ hasSuffixIcon: !!$slots['suffix-icon'] })">
         <slot name="suffix-icon" />
         <input
           v-bind="$attrs"
@@ -156,7 +156,17 @@ const wrapperClasses = cva(
   }
 );
 
-const contentWrapperClasses = cva('flex w-full flex-row items-center bg-surface-secondary');
+const contentWrapperClasses = cva('flex w-full flex-row items-center', {
+  variants: {
+    hasSuffixIcon: {
+      true: 'bg-white',
+      false: 'bg-surface-secondary',
+    },
+  },
+  defaultVariants: {
+    hasSuffixIcon: false,
+  },
+});
 
 const inputClasses = cva(
   'w-full outline-none text-sm font-medium leading-5 p-3 placeholder:text-gray-800',
@@ -183,7 +193,7 @@ const appendButtonClasses = cva(
 );
 
 const appendButtonIconClasses = cva(
-  'flex min-w-fit cursor-pointer items-center justify-center bg-white p-4',
+  'flex min-w-fit cursor-pointer items-center justify-center bg-white p-3',
   {
     variants: {
       disabled: {
