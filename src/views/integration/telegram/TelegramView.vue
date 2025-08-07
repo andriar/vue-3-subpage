@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 
 import Banner from '@/components/common/Banner.vue';
 import CollapsibleGroup from '@/components/common/CollapsibleGroup.vue';
@@ -46,10 +46,11 @@ const currentChannel = computed(() => telegramData.value[0] || null);
 const isUserCreateChannel = computed(() => !channel.value.name && !channel.value.username);
 const shouldHideAutoResponder = computed(() => {
   return (
-    configs.value.offline_message === '' &&
-    configs.value.online_message === '' &&
-    configs.value.send_offline_each_message === false &&
-    configs.value.send_online_if_resolved === false
+    (configData.value?.offline_message === '' &&
+      configData.value?.online_message === '' &&
+      configData.value?.send_offline_each_message === false &&
+      configData.value?.send_online_if_resolved === false) ||
+    configData.value === null
   );
 });
 
@@ -88,6 +89,19 @@ const items = [
   },
 ];
 
+watch(isAutoresponderFormOpen, async (newValue, oldValue) => {
+  // fetch config data when form auto responder is opened
+  if (oldValue === false && newValue === true) {
+    await fetchConfig(currentChannel.value?.id || '', 'telegram');
+    populateConfigData();
+  }
+
+  // reset config data when form auto responder is closed
+  if (oldValue === true && newValue === false) {
+    resetConfigData();
+  }
+});
+
 // --- UI State Change Functions ---
 const openAutoResponderForm = () => (isAutoresponderFormOpen.value = true);
 const closeAutoResponderForm = () => (isAutoresponderFormOpen.value = false);
@@ -117,7 +131,15 @@ function resetChannelData() {
   };
 
   isEnableTelegram.value = false;
-  // isEnableAutoResponder.value = false;
+}
+
+function resetConfigData() {
+  configs.value = {
+    offline_message: '',
+    online_message: '',
+    send_offline_each_message: false,
+    send_online_if_resolved: false,
+  };
 }
 
 // --- Data Population Functions ---
@@ -191,6 +213,9 @@ async function createTelegramChannel() {
 
   await fetchTelegram();
   populateChannelData();
+
+  // fetch config data when channel is created
+  await fetchConfig(currentChannel.value?.id || '', 'telegram');
 
   closeAutoResponderForm();
 }
@@ -267,6 +292,7 @@ async function updateAutoResponder() {
     text: 'Successfully changes channel auto responder.',
     showCancelButton: false,
   });
+  await fetchConfig(currentChannel.value?.id || '', 'telegram');
 }
 
 // --- Handlers Function---
@@ -437,7 +463,7 @@ onMounted(async () => {
       </Banner>
 
       <template v-if="!isAutoresponderFormOpen">
-        <MainTab :tabs="['Overview', 'Settings']" v-model="activeTab" />
+        <MainTab v-if="!isUserCreateChannel" :tabs="['Overview', 'Settings']" v-model="activeTab" />
 
         <template v-if="activeTab == 'Settings'">
           <CollapsibleGroup :items="items">
