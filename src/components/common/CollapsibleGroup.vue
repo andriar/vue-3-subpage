@@ -1,30 +1,7 @@
-<template>
-  <div class="shadow-base overflow-hidden rounded-lg">
-    <Collapsible v-for="(item, index) in items" :key="item.id" :title="item.title" :collapsed="activeItemId !== item.id"
-      @update:collapsed="handleCollapseToggle(item.id, $event)" :class="{
-        'border-t border-gray-300': index !== 0,
-      }" :initiallyCollapsed="!item.initiallyOpen">
-      <!-- Pass the content from the item data to the default slot of Collapsible -->
-      <template #default>
-        <!-- <div v-html="item.content"></div> -->
-        <slot :name="`item-id-${item.id}`" :item="item">
-          <div v-html="item.content"></div>
-        </slot>
-      </template>
-      <!-- Pass the title from the item data to the title slot -->
-      <template #title>
-        {{ item.title }}
-      </template>
-    </Collapsible>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 
 import Collapsible from './Collapsible.vue';
-
-// Adjust path if necessary
 
 // Define the interface for an item in the collapsible group
 interface CollapsibleGroupItem {
@@ -74,6 +51,30 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
-/* Scoped styles for the group, if any. */
-</style>
+<template>
+  <div class="shadow-base overflow-hidden rounded-lg">
+    <Collapsible
+      v-for="(item, index) in items"
+      :key="item.id"
+      :title="item.title"
+      :collapsed="activeItemId !== item.id"
+      :initiallyCollapsed="!item.initiallyOpen"
+      :class="{
+        'border-t border-gray-300': index !== 0,
+      }"
+      @update:collapsed="handleCollapseToggle(item.id, $event)"
+    >
+      <!-- Pass the content from the item data to the default slot of Collapsible -->
+      <template #default>
+        <!-- <div v-html="item.content"></div> -->
+        <slot :name="`item-id-${item.id}`" :item="item">
+          <div v-html="item.content"></div>
+        </slot>
+      </template>
+      <!-- Pass the title from the item data to the title slot -->
+      <template #title>
+        {{ item.title }}
+      </template>
+    </Collapsible>
+  </div>
+</template>

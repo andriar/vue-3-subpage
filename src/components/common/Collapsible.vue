@@ -1,3 +1,76 @@
+<script setup lang="ts">
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
+
+import { Icon } from '@/components/icons';
+
+interface Props {
+  title?: string;
+  initiallyCollapsed?: boolean;
+  collapsed?: boolean; // controlled mode
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  title: 'Collapsible Section',
+  initiallyCollapsed: true,
+});
+
+const emit = defineEmits<{ (e: 'update:collapsed', value: boolean): void }>();
+
+const isControlled = computed(() => props.collapsed !== undefined);
+const isCollapsed = ref(props.collapsed ?? props.initiallyCollapsed);
+
+watch(
+  () => props.collapsed,
+  (v) => {
+    if (v !== undefined) isCollapsed.value = v;
+  }
+);
+
+const contentWrapper = ref<HTMLElement | null>(null);
+const maxHeight = ref('0px');
+
+const setMaxHeightForOpen = () => {
+  const h = contentWrapper.value?.scrollHeight ?? 0;
+  maxHeight.value = `${h}px`;
+};
+
+const animate = () => {
+  const el = contentWrapper.value;
+  if (!el) return;
+
+  if (isCollapsed.value) {
+    // closing: set current height, then animate to 0
+    const current = el.scrollHeight;
+    maxHeight.value = `${current}px`;
+    requestAnimationFrame(() => {
+      maxHeight.value = '0px';
+    });
+  } else {
+    // opening: measure and set to content height
+    nextTick(() => setMaxHeightForOpen());
+  }
+};
+
+onMounted(() => {
+  if (isCollapsed.value) {
+    maxHeight.value = '0px';
+  } else {
+    setMaxHeightForOpen();
+  }
+});
+
+// re-run animation whenever collapse state changes
+watch(isCollapsed, () => animate());
+
+const toggleCollapse = () => {
+  const next = !isCollapsed.value;
+  emit('update:collapsed', next);
+  if (!isControlled.value) {
+    isCollapsed.value = next;
+  }
+};
+</script>
+
 <template>
   <div class="overflow-hidden bg-white">
     <!-- Collapsible Header -->
@@ -19,65 +92,13 @@
 
     <div
       ref="contentWrapper"
-      :style="{ maxHeight: contentMaxHeight }"
-      class="transition-all duration-300 ease-in-out"
+      :style="{ maxHeight, overflow: 'hidden', willChange: 'max-height' }"
+      class="transition-[max-height] duration-300 ease-in-out"
     >
       <!-- Slot for the collapsible content -->
-      <div class="px-6 pb-[18px]">
+      <div class="px-6 pt-2 pb-[18px]">
         <slot></slot>
       </div>
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-
-import { Icon } from '@/components/icons';
-
-// Define component props using defineProps
-interface Props {
-  title?: string; // Optional title for the header
-  initiallyCollapsed?: boolean; // Optional prop to set initial collapse state
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  title: 'Collapsible Section',
-  initiallyCollapsed: true,
-});
-
-// Reactive state to control the collapse status
-const isCollapsed = ref(props.initiallyCollapsed);
-
-// Reference to the content wrapper element for dynamic height calculation
-const contentWrapper = ref<HTMLElement | null>(null);
-
-// Computed property for `max-height` to control the collapse animation
-const contentMaxHeight = computed(() => {
-  // If collapsed, max-height is 0, otherwise it's based on content height
-  // We add a small buffer (e.g., 1000px) or use 'max-h-screen' for transition.
-  // For precise animation, one might calculate the actual scrollHeight
-  // when expanding, but 'max-h-screen' generally works well with Tailwind.
-  if (isCollapsed.value) {
-    return '0';
-  } else {
-    // A large enough value to ensure content is visible.
-    // In a real application with extremely long content, you might
-    // compute `contentWrapper.value?.scrollHeight + 'px'` here
-    // after content is rendered, but it can be tricky with transitions.
-    return '1000px'; // Using a fixed large value for simplicity and typical use cases.
-  }
-});
-
-/**
- * Toggles the collapsed state of the component.
- */
-const toggleCollapse = () => {
-  isCollapsed.value = !isCollapsed.value;
-};
-
-// Optional: If you need to do something when the component is mounted
-onMounted(() => {
-  // console.log('CollapsibleComponent mounted');
-});
-</script>
