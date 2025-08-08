@@ -447,7 +447,9 @@ onMounted(async () => {
           :width="24"
           :height="24"
         />
-        <h2 class="text-black-700 text-xl font-semibold">Telegram</h2>
+        <h2 class="text-black-700 text-xl font-semibold">
+          {{ isUserCreateChannel ? 'New Integration - Telegram' : 'Telegram' }}
+        </h2>
       </div>
 
       <Banner>
