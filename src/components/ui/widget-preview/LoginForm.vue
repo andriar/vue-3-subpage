@@ -11,7 +11,6 @@ import {
   SignIcon,
   UserIcon,
 } from '@/components/icons';
-import { useAppConfigStore } from '@/stores/app-config';
 import { CHANNEL_BADGE_URL } from '@/utils/constant/channels';
 
 const props = defineProps<{
@@ -36,7 +35,6 @@ const props = defineProps<{
     }[];
   }[];
 }>();
-const { baseUrl } = useAppConfigStore();
 
 const selectedField = ref<Record<string, string | number | undefined>>({});
 </script>
