@@ -43,7 +43,7 @@
         >
           <EyeIcon
             :size="20"
-            class="hover:text-black-700 active:text-black-700/60 text-gray-800 transition-colors"
+            :class="`hover:text-black-700 active:text-black-700/60 transition-colors ${showPassword ? 'text-black-700' : 'text-gray-800'}`"
           />
         </button>
       </div>

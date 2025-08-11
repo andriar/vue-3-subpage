@@ -12,7 +12,7 @@ const userSchema = z.object({
 // Define the main schema for the application object
 const appSchema = z.object({
   app_code: z.string(),
-  bot_webhook_url: z.string(),
+  bot_webhook_url: z.string().nullable(),
   created_at: z.iso.datetime({ offset: true, local: true }),
   id: z.number().int(),
   is_active: z.boolean(),
