@@ -27,23 +27,23 @@ export const useLoginFormStore = defineStore('login-form', () => {
   const iconsAdditionalField = ref<{ name: string; icon: string }[]>([
     {
       name: 'Date',
-      icon: 'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/date.png',
+      icon: 'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/date.svg',
     },
     {
       name: 'Location',
-      icon: 'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/map.png',
+      icon: 'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/location.svg',
     },
     {
       name: 'Briefcase',
-      icon: 'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/briefcase.png',
+      icon: 'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/briefcase.svg',
     },
     {
       name: 'Globe',
-      icon: 'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/globe.png',
+      icon: 'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/globe.svg',
     },
     {
       name: 'Phone',
-      icon: 'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/phone.png',
+      icon: 'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/phone.svg',
     },
   ]);
 

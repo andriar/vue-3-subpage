@@ -106,14 +106,17 @@ const selectedField = ref<Record<string, string | number | undefined>>({});
           class="shadow-card flex w-full items-center gap-3 rounded-2xl px-3 py-4"
         >
           <div class="max-h-[32px] max-w-[32px] rounded-lg bg-gray-100 p-[7px]">
-            <Image
+            <div
               v-if="field.icon"
-              :height="18"
-              :width="18"
-              :src="field.icon"
-              :fallback-src="`${baseUrl}/img/icons/${field.icon.toLowerCase()}.png`"
-              alt="field.label"
-            />
+              class="bg-surface-primary-blue h-4.5 w-4.5 mask-contain mask-no-repeat"
+              :style="{
+                maskImage: `url(${field.icon})`,
+                WebkitMaskImage: `url(${field.icon})`,
+              }"
+              :title="field.label"
+              :aria-label="`${field.label} image`"
+              role="img"
+            ></div>
           </div>
 
           <Select

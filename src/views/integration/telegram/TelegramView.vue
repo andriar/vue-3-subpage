@@ -361,6 +361,18 @@ async function toggleTelegramIntegration(status: boolean) {
       : null,
   };
 
+  if (!status) {
+    const resultShowAlert = await showAlert.warning({
+      title: 'Deactivate Channel',
+      text: `If you disable this channel, messages from customers trying to reach you will not be received in the Qiscus omnichannel. Do you want to proceed?`,
+      confirmButtonText: 'Let me think again',
+      cancelButtonText: 'Disable Now',
+      allowOutsideClick: false,
+    });
+
+    if (resultShowAlert.isConfirmed) return;
+  }
+
   await updateTelegram(currentChannel.value?.id, payload);
 
   // --- Handle error ---

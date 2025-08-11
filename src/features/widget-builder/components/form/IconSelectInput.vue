@@ -51,11 +51,11 @@ const selectIcon = (iconUrl: string) => {
         v-for="icon in props.icons"
         :key="icon.name"
         :class="getIconClasses(icon.icon)"
-        @click="selectIcon(icon.icon)"
         :title="icon.name"
         :data-value="icon.name"
         :data-testid="`${id}-${icon.name}`"
         :id="`${id}-${icon.name}`"
+        @click="selectIcon(icon.icon)"
       >
         <Image
           :src="icon.icon"

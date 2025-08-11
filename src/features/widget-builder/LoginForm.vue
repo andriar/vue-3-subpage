@@ -39,7 +39,7 @@ const additionalField = reactive<IAdditionalField>({
   name: '',
   placeholder: '',
   required: false,
-  iconField: 'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/date.png',
+  iconField: 'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/date.svg',
   options: [],
 });
 
@@ -90,7 +90,7 @@ const resetAdditionalField = () => {
   additionalField.placeholder = '';
   additionalField.required = false;
   additionalField.iconField =
-    'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/date.png';
+    'https://qiscus-sdk.s3.ap-southeast-1.amazonaws.com/public/qismo/date.svg';
   additionalField.options = [];
   // Reset edit mode
   isEditMode.value = false;
