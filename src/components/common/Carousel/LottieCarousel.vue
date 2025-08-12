@@ -30,7 +30,7 @@
                      :style="isDragging ? { transform: `translateX(${getDragTransform(index)}px)` } : {}">
                     <Vue3Lottie 
                     :ref="(el: any) => setAnimationRef(el, index)"
-                    :width="850" height="auto" :loop="false" :speed="2" :pauseOnHover="currentSlide === index ? true : false" @onComplete="nextSlide" :autoPlay="index === 0 ? true : false" :animationData="animation.data" />
+                    :width="850" height="auto" :loop="false" :speed="getSpeed(animation.speed)" :pauseOnHover="currentSlide === index ? true : false" @onComplete="nextSlide" :autoPlay="index === 0 ? true : false" :animationData="animation.data" />
                 </div>
             </div>
             
@@ -63,6 +63,7 @@ import { Vue3Lottie } from 'vue3-lottie';
 const props = defineProps<{
     animationData: {
         data: any;
+        speed?: number;
     }[];
     loading?: boolean;
     totalExpected?: number;
@@ -91,6 +92,10 @@ const setAnimationRef = (el: any, index: number) => {
     }
 };
 
+const getSpeed = (s?: number) => {
+  const n = typeof s === 'number' && isFinite(s) ? s : 1;
+  return n > 0 ? n : 1;
+};
 // Carousel control functions
 const goToSlide = (slideIndex: number) => {
     if (slideIndex >= 0 && slideIndex < totalSlides.value) {
