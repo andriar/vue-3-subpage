@@ -51,7 +51,7 @@
       <button
         v-if="$slots['append-button']"
         type="button"
-        id="append-btn"
+        :id="`${id}-append-btn`"
         :class="appendButtonClasses({ disabled })"
       >
         <slot name="append-button" :disabled="disabled"></slot>
