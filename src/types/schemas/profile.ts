@@ -11,13 +11,13 @@ const BillingPhoneNumberSchema = z.object({
 });
 
 const ProfileSchema = z.object({
-  name: z.string(),
-  avatar_url: z.string(),
-  company_name: z.string(),
-  address: z.string(),
-  phone_number: z.string(),
-  industry: z.string(),
-  email_address: z.string(),
+  name: z.string().nullable(),
+  avatar_url: z.string().nullable(),
+  company_name: z.string().nullable(),
+  address: z.string().nullable(),
+  phone_number: z.string().nullable(),
+  industry: z.string().nullable(),
+  email_address: z.string().nullable(),
   billing_emails: z.array(z.string()),
   billing_phone_numbers: z.array(BillingPhoneNumberSchema).optional(),
   type: z.number().int(),
