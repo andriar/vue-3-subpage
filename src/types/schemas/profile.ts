@@ -24,7 +24,7 @@ const ProfileSchema = z.object({
   last_password_update: z.string(),
   sdk_email: z.email(),
   email: z.email(),
-  npwp_number: z.string(),
+  npwp_number: z.string().nullable(),
 });
 
 export const ProfileResponseSchema = createApiResponseSchema(ProfileSchema);
