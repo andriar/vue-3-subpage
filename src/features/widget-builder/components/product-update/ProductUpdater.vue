@@ -39,7 +39,7 @@ import { Button, Checkbox } from '@/components/common/common';
 import { PRODUCT_UPDATE_ANIMATION_DATA } from '@/utils/constant/animation-data';
 import { computed, onUnmounted, ref, watch } from 'vue';
 
-const animationData = ref<{ data: any }[]>([]);
+const animationData = ref<{ data: any, speed: number }[]>([]);
 const animationsLoading = ref(true);
 const isMounted = ref(true);
 
@@ -89,10 +89,10 @@ const loadAnimationDataBatched = async () => {
     if(!isMounted.value) return;
     
     animationData.value = [
-      { data: null }, // placeholder for the large animation
-      { data: isValid(data2) ? data2 : null },
-      { data: isValid(data3) ? data3 : null },
-      { data: isValid(data4) ? data4 : null },
+      { data: null, speed: 2 }, // placeholder for the large animation
+      { data: isValid(data2) ? data2 : null, speed: 1 },
+      { data: isValid(data3) ? data3 : null, speed: 1 },
+      { data: isValid(data4) ? data4 : null, speed: 1 },
     ];
     animationsLoading.value = false; // User can start interacting
     
