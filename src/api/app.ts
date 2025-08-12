@@ -1,3 +1,4 @@
+import type { ProfileResponse } from '@/types/schemas/profile';
 import apiV1, { apiV2 } from '@/utils/axios';
 
 export const featureApi = {
@@ -13,5 +14,5 @@ export const appApi = {
 };
 
 export const profileApi = {
-  get: () => apiV1.get<any[]>('/admin/get_profile'),
+  get: () => apiV1.get<ProfileResponse>('/admin/get_profile'),
 };
