@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 
 import Image from '@/components/common/Image.vue';
+import SvgIcon from '@/components/common/SvgIcon.vue';
 import Select from '@/components/form/Select.vue';
 import {
   ChevronDownIcon,
@@ -103,18 +104,17 @@ const selectedField = ref<Record<string, string | number | undefined>>({});
           :key="field.id"
           class="shadow-card flex w-full items-center gap-3 rounded-2xl px-3 py-4"
         >
-          <div class="max-h-[32px] max-w-[32px] rounded-lg bg-gray-100 p-[7px]">
-            <div
+          <div
+            class="flex max-h-[32px] max-w-[32px] items-center justify-center rounded-lg bg-gray-100 p-[7px]"
+          >
+            <SvgIcon
               v-if="field.icon"
-              class="bg-surface-primary-blue h-4.5 w-4.5 mask-contain mask-no-repeat"
-              :style="{
-                maskImage: `url(${field.icon})`,
-                WebkitMaskImage: `url(${field.icon})`,
-              }"
+              :src="field.icon"
+              :size="18"
               :title="field.label"
-              :aria-label="`${field.label} image`"
-              role="img"
-            ></div>
+              :aria-label="`${field.label} icon`"
+              class="text-surface-primary-blue"
+            />
           </div>
 
           <Select
