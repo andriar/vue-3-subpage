@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue';
+import { computed, onMounted, useAttrs, watch } from 'vue';
 
 import { useSvgContent } from '@/composables/useSvgContent';
 
@@ -8,22 +8,21 @@ interface Props {
   size?: number;
   title?: string;
   ariaLabel?: string;
-  class?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 18,
   title: 'Icon',
   ariaLabel: 'Icon',
-  class: '',
 });
+
+const attrs = useAttrs();
 
 const { fetchSvgContent, getSvgContent, isLoading, hasError, retryFetch } = useSvgContent();
 
 const svgDataUrl = computed(() => getSvgContent(props.src));
 const isLoadingSvg = computed(() => isLoading(props.src));
 const hasErrorSvg = computed(() => hasError(props.src));
-const className = computed(() => props.class);
 
 // Load SVG when component mounts or src changes
 const loadSvg = async () => {
@@ -69,7 +68,7 @@ watch(() => props.src, loadSvg, { immediate: true });
     <!-- SVG Icon -->
     <div
       v-else-if="svgDataUrl"
-      :class="['h-full w-full transition-all duration-200', className]"
+      :class="['h-full w-full transition-all duration-200', attrs.class]"
       :style="{
         maskImage: `url(${svgDataUrl})`,
         WebkitMaskImage: `url(${svgDataUrl})`,
@@ -81,6 +80,7 @@ watch(() => props.src, loadSvg, { immediate: true });
       :title="title"
       :aria-label="ariaLabel"
       role="img"
+      v-bind="attrs"
     ></div>
 
     <!-- Fallback icon when error -->
@@ -88,10 +88,11 @@ watch(() => props.src, loadSvg, { immediate: true });
       v-else-if="hasErrorSvg"
       :class="[
         'flex h-full w-full cursor-pointer items-center justify-center text-gray-400 transition-colors hover:text-gray-600',
-        className,
+        attrs.class,
       ]"
       :title="`Failed to load: ${title}. Click to retry.`"
       @click="retryLoad"
+      v-bind="attrs"
     >
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-full w-full">
         <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />

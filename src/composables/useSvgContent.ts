@@ -39,17 +39,19 @@ export const useSvgContent = () => {
     try {
       // Method 1: Try direct fetch first (might work in some cases)
       let response: Response;
+      const controller = new AbortController();
+      const { signal } = controller;
       try {
         response = await Promise.race([
           fetch(url, {
             mode: 'cors',
-            headers: {
-              Accept: 'image/svg+xml,image/*,*/*',
-            },
+            headers: { Accept: 'image/svg+xml,image/*,*/*' },
+            signal,
           }),
           createTimeout(10000), // 10 seconds timeout
         ]);
       } catch (corsError) {
+        controller.abort();
         // Method 2: Fallback to proxy approach using a CORS proxy service
         const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
         response = await Promise.race([
@@ -62,6 +64,10 @@ export const useSvgContent = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
+      const contentType = response.headers.get('content-type') || '';
+      if (!contentType.includes('image/svg+xml')) {
+        throw new Error(`Invalid Content-Type: ${contentType}`);
+      }
       const svgContent = await response.text();
 
       // Validate that it's actually SVG content
@@ -85,7 +91,6 @@ export const useSvgContent = () => {
       </svg>`;
       const fallbackDataUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(fallbackSvg)}`;
 
-      svgCache.value[url] = fallbackDataUrl;
       return fallbackDataUrl;
     } finally {
       loading.value.delete(url);
