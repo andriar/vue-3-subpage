@@ -12,6 +12,7 @@ import {
   useForceSendBot,
   useIntegrateBot,
 } from '@/composables/channels/bot';
+import { useFetchProfile } from '@/composables/useProfile';
 import { useSweetAlert } from '@/composables/useSweetAlert';
 import { useAppConfigStore } from '@/stores/app-config';
 import { useAppDetailStore } from '@/stores/app-detail';
@@ -55,6 +56,7 @@ const appConfig = useAppConfigStore();
 const { showAlert } = useSweetAlert();
 const { detail } = storeToRefs(useAppDetailStore());
 const { activate, error: activateError } = useActivateBot();
+const { fetchProfile, data: profileData, error: profileError } = useFetchProfile();
 const { forceSend, error: forceSendError } = useForceSendBot();
 const { integrate, loading: integrateLoading, error: integrateError } = useIntegrateBot();
 
@@ -152,7 +154,17 @@ onMounted(async () => {
     });
   }
 
-  data.agent_id = String(appConfig.userId) || '';
+  await fetchProfile();
+  if (profileError.value) {
+    showAlert.error({
+      title: 'Error',
+      text: 'Cannot fetch profile. Please try again.',
+      confirmButtonText: 'Okay',
+      showCancelButton: false,
+    });
+  }
+
+  data.agent_id = profileData.value?.sdk_email ?? '';
 
   data.webhook_url = bot.data.value?.bot_webhook_url ?? '';
   data.is_enable = bot.data.value?.is_bot_enabled ?? false;

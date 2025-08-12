@@ -11,3 +11,7 @@ export const planApi = {
 export const appApi = {
   get: () => apiV2.get<any[]>('/app/details'),
 };
+
+export const profileApi = {
+  get: () => apiV1.get<any[]>('/admin/get_profile'),
+};
