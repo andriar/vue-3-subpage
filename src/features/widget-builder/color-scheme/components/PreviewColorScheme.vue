@@ -77,6 +77,7 @@ const goToNext = () => {
         title="Hello there!"
         subtitle="Welcome to Qiscus!"
         :textColor="colorWidgetState"
+        :isUsingIconSkeleton="true"
         :imageUrl="''"
         :actions="[]"
       />

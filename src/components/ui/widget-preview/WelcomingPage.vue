@@ -8,6 +8,7 @@ interface Props {
   title: string;
   subtitle: string;
   textColor?: string;
+  isUsingIconSkeleton?: boolean;
   actions: {
     label: string;
     iconUrl: string;
@@ -19,6 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
   title: 'Hello there,',
   subtitle: 'Welcome to Qiscus!',
   textColor: '#01416C',
+  isUsingIconSkeleton: false,
   actions: () => [
     {
       label: 'Ask for Questions',
@@ -37,7 +39,11 @@ const props = withDefaults(defineProps<Props>(), {
       <!-- Header section -->
       <div class="flex flex-col gap-6">
         <!-- Logo section -->
-        <QiscusIcon v-if="!props.imageUrl" :size="32" />
+        <div
+          v-if="props.isUsingIconSkeleton"
+          class="bg-surface-disable h-8 w-8 animate-pulse rounded-full"
+        />
+        <QiscusIcon v-else-if="!props.imageUrl" :size="32" />
         <Image
           v-else
           :src="props.imageUrl"
