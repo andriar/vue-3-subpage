@@ -116,6 +116,13 @@ const grabberTimeoutString = computed({
 watch(
   () => welcomeDialogState.value.isAttentionGrabber,
   (isAttentionGrabberEnabled) => {
+    // Early return if attention grabber options are already properly set
+    if (
+      (isAttentionGrabberEnabled && welcomeDialogState.value.isAttentionGrabberText) ||
+      welcomeDialogState.value.isAttentionGrabberImage
+    )
+      return;
+
     // If attention grabber is turned on, enable both text and image options
     if (isAttentionGrabberEnabled) {
       welcomeDialogState.value.isAttentionGrabberText = true;
