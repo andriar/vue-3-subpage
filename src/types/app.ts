@@ -27,4 +27,8 @@ export interface IAppConfig {
   is_agent_takeover_enabled: boolean;
   use_latest: boolean;
   is_bulk_assignment_enabled: boolean;
+  // API Base URLs for different versions
+  apiBaseUrlV1?: string;
+  apiBaseUrlV2?: string;
+  apiBaseUrlV3?: string;
 }
