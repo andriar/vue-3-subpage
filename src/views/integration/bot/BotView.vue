@@ -343,7 +343,7 @@ onMounted(async () => {
       </transition>
 
       <transition name="fade">
-        <CollapsibleGroup :items="items" v-show="activeTab == 'Settings'">
+        <CollapsibleGroup :items="items">
           <template #item-id-1="{ item }">
             <div class="text-text-subtitle flex justify-between gap-8 text-sm">
               <div v-html="item.content"></div>
