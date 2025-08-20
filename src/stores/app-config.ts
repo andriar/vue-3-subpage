@@ -27,6 +27,11 @@ export const useAppConfigStore = defineStore('app', () => {
   const userId = computed(() => user.value.id);
   const sdkUserId = computed(() => sdkUser.value.id);
   const userSdkToken = computed(() => sdkUser.value.token);
+  
+  // API Base URLs computed properties
+  const apiBaseUrlV1 = computed(() => appConfig.value.apiBaseUrlV1 || import.meta.env.VITE_API_BASE_URL_V1 || '');
+  const apiBaseUrlV2 = computed(() => appConfig.value.apiBaseUrlV2 || import.meta.env.VITE_API_BASE_URL_V2 || '');
+  const apiBaseUrlV3 = computed(() => appConfig.value.apiBaseUrlV3 || import.meta.env.VITE_API_BASE_URL_V3 || '');
 
   // Getters
   const isConfigured = () => {
@@ -60,6 +65,18 @@ export const useAppConfigStore = defineStore('app', () => {
     user.value = { ...initUser, ...config.user };
     appConfig.value = { ...initAppConfig, ...config.appConfig };
     sdkUser.value = { ...initSdkUser, ...config.sdkUser };
+    
+    // Refresh axios instances when config changes (lazy import to avoid circular dependency)
+    if (typeof window !== 'undefined') {
+      // Use setTimeout to ensure this runs after the current call stack
+      setTimeout(() => {
+        import('../utils/axios').then(({ refreshAxiosInstances }) => {
+          refreshAxiosInstances();
+        }).catch(() => {
+          // Silently ignore errors if axios module is not available yet
+        });
+      }, 0);
+    }
   };
 
   const clearConfig = () => {
@@ -84,6 +101,11 @@ export const useAppConfigStore = defineStore('app', () => {
     baseUrl,
     sdkUserId,
     userSdkToken,
+
+    // API Base URLs
+    apiBaseUrlV1,
+    apiBaseUrlV2,
+    apiBaseUrlV3,
 
     // Getters
     isConfigured,

@@ -4,10 +4,32 @@ import axios from 'axios';
 
 import { useAppConfigStore } from '../stores/app-config';
 
-// API Base URLs from environment variables
-const API_BASE_URL_V1 = import.meta.env.VITE_API_BASE_URL_V1;
-const API_BASE_URL_V2 = import.meta.env.VITE_API_BASE_URL_V2;
-const API_BASE_URL_V3 = import.meta.env.VITE_API_BASE_URL_V3;
+// Function to safely get API base URLs
+const getApiBaseUrls = () => {
+  // Check if we're in a browser environment and Pinia is available
+  if (typeof window !== 'undefined') {
+    try {
+      const appConfigStore = useAppConfigStore();
+      // Check if store is properly initialized
+      if (appConfigStore && appConfigStore.apiBaseUrlV1 !== undefined) {
+        return {
+          v1: appConfigStore.apiBaseUrlV1,
+          v2: appConfigStore.apiBaseUrlV2,
+          v3: appConfigStore.apiBaseUrlV3,
+        };
+      }
+    } catch {
+      // Pinia not yet available, continue to fallback
+    }
+  }
+  
+  // Fallback to environment variables
+  return {
+    v1: import.meta.env.VITE_API_BASE_URL_V1 || '',
+    v2: import.meta.env.VITE_API_BASE_URL_V2 || '',
+    v3: import.meta.env.VITE_API_BASE_URL_V3 || '',
+  };
+};
 
 // Default timeout
 const DEFAULT_TIMEOUT = 10000;
@@ -121,10 +143,50 @@ export const createAxiosInstance = (
   return instance;
 };
 
-// Create instances for each API version
-export const apiV1 = createAxiosInstance(API_BASE_URL_V1 || '');
-export const apiV2 = createAxiosInstance(API_BASE_URL_V2 || '');
-export const apiV3 = createAxiosInstance(API_BASE_URL_V3 || '');
+// Function to create and configure axios instances
+const createApiInstances = () => {
+  const urls = getApiBaseUrls();
+  return {
+    v1: createAxiosInstance(urls.v1),
+    v2: createAxiosInstance(urls.v2),
+    v3: createAxiosInstance(urls.v3),
+  };
+};
+
+// Lazy initialization - instances are created when first accessed
+let instances: ReturnType<typeof createApiInstances> | null = null;
+
+const getInstances = () => {
+  if (!instances) {
+    instances = createApiInstances();
+  }
+  return instances;
+};
+
+// Function to refresh axios instances (useful when config changes)
+export const refreshAxiosInstances = () => {
+  instances = createApiInstances();
+  return instances;
+};
+
+// Export individual instances using lazy loading
+export const apiV1 = new Proxy({} as AxiosInstance, {
+  get(_, prop) {
+    return getInstances().v1[prop as keyof AxiosInstance];
+  }
+});
+
+export const apiV2 = new Proxy({} as AxiosInstance, {
+  get(_, prop) {
+    return getInstances().v2[prop as keyof AxiosInstance];
+  }
+});
+
+export const apiV3 = new Proxy({} as AxiosInstance, {
+  get(_, prop) {
+    return getInstances().v3[prop as keyof AxiosInstance];
+  }
+});
 
 // Default export for backward compatibility
 export default apiV1;

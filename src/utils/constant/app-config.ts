@@ -15,4 +15,8 @@ export const initAppConfig = {
     is_agent_takeover_enabled: false,
     use_latest: false,
     is_bulk_assignment_enabled: false,
+    // API Base URLs for different versions
+    apiBaseUrlV1: '',
+    apiBaseUrlV2: '',
+    apiBaseUrlV3: '',
 }
