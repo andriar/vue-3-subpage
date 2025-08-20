@@ -140,7 +140,7 @@ const Animate = defineAsyncComponent(() => import('@/components/common/Animate.v
 // interface
 interface IChannel {
   id: number;
-  name: string;
+  name: string | null;
   channelId: string;
   isActive: boolean;
   badgeUrl: string;

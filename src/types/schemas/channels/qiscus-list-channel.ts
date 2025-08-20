@@ -9,7 +9,7 @@ export const QiscusChannelSchema = z.object({
   is_active: z.boolean(),
   is_secure: z.boolean(),
   secret_key: z.string(),
-  name: z.string(),
+  name: z.string().nullable(),
   widget_version: z.string().nullable(),
 });
 
