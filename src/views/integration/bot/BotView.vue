@@ -341,38 +341,39 @@ onMounted(async () => {
           </div>
         </form>
       </transition>
-
       <transition name="fade">
-        <CollapsibleGroup :items="items">
-          <template #item-id-1="{ item }">
-            <div class="text-text-subtitle flex justify-between gap-8 text-sm">
-              <div v-html="item.content"></div>
-              <div>
-                <Switch
-                  id="enable-bot-switch"
-                  variant="success"
-                  :model-value="data.is_enable"
-                  @update:model-value="handleActivateBot"
-                  size="medium"
-                />
+        <template v-if="activeTab == 'Settings'">
+          <CollapsibleGroup :items="items">
+            <template #item-id-1="{ item }">
+              <div class="text-text-subtitle flex justify-between gap-8 text-sm">
+                <div v-html="item.content"></div>
+                <div>
+                  <Switch
+                    id="enable-bot-switch"
+                    variant="success"
+                    :model-value="data.is_enable"
+                    @update:model-value="handleActivateBot"
+                    size="medium"
+                  />
+                </div>
               </div>
-            </div>
-          </template>
-          <template #item-id-2="{ item }">
-            <div class="text-text-subtitle flex justify-between gap-8 text-sm">
-              {{ item.content }}
-              <div>
-                <Switch
-                  id="enable-force-bot-switch"
-                  variant="success"
-                  size="medium"
-                  :model-value="data.is_enable_chat"
-                  @update:model-value="handleForceSendBot"
-                />
+            </template>
+            <template #item-id-2="{ item }">
+              <div class="text-text-subtitle flex justify-between gap-8 text-sm">
+                {{ item.content }}
+                <div>
+                  <Switch
+                    id="enable-force-bot-switch"
+                    variant="success"
+                    size="medium"
+                    :model-value="data.is_enable_chat"
+                    @update:model-value="handleForceSendBot"
+                  />
+                </div>
               </div>
-            </div>
-          </template>
-        </CollapsibleGroup>
+            </template>
+          </CollapsibleGroup>
+        </template>
       </transition>
     </div>
   </div>
