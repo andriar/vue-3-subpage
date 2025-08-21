@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-8 px-12 py-8">
+  <div class="mx-auto flex max-w-[1728px] flex-col gap-8">
     <router-link
       to="/"
       id="route-integration"

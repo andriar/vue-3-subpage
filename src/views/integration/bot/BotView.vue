@@ -174,7 +174,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-8 px-12 py-8">
+  <div class="flex flex-col gap-8">
     <div class="flex items-center justify-between">
       <router-link
         to="/"

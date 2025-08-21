@@ -1,5 +1,5 @@
 <template>
-  <div class="text-text-title flex min-h-screen flex-col gap-8 px-12 py-8 text-sm">
+  <div class="text-text-title flex min-h-screen flex-col gap-8 text-sm">
     <div class="flex items-center justify-between">
       <router-link to="/qiscus" class="text-primary flex items-center gap-2 font-semibold">
         <BackIcon :size="20" />
