@@ -18,11 +18,13 @@
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
 import { defineAsyncComponent, onMounted, ref, watchEffect } from 'vue';
 import { RouterView } from 'vue-router';
 import { useFetchFeature } from './composables/channels/useFetchFeature';
 import { useSweetAlert } from './composables/useSweetAlert';
 import { navigationDirection } from './router'; // Import the reactive navigationDirection
+import { useAppConfigStore } from './stores/app-config';
 import { useAppDetailStore } from './stores/app-detail';
 import { usePlanStore } from './stores/plan';
 
@@ -36,6 +38,13 @@ const leaveActiveClass = ref('transition-all duration-100 ease-in');
 const leaveFromClass = ref('opacity-100 translate-x-0');
 const leaveToClass = ref('opacity-0 -translate-x-5');
 
+const { appConfig } = storeToRefs(useAppConfigStore())
+
+const applyCustomColor = () => {
+  if (appConfig.value.customColor) {
+    document.documentElement.style.setProperty('--color-primary', appConfig.value.customColor);
+  }
+}
 
 // Watch for changes in navigationDirection and update transition classes
 watchEffect(() => {
@@ -67,6 +76,8 @@ const { showAlert } = useSweetAlert()
 const loading = ref<boolean>(false)
 
 onMounted(() => {
+  applyCustomColor()
+  
   loading.value = true
   Promise.all([feature.fetchFeature(), plan.getPlanData(), app.fetch()]).then(() => {
     loading.value = false

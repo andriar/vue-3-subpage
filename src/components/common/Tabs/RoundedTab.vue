@@ -33,7 +33,7 @@ const handleTabClick = (tab: string) => {
       :aria-selected="props.modelValue === tab.label" :aria-controls="`tab-panel-${tab.label}`"
       class="text-text-title flex cursor-pointer items-center gap-2 rounded-full border-[1px] px-3 py-2 transition-all duration-200 ease-linear border-transparent bg-transparent hover:bg-gray-300 "
       :class="{
-        '!bg-soft-green !border-primary': modelValue === tab.label
+        '!bg-primary/10 !border-primary': modelValue === tab.label
       }">
       <span v-if="tab.icon">
         <component :is="tab.icon" :size="24"
