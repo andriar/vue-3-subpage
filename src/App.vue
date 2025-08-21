@@ -2,21 +2,19 @@
   <div id="app">
     <main class="mx-12 px-12 py-8">
       <div class="mx-auto max-w-[1728px]">
-        <div class="mx-auto max-w-[1728px]">
-          <router-view v-slot="{ Component }">
-            <transition
-              :enter-active-class="enterActiveClass"
-              :enter-from-class="enterFromClass"
-              :enter-to-class="enterToClass"
-              :leave-active-class="leaveActiveClass"
-              :leave-from-class="leaveFromClass"
-              :leave-to-class="leaveToClass"
-              mode="out-in"
-            >
-              <component :is="Component" />
-            </transition>
-          </router-view>
-        </div>
+        <router-view v-slot="{ Component }">
+          <transition
+            :enter-active-class="enterActiveClass"
+            :enter-from-class="enterFromClass"
+            :enter-to-class="enterToClass"
+            :leave-active-class="leaveActiveClass"
+            :leave-from-class="leaveFromClass"
+            :leave-to-class="leaveToClass"
+            mode="out-in"
+          >
+            <component :is="Component" />
+          </transition>
+        </router-view>
       </div>
     </main>
     <transition name="fade">
