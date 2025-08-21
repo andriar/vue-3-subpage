@@ -36,7 +36,7 @@ defineProps<{
 }
 
 .card:hover {
-  border-color: #27b199;
+  border-color: var(--color-primary);
 }
 
 .card::after {

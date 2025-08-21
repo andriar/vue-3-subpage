@@ -1,5 +1,9 @@
 import type { ISdkUser, IUser } from './user';
 
+
+
+
+
 export interface IWidgetConfig {
   iframeUrl?: string;
   env: 'production' | 'latest' | 'staging';
@@ -31,4 +35,6 @@ export interface IAppConfig {
   apiBaseUrlV1?: string;
   apiBaseUrlV2?: string;
   apiBaseUrlV3?: string;
+  // custom color
+  customColor?: string;
 }
