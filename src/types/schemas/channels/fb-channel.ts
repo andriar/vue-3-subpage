@@ -1,12 +1,13 @@
-import { z } from "zod";
-import { createApiResponseSchemaPagination } from "../common";
+import { z } from 'zod';
+
+import { createApiResponseSchemaPagination } from '../common';
 
 const FbChannelSchema = z.object({
-   badge_url: z.string(),
-   id: z.number(),
-   is_active: z.boolean(),
-   name: z.string(),
-   page_id: z.string(),
+  badge_url: z.string(),
+  id: z.number(),
+  is_active: z.boolean(),
+  name: z.string().nullable(),
+  page_id: z.string(),
 });
 
 const FbChannelListSchema = z.array(FbChannelSchema);

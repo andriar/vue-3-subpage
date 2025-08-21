@@ -253,11 +253,11 @@ onMounted(async () => {
                 <template #append-button>
                   <button
                     type="button"
-                    class="text-primary active:text-primary-hover flex cursor-pointer gap-2 rounded-sm p-1 hover:bg-gray-400"
+                    class="text-text-title flex cursor-pointer gap-2 rounded-sm p-1"
                     @click="copyToClipboard(data.agent_id)"
                   >
                     Copy
-                    <CopyIcon :size="18" />
+                    <CopyIcon class="text-primary" :size="18" />
                   </button>
                 </template>
               </InputCustom>
@@ -265,11 +265,11 @@ onMounted(async () => {
                 <template #append-button>
                   <button
                     type="button"
-                    class="text-primary active:text-primary-hover flex cursor-pointer gap-2 rounded-sm p-1 hover:bg-gray-400"
+                    class="text-text-title flex cursor-pointer gap-2 rounded-sm p-1"
                     @click="copyToClipboard(data.app_id)"
                   >
                     Copy
-                    <CopyIcon :size="18" />
+                    <CopyIcon class="text-primary" :size="18" />
                   </button>
                 </template>
               </InputCustom>

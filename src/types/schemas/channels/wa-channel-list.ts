@@ -25,7 +25,7 @@ const WhatsappChannelSchema = z.object({
   is_postpaid: z.boolean().nullable(),
   is_ssl_enabled: z.boolean(),
   is_template_optimized: z.boolean(),
-  name: z.string(),
+  name: z.string().nullable(),
   phone_number: z.string().nullable(),
   phone_number_id: z.string().nullable(),
   phone_number_status: z.string().nullable(),

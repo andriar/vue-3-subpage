@@ -1,14 +1,15 @@
-import { z } from "zod";
-import { createApiResponseSchemaPagination } from "../common";
+import { z } from 'zod';
+
+import { createApiResponseSchemaPagination } from '../common';
 
 const LineChannelSchema = z.object({
-    access_token: z.string(),
-    badge_url: z.string(),
-    id: z.number(),
-    is_active: z.boolean(),
-    name: z.string(),
-    secret_key: z.string(),
-    webhook_url: z.string(),
+  access_token: z.string(),
+  badge_url: z.string(),
+  id: z.number(),
+  is_active: z.boolean(),
+  name: z.string().nullable(),
+  secret_key: z.string(),
+  webhook_url: z.string(),
 });
 
 const LineChannelListSchema = z.array(LineChannelSchema);
