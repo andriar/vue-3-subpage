@@ -28,7 +28,7 @@
 }
 
 .default-confirm-button {
-  background-color: #27b199 !important;
+  background-color: var(--color-primary, #27b199) !important;
   color: white !important;
   border: none !important;
   padding: 8px 20px !important;
@@ -45,13 +45,13 @@
 } */
 
 .default-confirm-button:hover {
-  background-color: #288372 !important;
+  background-color: color-mix(in oklab, var(--color-primary, #27b199) 80%, transparent) !important;
 }
 
 .default-cancel-button {
   padding: 8px 20px !important;
   background: transparent !important;
-  color: #27b199 !important;
+  color: var(--color-primary, #27b199) !important;
   font-weight: 600 !important;
   font-size: 14px !important;
   line-height: 20px !important;

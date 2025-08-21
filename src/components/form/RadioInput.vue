@@ -87,8 +87,8 @@ const computedLabelClasses = computed(() => labelClasses({ disabled: props.disab
           <input :id="`${id}-${getOptionValue(option)}`" :name="name || id" :value="getOptionValue(option)"
             :checked="isChecked(option)" type="radio" class="sr-only" @change="handleChange" />
           <div
-            class="border-button-primary flex h-4.5 w-4.5 cursor-pointer items-center justify-center rounded-full border-2 transition-colors"
-            :class="[isChecked(option) ? 'bg-button-primary' : 'bg-white']"
+            class="border-primary flex h-4.5 w-4.5 cursor-pointer items-center justify-center rounded-full border-2 transition-colors"
+            :class="[isChecked(option) ? 'bg-primary' : 'bg-white']"
             @click="selectOption(getOptionValue(option))">
             <div v-if="isChecked(option)" class="h-2 w-2 rounded-full bg-white" />
           </div>

@@ -81,7 +81,7 @@ const switchClass = computed(() =>
         },
         variant: {
           default: 'focus:ring-blue-500/20',
-          success: 'focus:ring-green-500/20',
+          success: 'focus:ring-primary/20',
           warning: 'focus:ring-yellow-500/20',
           danger: 'focus:ring-red-500/20',
         },
@@ -108,7 +108,7 @@ const switchClass = computed(() =>
         {
           variant: 'success',
           state: 'checked',
-          class: 'bg-green-500',
+          class: 'bg-primary',
         },
         {
           variant: 'success',

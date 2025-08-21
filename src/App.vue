@@ -2,19 +2,21 @@
   <div id="app">
     <main class="mx-12 px-12 py-8">
       <div class="mx-auto max-w-[1728px]">
-        <router-view v-slot="{ Component }">
-          <transition
-            :enter-active-class="enterActiveClass"
-            :enter-from-class="enterFromClass"
-            :enter-to-class="enterToClass"
-            :leave-active-class="leaveActiveClass"
-            :leave-from-class="leaveFromClass"
-            :leave-to-class="leaveToClass"
-            mode="out-in"
-          >
-            <component :is="Component" />
-          </transition>
-        </router-view>
+        <div class="mx-auto max-w-[1728px]">
+          <router-view v-slot="{ Component }">
+            <transition
+              :enter-active-class="enterActiveClass"
+              :enter-from-class="enterFromClass"
+              :enter-to-class="enterToClass"
+              :leave-active-class="leaveActiveClass"
+              :leave-from-class="leaveFromClass"
+              :leave-to-class="leaveToClass"
+              mode="out-in"
+            >
+              <component :is="Component" />
+            </transition>
+          </router-view>
+        </div>
       </div>
     </main>
     <transition name="fade">
@@ -26,6 +28,7 @@
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
 import { defineAsyncComponent, onMounted, ref, watchEffect } from 'vue';
 import { RouterView } from 'vue-router';
 
@@ -33,6 +36,7 @@ import { useFetchFeature } from './composables/channels/useFetchFeature';
 import { useSweetAlert } from './composables/useSweetAlert';
 import { navigationDirection } from './router';
 // Import the reactive navigationDirection
+import { useAppConfigStore } from './stores/app-config';
 import { useAppDetailStore } from './stores/app-detail';
 import { usePlanStore } from './stores/plan';
 
@@ -45,6 +49,14 @@ const enterToClass = ref('opacity-100 translate-x-0');
 const leaveActiveClass = ref('transition-all duration-100 ease-in');
 const leaveFromClass = ref('opacity-100 translate-x-0');
 const leaveToClass = ref('opacity-0 -translate-x-5');
+
+const { appConfig } = storeToRefs(useAppConfigStore());
+
+const applyCustomColor = () => {
+  if (appConfig.value.customColor) {
+    document.documentElement.style.setProperty('--color-primary', appConfig.value.customColor);
+  }
+};
 
 // Watch for changes in navigationDirection and update transition classes
 watchEffect(() => {
@@ -76,6 +88,8 @@ const { showAlert } = useSweetAlert();
 const loading = ref<boolean>(false);
 
 onMounted(() => {
+  applyCustomColor();
+
   loading.value = true;
   Promise.all([feature.fetchFeature(), plan.getPlanData(), app.fetch()])
     .then(() => {
