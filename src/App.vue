@@ -18,6 +18,7 @@
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
 import { defineAsyncComponent, onMounted, ref, watchEffect } from 'vue';
 import { RouterView } from 'vue-router';
 import { useFetchFeature } from './composables/channels/useFetchFeature';
@@ -37,11 +38,11 @@ const leaveActiveClass = ref('transition-all duration-100 ease-in');
 const leaveFromClass = ref('opacity-100 translate-x-0');
 const leaveToClass = ref('opacity-0 -translate-x-5');
 
-const { appConfig } = useAppConfigStore()
+const { appConfig } = storeToRefs(useAppConfigStore())
 
 const applyCustomColor = () => {
-  if (appConfig.customColor) {
-    document.documentElement.style.setProperty('--color-primary', appConfig.customColor);
+  if (appConfig.value.customColor) {
+    document.documentElement.style.setProperty('--color-primary', appConfig.value.customColor);
   }
 }
 
