@@ -87,7 +87,7 @@ const buttonClass = computed(() =>
         intent: 'primary',
         disabled: false,
         animation: true,
-        class: 'hover:bg-primary-hover',
+        class: 'hover:bg-primary/80',
       },
       {
         intent: 'secondary',

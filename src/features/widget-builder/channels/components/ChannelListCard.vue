@@ -91,7 +91,7 @@ const isMaxChannel = computed(() => {
           id="add-more-channel-btn"
           intent="flat"
           size="small"
-          class="text-text-primary gap-2 !px-0"
+          class="text-primary gap-2 !px-0"
           @click="isModalOpen = true"
           disableAnimation
           :disabled="isMaxChannel"

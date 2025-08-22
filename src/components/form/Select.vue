@@ -55,7 +55,7 @@
             <span
               :class="[
                 'block truncate text-sm font-medium',
-                selectedValue === option.value ? 'text-text-primary' : 'text-text-title',
+                selectedValue === option.value ? 'text-primary' : 'text-text-title',
               ]"
             >
               {{ option.text }}
