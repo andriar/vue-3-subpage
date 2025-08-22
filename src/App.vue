@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <main class="mx-12 px-12 py-8">
+    <main class=" px-12 py-8">
       <div class="mx-auto max-w-[1728px]">
         <router-view v-slot="{ Component }">
           <transition
