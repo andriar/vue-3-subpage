@@ -204,7 +204,7 @@ function copyToClipboard(text: string) {
 const channels = computed(() =>
   listData.value.map((channel) => ({
     id: channel.id,
-    name: channel.name,
+    name: channel.name || '-',
     channelId: channel.id.toString(), // Assuming channel.id is also the channelId for display
     isActive: channel.is_active,
     badgeUrl: channel.badge_url ? channel.badge_url : CHANNEL_BADGE_URL.qiscus,

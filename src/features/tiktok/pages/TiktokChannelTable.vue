@@ -173,7 +173,7 @@ const channels = computed(() =>
     badgeUrl: channel.badge_url,
     id: channel.id,
     isActive: channel.is_active,
-    name: channel.name,
+    name: channel.name || '-',
     source: channel.source,
     uniqueId: channel.unique_id,
     useChannelResponder: channel.use_channel_responder,

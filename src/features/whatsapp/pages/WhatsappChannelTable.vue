@@ -313,7 +313,7 @@ const channels = computed(() =>
     isPostpaid: channel.is_postpaid,
     isSslEnabled: channel.is_ssl_enabled,
     isTemplateOptimized: channel.is_template_optimized,
-    name: channel.name,
+    name: channel.name || '-',
     phoneNumber: channel.phone_number,
     phoneNumberId: channel.phone_number_id,
     phoneNumberStatus: channel.phone_number_status,

@@ -172,7 +172,7 @@ const channels = computed(() =>
     badgeUrl: channel.badge_url,
     id: channel.id,
     isActive: channel.is_active,
-    name: channel.name,
+    name: channel.name || '-',
     pageId: channel.page_id,
   }))
 );

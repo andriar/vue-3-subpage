@@ -173,7 +173,7 @@ const channels = computed(() =>
     id: channel.id,
     igId: channel.ig_id,
     isActive: channel.is_active,
-    name: channel.name,
+    name: channel.name || '-',
     pageId: channel.page_id,
     privateRepliesEnabled: channel.private_replies_enabled,
     privateRepliesText: channel.private_replies_text,

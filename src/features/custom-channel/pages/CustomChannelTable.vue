@@ -178,7 +178,7 @@ const channels = computed(() =>
     isReplyEnable: channel.is_reply_enable,
     limitCharacter: channel.limit_character,
     logoUrl: channel.logo_url,
-    name: channel.name,
+    name: channel.name || '-',
     updatedAt: channel.updated_at,
     useChannelResponder: channel.use_channel_responder,
     webhookUrl: channel.webhook_url,

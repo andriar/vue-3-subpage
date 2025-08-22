@@ -173,7 +173,7 @@ const channels = computed(() =>
     badgeUrl: channel.badge_url,
     id: channel.id,
     isActive: channel.is_active,
-    name: channel.name,
+    name: channel.name || '-',
     secretKey: channel.secret_key,
     webhookUrl: channel.webhook_url,
   }))
