@@ -304,6 +304,7 @@ watch(
             v-model="grabberTimeoutString"
             label="Appear Delay"
             :maxlength="50"
+            :min="0"
             type="number"
             placeholder="0"
           >
