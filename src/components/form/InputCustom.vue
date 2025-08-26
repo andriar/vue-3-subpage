@@ -11,6 +11,7 @@
           :class="inputClasses({ disabled })"
           :value="modelValue"
           @input="onInput"
+          @keypress="onKeyPress"
           @focus="isFocused = true"
           @blur="isFocused = false"
           :placeholder="placeholder"
@@ -108,8 +109,33 @@ const currentType = computed(() =>
   props.type === 'password' && showPassword.value ? 'text' : props.type
 );
 
+// handle keypress to prevent input letters on type number
+const onKeyPress = (event: KeyboardEvent) => {
+  if (props.type === 'number') {
+    // block e, E, +, -, and other non-digit characters
+    // allow: 0-9, Backspace, Delete, Tab, Arrow keys
+    if (
+      !/[0-9]/.test(event.key) &&
+      !['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(
+        event.key
+      )
+    ) {
+      event.preventDefault();
+    }
+  }
+};
+
 const onInput = (event: Event) => {
-  emit('update:modelValue', (event.target as HTMLInputElement).value);
+  const target = event.target as HTMLInputElement;
+
+  if (props.type === 'number') {
+    // delete all non-digit characters
+    const cleanValue = target.value.replace(/[^0-9]/g, '');
+    target.value = cleanValue;
+    emit('update:modelValue', cleanValue);
+  } else {
+    emit('update:modelValue', target.value);
+  }
 };
 
 const onClear = () => {

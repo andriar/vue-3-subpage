@@ -228,9 +228,10 @@ watch(
             id="webhook-url-input"
             v-model="welcomeDialogState.welcomeTimeout"
             label="Appear Delay"
-            :maxlength="50"
             type="number"
             placeholder="0"
+            :maxlength="50"
+            :min="0"
           >
             <template #append-button>
               <div class="text-text-title text-sm font-medium">Seconds</div>
