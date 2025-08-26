@@ -10,6 +10,7 @@ import TextArea from '@/components/form/TextArea.vue';
 import { useUploadSdkImage } from '@/composables/images/useUploadSdkImage';
 import { useChannelWidgetStore } from '@/stores/integration/widget-builder/channels';
 import type { NormalizedOtherChannel } from '@/types/schemas/channels/qiscus-widget/config-qiscus-widget';
+import { DEFAULT_CHANNEL_ENABLED } from '@/utils/constant/channels';
 
 const { addChannel, updateChannel } = useChannelWidgetStore();
 const { loading, data, error, upload } = useUploadSdkImage();
@@ -58,20 +59,22 @@ const handleAddChannel = (): void => {
     name: channelName.value,
     url: channelLink.value,
     badge_url: channelBadgeIcon.value,
-    is_enable: false,
   };
 
+  // Update channel
   if (modelValue.value) {
     const updatedChannel: NormalizedOtherChannel = {
       index: modelValue.value.index,
       ...formData,
-      is_active: modelValue.value.is_active,
+      is_enable: modelValue.value.is_enable,
     };
     updateChannel(modelValue.value.index, updatedChannel);
+
+    // Add channel
   } else {
     addChannel({
       ...formData,
-      is_enable: false,
+      is_enable: DEFAULT_CHANNEL_ENABLED,
     });
   }
   closeModal();

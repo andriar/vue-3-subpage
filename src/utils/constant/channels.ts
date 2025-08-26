@@ -111,3 +111,6 @@ export const CHANNEL_LIST = [
       'Enable and manage bots to assist with customer inquiries across all your connected channel.',
   },
 ] as const;
+
+// For channel list card
+export const DEFAULT_CHANNEL_ENABLED = true;

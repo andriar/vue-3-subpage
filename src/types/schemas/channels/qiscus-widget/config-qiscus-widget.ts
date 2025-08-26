@@ -1,12 +1,6 @@
 import { z } from 'zod';
 
-
-
 import { createApiResponseSchema } from '../../common';
-
-
-
-
 
 const OtherChannelSchema = z.object({
   badge_url: z.string().optional(),
