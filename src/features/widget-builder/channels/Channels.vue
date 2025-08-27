@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 
 import { Banner } from '@/components/common/common';
 import ImageInput from '@/components/form/ImageInput.vue';
@@ -23,6 +23,21 @@ const { widgetState: channelState, channelList } = storeToRefs(useChannelWidgetS
 const hasNoEnabledChannels = computed(() => {
   return channelList.value.length === 0 || channelList.value.every((channel) => !channel.is_enable);
 });
+
+/**
+ * Watcher to automatically enable Qiscus Live Chat when all other channels are disabled
+ * This ensures that when isQiscusLiveChat is false and all channels in channelList have
+ * is_enable set to false (or channelList is empty), isQiscusLiveChat will automatically be set to true
+ */
+watch(
+  [() => channelState.value.isQiscusLiveChat, channelList.value],
+  ([isQiscusLiveChat]) => {
+    if (!isQiscusLiveChat && hasNoEnabledChannels.value) {
+      channelState.value.isQiscusLiveChat = true;
+    }
+  },
+  { deep: true }
+);
 
 // Handles the toggle state change for Qiscus Live Chat
 const handleQiscusLiveChatToggle = async (newValue: boolean): Promise<void> => {
