@@ -3,7 +3,7 @@
     <router-link
       to="/"
       id="route-integration"
-      class="text-primary flex items-center gap-2 text-sm font-semibold"
+      class="text-primary flex w-fit items-center gap-2 text-sm font-semibold"
     >
       <BackIcon :size="20" class="text-primary" />
       Integration
